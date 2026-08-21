@@ -1,10 +1,10 @@
-# SkyWindow: Satellite Tasking & Global Hazard Watch 🛰️🌍
+# SkyWindow: Satellite Tasking & Global Hazard Watch 
 
 SkyWindow is a professional-grade, multi-faceted mission planning console. It combines a highly optimized **Satellite Tasking Optimizer** with a live, real-time **Global Hazard Watch** dashboard. Designed to simulate the complexities of earth-observation satellite operations, the platform intelligently schedules satellite passes over prioritized targets based on orbital mechanics, weather conditions, and satellite hardware constraints, while seamlessly integrating emergency tasking from live disaster feeds.
 
 ---
 
-## 🚀 Features
+##  Features
 
 ### 1. Global Hazard Watch (Live Disaster Monitoring)
 A real-time, multi-hazard natural disaster monitor covering worldwide events.
@@ -26,7 +26,7 @@ Simulates satellite orbital mechanics and schedules imaging passes.
 
 ---
 
-## 🏗️ Architecture Stack
+##  Architecture Stack
 
 - **Backend:** Python (FastAPI, Uvicorn)
   - `sgp4`, `skyfield` for orbital physics.
@@ -39,7 +39,7 @@ Simulates satellite orbital mechanics and schedules imaging passes.
 
 ---
 
-## ⚙️ Installation & Setup
+## Installation & Setup
 
 ### Prerequisites
 - **Python 3.8+**
@@ -69,7 +69,7 @@ npm run dev
 
 ---
 
-## 📖 How to Use
+##  How to Use
 
 1. **Mission Planning:**
    - Select a satellite (e.g., ISS) from the dropdown.
