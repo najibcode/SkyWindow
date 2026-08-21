@@ -294,18 +294,23 @@ function renderFeedList(disasters) {
         const isSev = d.severity === 'Severe';
         const div = document.createElement('div');
         div.className = `disaster-feed-item ${isCrit ? 'critical' : (isSev ? 'severe' : '')}`;
+        if (activeDisaster && activeDisaster.event_id === d.event_id) {
+            div.classList.add('active');
+        }
         
         div.innerHTML = `
             <div class="df-header">
                 <span class="df-title">${d.name}</span>
-                <span class="badge-mini ${isCrit ? 'status-alert' : (isSev ? 'status-warn' : 'status-ok')}">${d.severity.toUpperCase()}</span>
+                <span class="badge-mini ${isCrit ? 'status-alert' : (isSev ? 'status-warn' : 'status-ok')}">● ${d.severity}</span>
             </div>
             <div class="df-meta">
-                <span>${d.event_type} • Area: ${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Point'}</span>
-                <span class="df-risk">RISK: ${d.risk_score ? d.risk_score.toFixed(0) : 50}/100</span>
+                <span>${d.event_type} · ${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Point Hazard'}</span>
+                <span class="df-risk font-mono">Risk ${d.risk_score ? d.risk_score.toFixed(0) : 50}/100</span>
             </div>
         `;
         div.addEventListener('click', () => {
+            document.querySelectorAll('.disaster-feed-item').forEach(el => el.classList.remove('active'));
+            div.classList.add('active');
             selectDisaster(d);
             map.setView([d.latitude, d.longitude], 6);
         });
@@ -390,21 +395,22 @@ function selectDisaster(d) {
     activeDisaster = d;
     const card = document.getElementById('priority-intel-card');
     const isCrit = d.severity === 'Critical';
+    const isSev = d.severity === 'Severe';
     
     card.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
-            <strong style="font-size:13px; color:var(--text-main);">${d.name}</strong>
-            <span class="badge-mini ${isCrit ? 'status-alert' : 'status-warn'}">${d.severity.toUpperCase()}</span>
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:10px;">
+            <strong style="font-size:13px; font-weight:600; color:var(--text-primary);">${d.name}</strong>
+            <span class="badge-mini ${isCrit ? 'status-alert' : (isSev ? 'status-warn' : 'status-ok')}">● ${d.severity}</span>
         </div>
-        <div class="info-row"><span class="label">DISASTER TYPE:</span> <span>${d.event_type} (${d.category})</span></div>
-        <div class="info-row"><span class="label">RISK SCORE:</span> <span class="font-bold status-alert">${d.risk_score}/100</span></div>
-        <div class="info-row"><span class="label">AFFECTED AREA:</span> <span>${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Local Epicenter'}</span></div>
-        <div class="info-row"><span class="label">POPULATION EXPOSURE:</span> <span>${d.estimated_population ? d.estimated_population.toLocaleString() : 'Analyzing...'}</span></div>
-        <div class="info-row"><span class="label">RECOMMENDED SENSOR:</span> <span class="text-accent font-bold">${d.recommended_sensor}</span></div>
-        <div style="margin-top:8px; border-top:1px dashed var(--border-color); padding-top:6px; font-size:10px; color:var(--text-dim);">
-            <strong>RATIONALE:</strong> ${d.recommended_action || 'Execute high-resolution orbital reconnaissance.'}
+        <div class="info-row"><span class="label">Hazard Classification</span> <span>${d.event_type} (${d.category})</span></div>
+        <div class="info-row"><span class="label">Calculated Risk</span> <span class="font-mono font-semibold ${isCrit ? 'status-alert' : (isSev ? 'status-warn' : 'status-ok')}">${d.risk_score}/100</span></div>
+        <div class="info-row"><span class="label">Estimated Impact Area</span> <span class="font-mono">${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Localized'}</span></div>
+        <div class="info-row"><span class="label">Population Exposure</span> <span class="font-mono">${d.estimated_population ? d.estimated_population.toLocaleString() : 'Analyzing...'}</span></div>
+        <div class="info-row"><span class="label">Recommended Sensor</span> <span class="font-semibold" style="color:var(--text-primary);">${d.recommended_sensor}</span></div>
+        <div style="margin-top:10px; border-top:1px solid var(--border-subtle); padding-top:8px; font-size:11px; color:var(--text-secondary); line-height:1.4;">
+            <strong style="color:var(--text-muted); font-size:10px;">TACTICAL RATIONALE:</strong> ${d.recommended_action || 'Execute high-resolution orbital reconnaissance.'}
         </div>
-        <button class="btn btn-small btn-secondary w-full mt-1" onclick="window.viewIncidentModal('${d.event_id}')">VIEW FULL INCIDENT WORKSPACE →</button>
+        <button class="btn btn-small btn-secondary w-full mt-2" onclick="window.viewIncidentModal('${d.event_id}')">Open Full Incident Workspace &rarr;</button>
     `;
 
     document.getElementById('next-obs-sat').innerText = d.recommended_sensor.includes('SAR') ? 'SENTINEL-1A (SAR)' : 'SENTINEL-2A (Optical)';
@@ -529,26 +535,27 @@ function renderDisasterCatalog() {
         const card = document.createElement('div');
         card.className = 'disaster-card';
         const isCrit = d.severity === 'Critical';
+        const isSev = d.severity === 'Severe';
 
         card.innerHTML = `
             <div>
                 <div class="dc-header">
                     <div>
-                        <div class="dc-title">${d.name}</div>
-                        <div class="dc-type">${d.event_type.toUpperCase()} • ${d.category.toUpperCase()}</div>
+                        <div class="dc-title font-semibold" style="font-size:13px; color:var(--text-primary);">${d.name}</div>
+                        <div class="dc-type text-muted" style="font-size:11px;">${d.event_type} · ${d.category}</div>
                     </div>
-                    <span class="badge-mini ${isCrit ? 'status-alert' : 'status-warn'}">${d.severity.toUpperCase()}</span>
+                    <span class="badge-mini ${isCrit ? 'status-alert' : (isSev ? 'status-warn' : 'status-ok')}">● ${d.severity}</span>
                 </div>
-                <div class="dc-body">
-                    <div class="info-row"><span class="label">RISK SCORE:</span> <strong style="color:var(--text-alert)">${d.risk_score}/100</strong></div>
-                    <div class="info-row"><span class="label">AFFECTED AREA:</span> <span>${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Point'}</span></div>
-                    <div class="info-row"><span class="label">EXPOSED POP:</span> <span>${d.estimated_population ? d.estimated_population.toLocaleString() : 'N/A'}</span></div>
-                    <div class="info-row"><span class="label">RECOMMENDED SENSOR:</span> <span class="text-accent">${d.recommended_sensor}</span></div>
+                <div class="dc-body mt-2">
+                    <div class="info-row"><span class="label">Calculated Risk</span> <strong class="font-mono ${isCrit ? 'status-alert' : ''}">${d.risk_score}/100</strong></div>
+                    <div class="info-row"><span class="label">Impact Area</span> <span class="font-mono">${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Localized'}</span></div>
+                    <div class="info-row"><span class="label">Exposed Population</span> <span class="font-mono">${d.estimated_population ? d.estimated_population.toLocaleString() : 'N/A'}</span></div>
+                    <div class="info-row"><span class="label">Optimal Sensor</span> <span>${d.recommended_sensor}</span></div>
                 </div>
             </div>
-            <div class="dc-footer">
-                <button class="btn btn-small btn-secondary flex-1" onclick="window.viewIncidentModal('${d.event_id}')">INCIDENT VIEW</button>
-                <button class="btn btn-small btn-primary flex-1" onclick="window.quickTaskFromMap('${d.event_id}')">TASK SATELLITE</button>
+            <div class="dc-footer mt-2" style="display:flex; gap:6px;">
+                <button class="btn btn-small btn-secondary flex-1" onclick="window.viewIncidentModal('${d.event_id}')">Incident View</button>
+                <button class="btn btn-small btn-primary flex-1" onclick="window.quickTaskFromMap('${d.event_id}')">Task Platform &rarr;</button>
             </div>
         `;
         grid.appendChild(card);
@@ -1160,19 +1167,19 @@ async function fetchHealth() {
 
         sources.forEach(s => {
             const card = document.createElement('div');
-            card.className = 'source-card';
+            card.className = 'health-card';
             card.innerHTML = `
-                <div class="source-card-header">
-                    <strong style="font-size:12px;">${s.name}</strong>
+                <div class="health-card-header">
+                    <strong style="font-size:12px; font-weight:600; color:var(--text-primary);">${s.name}</strong>
                     <span class="badge-mini status-ok">● ${s.status}</span>
                 </div>
-                <div style="font-family:var(--font-mono); font-size:10px; color:var(--text-dim); line-height:1.5;">
-                    <div><strong>Provider:</strong> ${s.provider}</div>
-                    <div><strong>Category:</strong> ${s.category}</div>
-                    <div><strong>Latency:</strong> ${s.latency_ms} ms</div>
-                    <div><strong>Update Freq:</strong> ${s.update_frequency}</div>
-                    <div><strong>License:</strong> ${s.license}</div>
-                    <div style="margin-top:4px; border-top:1px dashed var(--border-color); padding-top:4px;">
+                <div style="font-size:11px; color:var(--text-secondary); line-height:1.6; margin-top:8px;">
+                    <div class="info-row"><span class="label">Provider</span> <span class="font-semibold">${s.provider}</span></div>
+                    <div class="info-row"><span class="label">Hazard Domain</span> <span>${s.category}</span></div>
+                    <div class="info-row"><span class="label">Ping Latency</span> <span class="font-mono">${s.latency_ms} ms</span></div>
+                    <div class="info-row"><span class="label">Update Cadence</span> <span>${s.update_frequency}</span></div>
+                    <div class="info-row"><span class="label">Licensing</span> <span>${s.license}</span></div>
+                    <div style="margin-top:8px; border-top:1px solid var(--border-subtle); padding-top:6px; font-size:10px; color:var(--text-muted);">
                         <strong>Attribution:</strong> ${s.attribution}
                     </div>
                 </div>
