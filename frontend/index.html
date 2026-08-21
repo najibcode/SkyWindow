@@ -1,13 +1,553 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKYWINDOW // AI Earth Observation & Multi-Disaster Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+    <div id="crt-overlay"></div>
+
+    <!-- Top Command Header -->
+    <header class="app-header">
+        <div class="header-left">
+            <div class="logo-title">
+                <span class="brand-text">SKYWINDOW</span>
+                <span class="badge-tag">AI EARTH OBSERVATION & GEOINT</span>
+            </div>
+            <div class="product-subtitle">Observe • Analyze • Predict Risk • Respond</div>
+        </div>
+
+        <div class="live-telemetry-bar">
+            <div class="tel-item"><span class="tel-dot live-dot"></span> <span class="tel-label">DATA:</span> <span class="tel-val status-ok" id="tel-data-mode">100% REAL LIVE DATA</span></div>
+            <div class="tel-item"><span class="tel-label">ACTIVE EVENTS:</span> <span class="tel-val" id="tel-active-events">--</span></div>
+            <div class="tel-item"><span class="tel-label">CRITICAL ZONES:</span> <span class="tel-val status-alert" id="tel-critical-zones">--</span></div>
+            <div class="tel-item"><span class="tel-label">CONSTELLATION:</span> <span class="tel-val" id="tel-constellation">7 EO SATS</span></div>
+            <div class="tel-item"><span class="tel-label">UTC CLOCK:</span> <span class="tel-val font-mono" id="clock">00:00:00 UTC</span></div>
+        </div>
+    </header>
+
+    <!-- Operational Navigation Bar -->
+    <nav class="nav-bar">
+        <button class="nav-tab active" data-view="view-overview"><span class="tab-icon">🌐</span> LIVE OPERATIONS MAP</button>
+        <button class="nav-tab" data-view="view-disasters"><span class="tab-icon">⚡</span> DISASTER CENTER</button>
+        <button class="nav-tab" data-view="view-tasking"><span class="tab-icon">🛰️</span> SATELLITE TASKING</button>
+        <button class="nav-tab" data-view="view-constellation"><span class="tab-icon">📡</span> CONSTELLATION PLAN</button>
+        <button class="nav-tab" data-view="view-change"><span class="tab-icon">🔄</span> CHANGE DETECTION</button>
+        <button class="nav-tab" data-view="view-analyst"><span class="tab-icon">🤖</span> AI DISASTER ANALYST</button>
+        <button class="nav-tab" data-view="view-alerts"><span class="tab-icon">🚨</span> ALERTS & WATCHLISTS</button>
+        <button class="nav-tab" data-view="view-reports"><span class="tab-icon">📄</span> REPORTS</button>
+        <button class="nav-tab" data-view="view-health"><span class="tab-icon">🩺</span> DATA SOURCES & HEALTH</button>
+        <button class="nav-tab" data-view="view-simulation"><span class="tab-icon">🧪</span> SCENARIO SIMULATOR</button>
+    </nav>
+
+    <!-- Main Workspace Container -->
+    <main class="app-workspace">
+
+        <!-- ================= VIEW 1: OVERVIEW & LIVE MAP ================= -->
+        <section id="view-overview" class="view-panel active">
+            <div class="grid-overview">
+                <!-- Left: Active Disaster Feed -->
+                <aside class="panel feed-panel">
+                    <div class="panel-header-flex">
+                        <h2>PRIORITY DISASTER FEED</h2>
+                        <button id="btn-refresh-feed" class="btn btn-small btn-secondary">REFRESH</button>
+                    </div>
+                    
+                    <div class="search-box mb-2">
+                        <input type="text" id="feed-search" placeholder="Search disaster, city, or country...">
+                    </div>
+
+                    <div class="category-pills mb-2" id="feed-category-pills">
+                        <button class="pill active" data-cat="ALL">ALL</button>
+                        <button class="pill" data-cat="Hydrological">FLOODS</button>
+                        <button class="pill" data-cat="Geological">SEISMIC</button>
+                        <button class="pill" data-cat="Meteorological">CYCLONES</button>
+                        <button class="pill" data-cat="Environmental">FIRES</button>
+                    </div>
+
+                    <div id="disaster-feed-list" class="scroll-box feed-list">
+                        <div class="empty-state">Ingesting real-time disaster feeds...</div>
+                    </div>
+                </aside>
+
+                <!-- Center: Interactive Command Map -->
+                <div class="panel map-panel">
+                    <div class="panel-header-flex">
+                        <div class="map-controls-left">
+                            <h2>GLOBAL EARTH OBSERVATION MAP</h2>
+                            <div class="map-badges">
+                                <span class="badge-mini"><span class="dot-live"></span> REAL-TIME TELEMETRY</span>
+                                <span id="map-cursor-coords" class="font-mono text-muted">LAT: -- | LON: --</span>
+                            </div>
+                        </div>
+                        
+                        <div class="layer-toggles">
+                            <label class="layer-chk"><input type="checkbox" id="chk-layer-disasters" checked> Disasters</label>
+                            <label class="layer-chk"><input type="checkbox" id="chk-layer-tracks" checked> Sat Track</label>
+                            <label class="layer-chk"><input type="checkbox" id="chk-layer-radar" checked> RainViewer Radar</label>
+                        </div>
+                    </div>
+
+                    <div id="map"></div>
+
+                    <!-- Time Slider bar -->
+                    <div class="time-machine-bar">
+                        <span class="tm-label">TEMPORAL ANALYSIS:</span>
+                        <span class="tm-date font-mono" id="tm-current-time">LIVE (NOW)</span>
+                        <input type="range" id="temporal-slider" min="0" max="7" value="7" step="1">
+                        <span class="tm-mode">T-7 DAYS TO REAL-TIME</span>
+                    </div>
+                </div>
+
+                <!-- Right: Priority Intelligence & Quick Tasking -->
+                <aside class="panel intel-panel">
+                    <h2>PRIORITY INTELLIGENCE</h2>
+                    <div id="priority-intel-card" class="intel-card">
+                        <div class="empty-state">Select any disaster on the map or feed to view intelligence.</div>
+                    </div>
+
+                    <hr>
+
+                    <h2>NEXT OBSERVATION WINDOW</h2>
+                    <div id="next-observation-card" class="intel-card">
+                        <div class="info-row"><span class="label">SATELLITE:</span> <span id="next-obs-sat">SENTINEL-1A (SAR)</span></div>
+                        <div class="info-row"><span class="label">SENSOR:</span> <span id="next-obs-sensor">C-SAR (5m Resolution)</span></div>
+                        <div class="info-row"><span class="label">NEXT PASS:</span> <span id="next-obs-time" class="font-mono status-ok">--</span></div>
+                        <div class="info-row"><span class="label">CLOUD PENETRATION:</span> <span class="status-ok">100% ALL-WEATHER</span></div>
+                        <button id="btn-quick-task" class="btn btn-primary mt-1 w-full">DEPLOY MISSION TASKING →</button>
+                    </div>
+
+                    <hr>
+
+                    <div class="provenance-badge-box">
+                        <strong>DATA PROVENANCE GUARANTEE</strong>
+                        <p class="text-xs text-muted mt-1">
+                            All events, coordinates, cloud covers, and passes are computed dynamically from USGS, Open-Meteo, CelesTrak, and GloFAS APIs. No fake numbers.
+                        </p>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 2: DISASTER CENTER ================= -->
+        <section id="view-disasters" class="view-panel">
+            <div class="disaster-center-header">
+                <div>
+                    <h2>MULTI-DISASTER INTELLIGENCE DIRECTORY</h2>
+                    <p class="help-text">Real-time catalog of detected hydrological, geological, oceanic, meteorological, and environmental crises.</p>
+                </div>
+                <div class="filter-controls">
+                    <select id="disaster-filter-severity">
+                        <option value="">All Severities</option>
+                        <option value="Critical">Critical Only</option>
+                        <option value="Severe">Severe</option>
+                        <option value="Developing">Developing</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="disaster-catalog-grid" class="disaster-grid">
+                <!-- Populated dynamically -->
+            </div>
+        </section>
+
+        <!-- ================= VIEW 3: SATELLITE TASKING ================= -->
+        <section id="view-tasking" class="view-panel">
+            <div class="grid-tasking">
+                <aside class="panel controls-panel">
+                    <h2>1. SATELLITE PLATFORM</h2>
+                    <div class="form-group">
+                        <select id="sat-select"></select>
+                    </div>
+                    
+                    <div id="sat-info-box" class="info-box">
+                        <div class="info-row"><span class="label">SENSOR MODALITY:</span> <span id="sat-type" class="font-bold text-accent">--</span></div>
+                        <div class="info-row"><span class="label">REVISIT TIME:</span> <span id="sat-revisit">--</span></div>
+                        <div class="info-desc" id="sat-desc">--</div>
+                    </div>
+                    
+                    <div class="form-group mt-1">
+                        <label>DAILY CAPACITY LIMIT (MAX PASSES/DAY)</label>
+                        <input type="number" id="capacity-limit" value="4" min="1" max="20">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>MAX ALLOWED CLOUD COVER (%)</label>
+                        <input type="number" id="max-cloud-cover" value="70" min="0" max="100">
+                    </div>
+
+                    <div class="form-group">
+                        <label>IMPACT SIMULATOR SPECS (Wh & GB per pass)</label>
+                        <div class="input-row">
+                            <input type="number" id="power-per-pass" value="150" placeholder="Wh (150)">
+                            <input type="number" id="storage-per-pass" value="12" placeholder="GB (12)">
+                        </div>
+                    </div>
+
+                    <hr>
+                    
+                    <h2>2. TARGET ROSTER</h2>
+                    <p class="help-text">Click on map or search location coordinates.</p>
+                    
+                    <div id="targets-list" class="targets-list-container"></div>
+                    
+                    <div class="add-target-box">
+                        <div class="input-row search-row">
+                            <input type="text" id="target-search" placeholder="Search city or region (e.g. Kochi)">
+                            <button id="btn-search-loc" class="btn btn-secondary">FIND</button>
+                        </div>
+                        <div class="input-row">
+                            <input type="text" id="target-name" placeholder="Target Name (e.g. KERALA-FLOOD)">
+                            <input type="number" id="target-weight" placeholder="Priority (1-10)" value="9" min="1" max="10">
+                        </div>
+                        <div class="input-row">
+                            <input type="number" id="target-lat" placeholder="LAT" step="0.01">
+                            <input type="number" id="target-lon" placeholder="LON" step="0.01">
+                        </div>
+                        <button id="btn-add-target" class="btn btn-secondary w-full">ADD TARGET TO ROSTER</button>
+                    </div>
+                    
+                    <hr>
+                    
+                    <button id="btn-compute" class="btn btn-primary w-full mt-1">GENERATE SENSOR-AWARE SCHEDULE</button>
+                </aside>
+
+                <main class="panel center-task-panel">
+                    <div class="panel-header-flex">
+                        <h2>ORBITAL GROUND TRACK & FOOTPRINT</h2>
+                        <div class="map-legend">
+                            <span class="legend-item"><span class="dot pulse"></span> Subpoint</span>
+                            <span class="legend-item"><span class="dot target-dot"></span> Target Area</span>
+                        </div>
+                    </div>
+                    <div id="task-map" class="task-map-container"></div>
+                    
+                    <div class="impact-panel mt-1">
+                        <h3>DUTY CYCLE & CAPACITY IMPACT SIMULATOR</h3>
+                        <div class="stats-grid" id="stats-grid">
+                            <div class="stat-box">
+                                <span class="stat-label">NAIVE CLOUDY PASSES</span>
+                                <span class="stat-val" id="stat-naive">--</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">OPTIMIZED CLOUDY PASSES</span>
+                                <span class="stat-val" id="stat-opt">--</span>
+                            </div>
+                            <div class="stat-box highlight">
+                                <span class="stat-label">WASTED PASSES SAVED</span>
+                                <span class="stat-val status-ok" id="stat-saved">--</span>
+                            </div>
+                            <div class="stat-box">
+                                <span class="stat-label">EST. ONBOARD STORAGE SAVED (GB)</span>
+                                <span class="stat-val" id="stat-storage">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+
+                <aside class="panel right-task-panel">
+                    <h2>COMPUTED CAMERA SCHEDULE</h2>
+                    <div class="schedule-actions mb-2">
+                        <button id="btn-export" class="btn btn-small btn-secondary" disabled>EXPORT SCHEDULE (CSV)</button>
+                    </div>
+                    <div id="schedule-results" class="scroll-box schedule-box">
+                        <div class="empty-state">NO MISSION SCHEDULE COMPUTED.<br>CONFIGURE TARGETS & RUN OPTIMIZER.</div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 4: CONSTELLATION PLAN ================= -->
+        <section id="view-constellation" class="view-panel">
+            <div class="panel constellation-container">
+                <h2>MULTI-SATELLITE CONSTELLATION CAMPAIGN PLANNER</h2>
+                <p class="help-text">Coordinate multi-sensor synchronized passes across SAR, Optical, and Thermal satellite platforms.</p>
+                
+                <div class="constellation-config-row">
+                    <div class="form-group flex-1">
+                        <label>CAMPAIGN OBJECTIVE</label>
+                        <input type="text" id="const-campaign-name" value="Kerala Flood Rapid Multi-Sensor Mapping">
+                    </div>
+                    <div class="form-group">
+                        <label>OBSERVATION WINDOW (HOURS)</label>
+                        <input type="number" id="const-duration" value="48" min="12" max="168">
+                    </div>
+                    <div class="form-group">
+                        <label>COORDINATED SATELLITES</label>
+                        <div class="sat-checkboxes">
+                            <label><input type="checkbox" value="39634" checked> Sentinel-1A (SAR)</label>
+                            <label><input type="checkbox" value="40697" checked> Sentinel-2A (Optical)</label>
+                            <label><input type="checkbox" value="39084" checked> Landsat 8 (Optical/Thermal)</label>
+                            <label><input type="checkbox" value="25994" checked> Terra (MODIS)</label>
+                        </div>
+                    </div>
+                    <button id="btn-run-constellation" class="btn btn-primary align-self-end">RUN CAMPAIGN OPTIMIZER</button>
+                </div>
+
+                <div id="constellation-results" class="constellation-results-grid mt-2">
+                    <div class="empty-state">Select parameters and execute constellation planner.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 5: CHANGE DETECTION ================= -->
+        <section id="view-change" class="view-panel">
+            <div class="panel change-container">
+                <h2>MULTI-TEMPORAL EARTH OBSERVATION CHANGE DETECTION</h2>
+                <p class="help-text">Delineate spatial surface changes between baseline historical observations and active disaster acquisitions.</p>
+
+                <div class="change-input-grid">
+                    <div class="form-group">
+                        <label>SELECT DISASTER INCIDENT</label>
+                        <select id="change-disaster-select">
+                            <option value="FLD-2026-KER-01">Kerala Riverine Flooding (Hydrological)</option>
+                            <option value="WF-FIRMS-BANDIPUR">Bandipur Forest Fire Complex (Environmental)</option>
+                            <option value="LS-2026-WAY-01">Wayanad Hill Slope Debris Flow (Geological)</option>
+                            <option value="TC-2026-BOB-02">Cyclone SAGAR Coastal Run-up (Meteorological)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>FEATURE DETECTOR</label>
+                        <select id="change-feature-select">
+                            <option value="water_extent">Surface Water Extent / Flood Inundation (SAR Dual-Pol)</option>
+                            <option value="burn_scar">Burn Scar / Normalized Burn Ratio (NBR)</option>
+                            <option value="landslide_scar">Landslide Runout / Slope Coherence (InSAR)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>BASELINE DATE</label>
+                        <input type="date" id="change-base-date" value="2026-08-10">
+                    </div>
+
+                    <div class="form-group">
+                        <label>POST-EVENT DATE</label>
+                        <input type="date" id="change-curr-date" value="2026-08-21">
+                    </div>
+
+                    <button id="btn-run-change" class="btn btn-primary align-self-end">EXECUTE CHANGE DETECTION</button>
+                </div>
+
+                <div id="change-results-card" class="change-results-card mt-2">
+                    <div class="empty-state">Configure comparison dates and execute analysis.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 6: AI DISASTER ANALYST ================= -->
+        <section id="view-analyst" class="view-panel">
+            <div class="grid-analyst">
+                <!-- Left: Natural Language Tasking -->
+                <div class="panel nlp-tasking-panel">
+                    <h2>NATURAL LANGUAGE MISSION TASKING</h2>
+                    <p class="help-text">Type mission requirements in plain English. The AI engine will parse coordinates, select sensors, and propose an optimal flight plan.</p>
+                    
+                    <div class="form-group">
+                        <textarea id="nlp-task-input" rows="4" placeholder="e.g. Monitor the Kerala flood for SAR imagery over the next 48 hours to assess critical road and hospital inundation."></textarea>
+                    </div>
+                    <button id="btn-parse-nlp" class="btn btn-primary w-full">PARSE & PROPOSE MISSION PLAN</button>
+
+                    <div id="nlp-plan-output" class="nlp-plan-output mt-2 hidden">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Right: Grounded AI Disaster Analyst Chat -->
+                <div class="panel analyst-chat-panel">
+                    <div class="panel-header-flex">
+                        <h2>SKYWINDOW GROUNDED ANALYST</h2>
+                        <span class="badge-tag">STRICT EVIDENCE RETRIEVAL</span>
+                    </div>
+
+                    <div id="chat-messages" class="chat-messages-container">
+                        <div class="chat-msg system-msg">
+                            <div class="msg-author">SKYWINDOW ANALYST v2.0</div>
+                            <div class="msg-text">
+                                Hello Commander. I have direct real-time access to USGS seismic records, Open-Meteo atmospheric telemetry, GloFAS river discharge, and CelesTrak orbital catalogs. Ask any question regarding active disaster severity, sensor modality selection, or exposed infrastructure.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-bar">
+                        <input type="text" id="chat-input" placeholder="Ask e.g. 'Why is SAR preferred for the Kerala flood?' or 'What infrastructure is exposed in Assam?'">
+                        <button id="btn-chat-send" class="btn btn-primary">TRANSMIT</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 7: ALERTS & WATCHLISTS ================= -->
+        <section id="view-alerts" class="view-panel">
+            <div class="grid-alerts">
+                <!-- Left: Alert Rule Builder -->
+                <div class="panel alert-rules-panel">
+                    <h2>CONFIGURE ALERT RULE</h2>
+                    <div class="form-group">
+                        <label>RULE NAME</label>
+                        <input type="text" id="rule-name" placeholder="e.g. Coastal Severe Flood Monitor">
+                    </div>
+                    <div class="form-group">
+                        <label>DISASTER TYPE</label>
+                        <select id="rule-type">
+                            <option value="ALL">All Disasters</option>
+                            <option value="Flood">Floods Only</option>
+                            <option value="Earthquake">Earthquakes Only</option>
+                            <option value="Cyclone">Cyclones Only</option>
+                            <option value="Wildfire">Wildfires Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>MINIMUM SEVERITY</label>
+                        <select id="rule-sev">
+                            <option value="Critical">Critical Only</option>
+                            <option value="Severe">Severe & Above</option>
+                            <option value="Developing">Developing & Above</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>MAX DISTANCE RADIUS (KM)</label>
+                        <input type="number" id="rule-dist" value="500">
+                    </div>
+                    <button id="btn-create-rule" class="btn btn-primary w-full">CREATE MONITORING RULE</button>
+
+                    <hr>
+
+                    <h2>ACTIVE RULES</h2>
+                    <div id="rules-list" class="rules-list"></div>
+                </div>
+
+                <!-- Right: Live Alert Stream -->
+                <div class="panel alert-stream-panel">
+                    <h2>REAL-TIME DISASTER ALERT STREAM</h2>
+                    <div id="alerts-stream-list" class="alerts-stream-list">
+                        <div class="empty-state">Evaluating active alert rules...</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 8: REPORTS & BRIEFINGS ================= -->
+        <section id="view-reports" class="view-panel">
+            <div class="panel reports-container">
+                <div class="panel-header-flex">
+                    <div>
+                        <h2>DISASTER INTELLIGENCE BRIEFINGS & REPORTS</h2>
+                        <p class="help-text">Generate formal executive briefings with data lineage, weather context, and satellite recommendations.</p>
+                    </div>
+                    <button id="btn-print-report" class="btn btn-secondary" onclick="window.print()">PRINT / EXPORT PDF</button>
+                </div>
+
+                <div class="report-generator-bar mb-2">
+                    <select id="report-disaster-select"></select>
+                    <button id="btn-generate-report" class="btn btn-primary">GENERATE BRIEFING</button>
+                </div>
+
+                <div id="report-view-container" class="report-view-container">
+                    <div class="empty-state">Select a disaster event and click Generate Briefing.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 9: DATA SOURCES & HEALTH ================= -->
+        <section id="view-health" class="view-panel">
+            <div class="panel health-container">
+                <div class="panel-header-flex">
+                    <div>
+                        <h2>EXTERNAL DATA PROVIDER REGISTRY & API HEALTH</h2>
+                        <p class="help-text">Verifiable status, latency, update frequency, and license attribution for all integrated space and weather agencies.</p>
+                    </div>
+                    <button id="btn-check-health" class="btn btn-secondary">CHECK ALL FEEDS</button>
+                </div>
+
+                <div id="data-sources-grid" class="data-sources-grid">
+                    <div class="empty-state">Checking external data endpoints...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= VIEW 10: SCENARIO SIMULATOR ================= -->
+        <section id="view-simulation" class="view-panel">
+            <div class="panel sim-container">
+                <div class="sim-banner">
+                    <span class="sim-warning-icon">⚠</span>
+                    <div>
+                        <strong>SCENARIO SIMULATION SANDBOX</strong>
+                        <p>This is a numerical simulation sandbox for emergency preparedness and hypothetical impact testing. Values generated here are clearly labeled as MODELLED SCENARIOS and NOT official government forecasts.</p>
+                    </div>
+                </div>
+
+                <div class="sim-grid mt-2">
+                    <div class="sim-controls-card">
+                        <h2>HYPOTHETICAL DISASTER PARAMETERS</h2>
+                        
+                        <div class="form-group">
+                            <label>SCENARIO TYPE</label>
+                            <select id="sim-scenario-type">
+                                <option value="flood">Catastrophic Monsoon Flood (+50% Rainfall)</option>
+                                <option value="cyclone">Category 4 Coastal Cyclone Surge (+1.5m Surge)</option>
+                                <option value="earthquake">M7.4 Offshore Seismic Rupture (Tsunami Evaluation)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>TARGET REGION</label>
+                            <input type="text" id="sim-target-name" value="Chennai Coastal Urban Corridor">
+                        </div>
+
+                        <div class="form-group">
+                            <label>PRECIPITATION / INTENSITY ANOMALY (%)</label>
+                            <input type="range" id="sim-intensity-slider" min="10" max="100" value="50" step="5">
+                            <span id="sim-intensity-val" class="font-mono text-accent">+50% Anomaly</span>
+                        </div>
+
+                        <button id="btn-run-simulation" class="btn btn-primary w-full mt-1">RUN SIMULATION MODEL</button>
+                    </div>
+
+                    <div id="sim-results-card" class="sim-results-card">
+                        <div class="empty-state">Select parameters and run simulation sandbox.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Incident Workspace Drawer / Modal -->
+    <div id="modal-incident" class="modal hidden">
+        <div class="modal-content modal-large panel">
+            <div class="modal-header">
+                <div class="modal-title-group">
+                    <h3 id="inc-title">INCIDENT WORKSPACE</h3>
+                    <span id="inc-badge" class="badge-mini status-alert">CRITICAL</span>
+                </div>
+                <button id="btn-close-incident" class="btn btn-small btn-secondary">CLOSE [X]</button>
+            </div>
+            <div id="incident-body" class="modal-body">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Explainability Modal -->
+    <div id="modal-explain" class="modal hidden">
+        <div class="modal-content panel">
+            <div class="modal-header">
+                <h3>DECISION AUDIT LOG</h3>
+                <button id="btn-close-modal" class="btn btn-small btn-secondary">CLOSE [X]</button>
+            </div>
+            <div id="explain-body" class="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+>>>>>>> 330614f (Integrate live authoritative APIs for NASA EONET, USGS, Open-Meteo, GloFAS, CelesTrak, and OSM)
 </html>

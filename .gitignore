@@ -3,13 +3,20 @@ __pycache__/
 *.py[cod]
 *$py.class
 venv/
+.venv/
 env/
 .env
 
 # Database
 *.sqlite3
 *.db
+skywindow.db
 backend/skywindow.db
 
 # Caching
+tle_cache/
 backend/tle_cache/
+
+# OS
+.DS_Store
+Thumbs.db

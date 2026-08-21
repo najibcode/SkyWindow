@@ -1,125 +1,77 @@
-from fastapi import FastAPI, HTTPException, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
-from typing import List, Optional
+from fastapi.middleware.cors import CORSMiddleware
 import os
-import time
 from datetime import datetime
 
-from tle_manager import fetch_tle, get_satellite_list
-from orbit_calc import compute_passes, compute_ground_track
-from weather_api import get_cloud_cover_forecast, get_cloud_cover_at_time
-from scheduler_opt import compute_schedule
-from database import log_prediction, update_actual_forecast, get_calibration_log
+from config import settings
+from database import init_db, get_calibration_log, update_actual_forecast
+from providers.weather.open_meteo import open_meteo_provider
 
-app = FastAPI()
+# Import API routers
+from api.satellites import router as satellites_router
+from api.disasters import router as disasters_router
+from api.weather import router as weather_router
+from api.tasking import router as tasking_router
+from api.change_detection import router as change_router
+from api.analyst import router as analyst_router
+from api.alerts import router as alerts_router
+from api.reports import router as reports_router
+from api.health import router as health_router
 
-class TargetInput(BaseModel):
-    id: str
-    name: str
-    lat: float
-    lon: float
-    weight: float
+# Initialize database
+init_db()
 
-class ScheduleRequest(BaseModel):
-    satellite_id: int
-    targets: List[TargetInput]
-    max_passes_per_day: int = 5
-    max_cloud_cover: float = 70.0
-    power_per_pass: float = 150.0
-    storage_per_pass: float = 12.0
+app = FastAPI(
+    title=settings.app_name,
+    version=settings.app_version,
+    description="AI-Powered Earth Observation & Multi-Disaster Intelligence Platform"
+)
 
-@app.get("/api/satellites")
-def get_satellites():
-    return get_satellite_list()
+# Enable CORS for development
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-@app.post("/api/schedule")
-async def create_schedule(req: ScheduleRequest):
-    try:
-        name, line1, line2, age_hours = await fetch_tle(req.satellite_id)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch TLE: {str(e)}")
-        
-    passes_data = {}
-    for target in req.targets:
-        # compute raw passes
-        passes = compute_passes(line1, line2, target.lat, target.lon)
-        
-        if passes:
-            # fetch weather
-            try:
-                forecast = await get_cloud_cover_forecast(target.lat, target.lon)
-            except Exception as e:
-                raise HTTPException(status_code=500, detail=f"Failed to fetch weather for {target.name}: {str(e)}")
-                
-            # enrich passes with weather
-            for p in passes:
-                cc = get_cloud_cover_at_time(forecast, p['culminate_time'])
-                p['cloud_cover'] = cc
-                
-        passes_data[target.id] = passes
-        
-    schedule_result = compute_schedule(
-        [t.dict() for t in req.targets], 
-        passes_data, 
-        req.max_passes_per_day,
-        req.max_cloud_cover,
-        req.power_per_pass,
-        req.storage_per_pass
-    )
-    
-    # log predictions for scheduled passes
-    now_str = datetime.now().isoformat()
-    for p in schedule_result['scheduled']:
-        log_prediction(p['target_name'], 
-                       next((t.lat for t in req.targets if t.id == p['target_id']), 0),
-                       next((t.lon for t in req.targets if t.id == p['target_id']), 0),
-                       p['culminate_time'], 
-                       p['cloud_cover'], 
-                       now_str)
-                       
-    schedule_result['tle_info'] = {
-        'name': name,
-        'age_hours': age_hours
-    }
-    
-    return schedule_result
+# Include all modular routers
+app.include_router(satellites_router)
+app.include_router(disasters_router)
+app.include_router(weather_router)
+app.include_router(tasking_router)
+app.include_router(change_router)
+app.include_router(analyst_router)
+app.include_router(alerts_router)
+app.include_router(reports_router)
+app.include_router(health_router)
 
-@app.get("/api/track")
-async def get_track(satellite_id: int):
-    try:
-        name, line1, line2, _ = await fetch_tle(satellite_id)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to fetch TLE: {str(e)}")
-    
-    track = compute_ground_track(line1, line2)
-    return {"name": name, "track": track}
-
-@app.post("/api/update_forecast_log")
-async def update_log():
-    logs = get_calibration_log()
-    now = datetime.now()
-    updates = 0
-    for row in logs:
-        if row['actual_cloud_cover'] is None:
-            pt = datetime.fromisoformat(row['pass_time'])
-            # if pass time has elapsed
-            if pt.timestamp() < now.timestamp():
-                try:
-                    # fetch current "forecast" which acts as observation for past hour
-                    forecast = await get_cloud_cover_forecast(row['lat'], row['lon'])
-                    cc = get_cloud_cover_at_time(forecast, row['pass_time'])
-                    if cc is not None:
-                        update_actual_forecast(row['pass_time'], row['lat'], row['lon'], cc, now.isoformat())
-                        updates += 1
-                except Exception as e:
-                    raise HTTPException(status_code=500, detail=f"Calibration log update failed for target {row['target_name']}: {str(e)}")
-    return {"status": "ok", "updates_made": updates}
-    
+# Legacy calibration endpoints for backwards compatibility
 @app.get("/api/calibration")
 def get_calibration():
     return get_calibration_log()
 
-# Serve frontend
+@app.post("/api/update_forecast_log")
+async def update_log():
+    logs = get_calibration_log()
+    now = datetime.utcnow()
+    updates = 0
+    for row in logs:
+        if row['actual_cloud_cover'] is None:
+            try:
+                pt = datetime.fromisoformat(row['pass_time'].replace("Z", "+00:00"))
+                if pt.timestamp() < now.timestamp():
+                    forecast = await open_meteo_provider.get_cloud_cover_forecast(row['lat'], row['lon'])
+                    cc = open_meteo_provider.get_cloud_cover_at_time(forecast, row['pass_time'])
+                    if cc is not None:
+                        update_actual_forecast(row['pass_time'], row['lat'], row['lon'], cc, now.isoformat())
+                        updates += 1
+            except Exception:
+                continue
+    return {"status": "ok", "updates_made": updates}
+
+# Serve frontend static assets
 frontend_dir = os.path.join(os.path.dirname(__file__), '..', 'frontend')
 app.mount("/", StaticFiles(directory=frontend_dir, html=True), name="frontend")
