@@ -29,8 +29,8 @@ class Settings(BaseModel):
     # Operational Mode: 'live', 'hybrid' (live with demo fallback when offline), 'demo'
     operational_mode: str = os.getenv("OPERATIONAL_MODE", "hybrid")
     
-    # Cache settings
-    weather_cache_seconds: int = int(os.getenv("WEATHER_CACHE_SECONDS", "1800")) # 30 mins
-    disaster_cache_seconds: int = int(os.getenv("DISASTER_CACHE_SECONDS", "300")) # 5 mins
+    # LLM Settings (Free Groq or Google Gemini API)
+    groq_api_key: Optional[str] = os.getenv("GROQ_API_KEY", None)
+    gemini_api_key: Optional[str] = os.getenv("GEMINI_API_KEY", None)
 
 settings = Settings()
