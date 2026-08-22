@@ -154,15 +154,15 @@
         .slide {
             position: absolute;
             inset: 0;
-            padding: 44px 64px 34px 64px;
+            padding: 38px 60px 28px 60px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(18px) scale(0.99);
+            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(16px) scale(0.99);
         }
 
         .slide.active {
@@ -178,37 +178,32 @@
         }
 
         .slide.active .slide-title {
-            animation: slideUpFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.12s;
+            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s;
         }
 
         .slide.active .slide-subtitle {
-            animation: slideUpFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.18s;
+            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.16s;
         }
 
         .slide.active .editorial-surface,
         .slide.active .compare-box,
+        .slide.active .interactive-screenshot-container,
         .slide.active .workflow-step {
-            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: slideUpFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
 
-        .slide.active .grid-3col .editorial-surface:nth-child(1) { animation-delay: 0.22s; }
-        .slide.active .grid-3col .editorial-surface:nth-child(2) { animation-delay: 0.32s; }
-        .slide.active .grid-3col .editorial-surface:nth-child(3) { animation-delay: 0.42s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(1) { animation-delay: 0.18s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(2) { animation-delay: 0.26s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(3) { animation-delay: 0.34s; }
 
-        .slide.active .grid-2col .editorial-surface:nth-child(1) { animation-delay: 0.24s; }
-        .slide.active .grid-2col .editorial-surface:nth-child(2) { animation-delay: 0.36s; }
-
-        .slide.active .workflow-step:nth-child(1) { animation-delay: 0.2s; }
-        .slide.active .workflow-step:nth-child(3) { animation-delay: 0.28s; }
-        .slide.active .workflow-step:nth-child(5) { animation-delay: 0.36s; }
-        .slide.active .workflow-step:nth-child(7) { animation-delay: 0.44s; }
-        .slide.active .workflow-step:nth-child(9) { animation-delay: 0.52s; }
+        .slide.active .grid-2col .editorial-surface:nth-child(1) { animation-delay: 0.2s; }
+        .slide.active .grid-2col .editorial-surface:nth-child(2) { animation-delay: 0.3s; }
 
         @keyframes slideUpFade {
             from {
                 opacity: 0;
-                transform: translateY(14px);
+                transform: translateY(12px);
             }
             to {
                 opacity: 1;
@@ -223,7 +218,7 @@
             letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--accent-earth);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -238,22 +233,22 @@
         }
 
         .slide-title {
-            font-size: 36px;
+            font-size: 34px;
             font-weight: 600;
             line-height: 1.18;
             color: var(--text-primary);
             letter-spacing: -0.02em;
             max-width: 920px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             opacity: 0;
         }
 
         .slide-subtitle {
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 400;
             color: var(--text-secondary);
             max-width: 820px;
-            line-height: 1.55;
+            line-height: 1.5;
             opacity: 0;
         }
 
@@ -261,18 +256,18 @@
         .grid-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            gap: 24px;
             align-items: stretch;
             flex: 1;
-            margin: 18px 0;
+            margin: 14px 0;
         }
 
         .grid-3col {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 20px;
+            gap: 16px;
             flex: 1;
-            margin: 20px 0;
+            margin: 16px 0;
             align-items: stretch;
         }
 
@@ -281,7 +276,7 @@
             background-color: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 6px;
-            padding: 22px 24px;
+            padding: 18px 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -295,25 +290,25 @@
         }
 
         .surface-header {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .surface-title {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .surface-body {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
-            line-height: 1.6;
+            line-height: 1.55;
         }
 
         /* Interactive Workflow Pipeline */
@@ -322,8 +317,8 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            margin: 24px 0;
-            gap: 12px;
+            margin: 18px 0;
+            gap: 10px;
         }
 
         .workflow-step {
@@ -331,7 +326,7 @@
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 4px;
-            padding: 16px 12px;
+            padding: 14px 10px;
             text-align: center;
             transition: all 0.3s ease;
             position: relative;
@@ -340,25 +335,25 @@
         .workflow-step.highlight {
             border-color: var(--accent-earth);
             background: var(--bg-elevated);
-            box-shadow: 0 4px 20px rgba(126, 151, 166, 0.08);
+            box-shadow: 0 4px 16px rgba(126, 151, 166, 0.08);
         }
 
         .step-tag {
             font-family: var(--font-mono);
             font-size: 10px;
             color: var(--text-muted);
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         .step-label {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: var(--text-primary);
         }
 
         .workflow-arrow {
             color: var(--text-muted);
-            font-size: 14px;
+            font-size: 13px;
             animation: arrowGlow 3s infinite ease-in-out;
         }
 
@@ -367,23 +362,173 @@
             50% { opacity: 1; transform: translateX(3px); color: var(--accent-earth); }
         }
 
+        /* Interactive Screenshot Switcher Container */
+        .screenshot-switcher-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            margin: 12px 0;
+        }
+
+        .screenshot-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+
+        .shot-tab {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .shot-tab:hover {
+            color: var(--text-primary);
+            border-color: var(--border-medium);
+        }
+
+        .shot-tab.active {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: var(--accent-earth);
+            font-weight: 600;
+        }
+
+        .screenshot-display-box {
+            position: relative;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-medium);
+            border-radius: 6px;
+            overflow: hidden;
+            height: 250px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .screenshot-display-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top left;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .screenshot-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 12px;
+            background: rgba(9, 12, 16, 0.88);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+        }
+
+        /* Satellite Constellation Selector */
+        .sat-pills-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .sat-pill {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 10px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sat-pill:hover, .sat-pill.active {
+            border-color: var(--accent-earth);
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+
+        .sat-pill-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+        }
+
+        .sat-pill-payload {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Tech Stack Badges */
+        .tech-badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tech-badge {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 6px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tech-badge-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tech-badge-role {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* Data Rows */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 12px;
+        }
+
+        .data-label { color: var(--text-muted); }
+        .data-val { color: var(--text-primary); font-family: var(--font-mono); }
+
         /* Comparison Box */
         .compare-grid {
             display: grid;
             grid-template-columns: 1fr 1.25fr;
-            gap: 28px;
+            gap: 24px;
             flex: 1;
-            margin: 18px 0;
+            margin: 14px 0;
         }
 
         .compare-box {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 6px;
-            padding: 24px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
             transition: all 0.3s ease;
         }
 
@@ -394,22 +539,22 @@
         }
 
         .compare-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-primary);
             border-bottom: 1px solid var(--border-subtle);
-            padding-bottom: 8px;
+            padding-bottom: 6px;
         }
 
         .compare-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .compare-list li {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-secondary);
             display: flex;
             gap: 8px;
@@ -419,31 +564,12 @@
         .bullet-muted { color: var(--text-muted); }
         .bullet-active { color: var(--accent-earth); font-weight: 600; }
 
-        /* Data Rows */
-        .data-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 12px;
-        }
-
-        .data-label { color: var(--text-muted); }
-        .data-val { color: var(--text-primary); font-family: var(--font-mono); }
-
-        /* Animated Orbital SVG */
-        .orbit-anim-svg {
-            width: 100%;
-            height: 160px;
-            margin-top: 10px;
-        }
-
         /* Lineage Note */
         .data-lineage-note {
             font-size: 11px;
             color: var(--text-muted);
             border-top: 1px solid var(--border-subtle);
-            padding-top: 12px;
+            padding-top: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -561,20 +687,20 @@
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <div>
                     <div class="eyebrow">MISSION INTELLIGENCE PLATFORM</div>
-                    <h1 class="slide-title" style="font-size:42px; margin-top: 4px;">
+                    <h1 class="slide-title" style="font-size:40px; margin-top: 4px;">
                         From disaster signal<br>to satellite observation.
                     </h1>
-                    <p class="slide-subtitle" style="margin-top: 8px;">
+                    <p class="slide-subtitle" style="margin-top: 6px;">
                         Connecting real-time planetary hazard signals directly to sensor-aware satellite mission planning.
                     </p>
                 </div>
 
                 <!-- Team RARF Credits -->
-                <div class="editorial-surface" style="padding: 14px 20px; min-width: 240px; background: var(--bg-elevated); border-color: var(--border-medium);">
-                    <div style="font-size: 10px; font-weight: 700; color: var(--accent-earth); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px;">
+                <div class="editorial-surface" style="padding: 12px 18px; min-width: 230px; background: var(--bg-elevated); border-color: var(--border-medium);">
+                    <div style="font-size: 10px; font-weight: 700; color: var(--accent-earth); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px;">
                         TEAM RARF
                     </div>
-                    <div style="font-size: 12px; color: var(--text-primary); font-weight: 500; display: flex; flex-direction: column; gap: 3px;">
+                    <div style="font-size: 11px; color: var(--text-primary); font-weight: 500; display: flex; flex-direction: column; gap: 2px;">
                         <span>Mohamed Fahad</span>
                         <span>Naresh</span>
                         <span>Mohamed Najib</span>
@@ -582,7 +708,7 @@
                 </div>
             </div>
 
-            <div class="grid-3col" style="margin-top: 24px;">
+            <div class="grid-3col" style="margin-top: 18px;">
                 <div class="editorial-surface">
                     <div class="surface-header">01. SENSE</div>
                     <div class="surface-title">Planetary Hazard Feeds</div>
@@ -625,7 +751,7 @@
             </div>
 
             <div class="grid-2col">
-                <div style="display:flex; flex-direction:column; gap:14px;">
+                <div style="display:flex; flex-direction:column; gap:12px;">
                     <div class="editorial-surface" style="border-left: 3px solid var(--text-muted);">
                         <div class="surface-title">Disconnected Data Streams</div>
                         <div class="surface-body">
@@ -640,9 +766,9 @@
                     </div>
                 </div>
 
-                <div class="editorial-surface" style="justify-content: center; gap: 14px;">
+                <div class="editorial-surface" style="justify-content: center; gap: 12px;">
                     <div class="surface-header">THE OPERATOR'S CHALLENGE</div>
-                    <div style="font-size:15px; color:var(--text-primary); line-height: 1.6;">
+                    <div style="font-size:14px; color:var(--text-primary); line-height: 1.6;">
                         "When an emergency unfolds, the decision is not merely knowing a disaster occurred—it is knowing <em>which satellite can see it next</em> and <em>which sensor modality can penetrate prevailing weather</em>."
                     </div>
                     <div style="font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 8px;">
@@ -726,107 +852,113 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 4: THE PRODUCT -->
+        <!-- SLIDE 4: THE PRODUCT & MULTI-SCREENSHOT INTERACTIVE CONSOLE -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-4">
             <div>
-                <div class="eyebrow">SYSTEM INTERFACE</div>
-                <h2 class="slide-title">An operational console for Earth observation.</h2>
+                <div class="eyebrow">PRODUCTION INTERFACE</div>
+                <h2 class="slide-title">Interactive mission operations console.</h2>
                 <p class="slide-subtitle">
-                    Designed for situational awareness, directly connecting planetary hazard feeds to sensor-aware satellite mission planning.
+                    Explore real modules: live operations GIS map, satellite tasking scheduler, disaster directory, and AI copilot.
                 </p>
             </div>
 
-            <!-- Real Screenshot Frame with Callouts -->
-            <div style="display:flex; gap:20px; align-items:stretch; flex:1; margin:16px 0;">
-                <div style="flex:1.8; position:relative; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 30px rgba(0,0,0,0.6);">
-                    <img src="docs/screenshots/skywindow_overview.png" onerror="this.src='screenshots/skywindow_overview.png'" alt="SkyWindow Operations Console" style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
-                    <div style="position:absolute; bottom:10px; left:12px; background:rgba(9,12,16,0.85); backdrop-filter:blur(6px); border:1px solid var(--border-subtle); padding:4px 10px; border-radius:4px; font-size:10px; font-family:var(--font-mono); color:var(--text-secondary);">
-                        LIVE CONSOLE // http://127.0.0.1:8000
-                    </div>
+            <div class="screenshot-switcher-wrap">
+                <!-- Interactive Screenshot Switcher Tabs -->
+                <div class="screenshot-tabs">
+                    <button class="shot-tab active" onclick="switchShot('overview', this)">01 · Operations Map</button>
+                    <button class="shot-tab" onclick="switchShot('tasking', this)">02 · Satellite Tasking</button>
+                    <button class="shot-tab" onclick="switchShot('catalog', this)">03 · Disaster Directory</button>
+                    <button class="shot-tab" onclick="switchShot('change', this)">04 · Change Detection</button>
+                    <button class="shot-tab" onclick="switchShot('analyst', this)">05 · AI Analyst</button>
                 </div>
 
-                <div style="flex:1; display:flex; flex-direction:column; gap:10px; justify-content:space-between;">
-                    <div class="editorial-surface" style="padding:14px 16px; border-left:3px solid var(--accent-earth);">
-                        <div class="surface-header">ZONE A · PRIORITY FEED</div>
-                        <div class="surface-body" style="font-size:12px;">
-                            Ingests real-time events from NASA EONET v3 & USGS with risk classifications and population exposure.
-                        </div>
-                    </div>
-                    <div class="editorial-surface" style="padding:14px 16px; border-left:3px solid var(--border-medium);">
-                        <div class="surface-header">ZONE B · GIS OPERATIONS MAP</div>
-                        <div class="surface-body" style="font-size:12px;">
-                            Multi-layer spatial view displaying hazard boundaries, satellite ground tracks, and weather radar.
-                        </div>
-                    </div>
-                    <div class="editorial-surface" style="padding:14px 16px; border-left:3px solid var(--status-ok);">
-                        <div class="surface-header">ZONE C · OBSERVATION DECISION</div>
-                        <div class="surface-body" style="font-size:12px;">
-                            Calculates optimal sensor modality (SAR vs Optical) and direct single-click pass deployment.
-                        </div>
-                    </div>
+                <div class="screenshot-display-box">
+                    <img id="activeShotImg" src="docs/screenshots/skywindow_overview.png" onerror="this.src='screenshots/skywindow_overview.png'" alt="SkyWindow Module View">
+                    <div class="screenshot-badge" id="shotBadgeText">MODULE // LIVE OPERATIONS GIS MAP & DISASTER FEED</div>
                 </div>
             </div>
 
             <div class="data-lineage-note">
-                <span>UI CAPTURE: REAL WORKING OPERATIONS CONSOLE</span>
-                <span>PRODUCTION SCREENSHOT</span>
+                <span>PRODUCTION SCREENSHOTS: 5 OPERATIONAL MODULES</span>
+                <span>CLICK TABS TO EXPLORE VIEWS</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 5: HOW IT WORKS -->
+        <!-- SLIDE 5: HOW IT WORKS & TECH STACK -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-5">
             <div>
-                <div class="eyebrow">ARCHITECTURE & DATA FLOW</div>
-                <h2 class="slide-title">Real data &rarr; operational decision.</h2>
+                <div class="eyebrow">ARCHITECTURE & TECHNOLOGY STACK</div>
+                <h2 class="slide-title">Engine architecture & real-world APIs.</h2>
                 <p class="slide-subtitle">
-                    A multi-tiered backend architecture integrating authoritative public data sources through astrodynamic and geospatial models.
+                    A multi-tiered backend architecture integrating authoritative public data sources through astrodynamic models.
                 </p>
             </div>
 
             <div class="grid-3col">
                 <div class="editorial-surface">
-                    <div class="surface-header">1. DATA PROVIDERS</div>
+                    <div class="surface-header">1. REAL-WORLD DATA APIS</div>
                     <div class="surface-title">Authoritative Feeds</div>
-                    <div class="surface-body" style="font-size:12px;">
-                        • <strong>NASA EONET v3:</strong> Fires, Storms, Volcanoes<br>
+                    <div class="surface-body" style="font-size:11px;">
+                        • <strong>NASA EONET v3:</strong> Active Fires & Storms<br>
                         • <strong>USGS NEIC:</strong> Seismic GeoJSON<br>
-                        • <strong>Open-Meteo & ECMWF:</strong> Cloud & NWP<br>
+                        • <strong>Open-Meteo & ECMWF:</strong> Cloud NWP<br>
+                        • <strong>Copernicus GloFAS:</strong> Hydrology<br>
                         • <strong>CelesTrak:</strong> NORAD Orbital Ephemeris<br>
-                        • <strong>OpenStreetMap:</strong> Critical Assets
+                        • <strong>OpenStreetMap:</strong> Infrastructure Overpass<br>
+                        • <strong>RainViewer:</strong> Doppler Weather Radar
                     </div>
                 </div>
 
                 <div class="editorial-surface" style="border-color: var(--border-medium);">
-                    <div class="surface-header">2. SKYWINDOW ENGINE</div>
-                    <div class="surface-title">Processing & Analytics</div>
-                    <div class="surface-body" style="font-size:12px;">
-                        • <strong>Disaster Manager:</strong> Ingestion & Lineage<br>
-                        • <strong>Risk Engine:</strong> H × E × V Breakdown<br>
-                        • <strong>SGP4 Propagator:</strong> Pass Calculations<br>
-                        • <strong>Mission Scheduler:</strong> Duty Constraints<br>
-                        • <strong>Change Detection:</strong> Surface Differencing
+                    <div class="surface-header">2. CORE TECH STACK</div>
+                    <div class="surface-title">Backend & Physics</div>
+                    <div class="tech-badge-grid">
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Python 3.10+</span>
+                            <span class="tech-badge-role">Core Engine</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">FastAPI</span>
+                            <span class="tech-badge-role">Async REST</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Skyfield / SGP4</span>
+                            <span class="tech-badge-role">Astrodynamics</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Pydantic v2</span>
+                            <span class="tech-badge-role">Validation</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">SQLite Store</span>
+                            <span class="tech-badge-role">Persistence</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Leaflet.js</span>
+                            <span class="tech-badge-role">GIS Frontend</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="editorial-surface">
                     <div class="surface-header">3. OPERATOR INTERACTION</div>
                     <div class="surface-title">Decision Output</div>
-                    <div class="surface-body" style="font-size:12px;">
+                    <div class="surface-body" style="font-size:11px;">
                         • <strong>Operations Map:</strong> Spatial Context<br>
                         • <strong>Tasking Schedule:</strong> Pass Timelines<br>
                         • <strong>Grounded Analyst:</strong> Evidence Q&A<br>
-                        • <strong>Intelligence Reports:</strong> Executive Briefs<br>
+                        • <strong>Change Differencing:</strong> Surface Deltas<br>
                         • <strong>API Health:</strong> Verifiable Latency
                     </div>
                 </div>
             </div>
 
             <div class="data-lineage-note">
-                <span>BACKEND: PYTHON / FASTAPI / SKYFIELD / NUMERICAL WEATHER PREDICTION</span>
-                <span>SYSTEM ARCHITECTURE</span>
+                <span>ARCHITECTURE: ASYNC PYTHON / FASTAPI / SGP4 ASTRODYNAMICS</span>
+                <span>SYSTEM SPEC</span>
             </div>
         </section>
 
@@ -871,26 +1003,54 @@
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 7: SATELLITE INTELLIGENCE -->
+        <!-- SLIDE 7: SATELLITE CONSTELLATION INTELLIGENCE (MIDDLE PAGE) -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-7">
             <div>
-                <div class="eyebrow">ASTRODYNAMICS & SCHEDULING</div>
-                <h2 class="slide-title">The orbital layer matters.</h2>
+                <div class="eyebrow">CONSTELLATION & ASTRODYNAMICS</div>
+                <h2 class="slide-title">The orbital layer: supported Earth observation platforms.</h2>
                 <p class="slide-subtitle">
-                    Satellite observation planning requires precise topocentric geometry, orbital pass calculations, and sensor look-angle evaluation.
+                    Select any satellite platform to inspect payload specifications, orbital regime, and sensor capabilities.
                 </p>
             </div>
 
-            <div class="grid-2col" style="margin:16px 0;">
-                <div style="position:relative; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
-                    <img src="docs/screenshots/skywindow_tasking.png" onerror="this.src='screenshots/skywindow_tasking.png'" alt="Satellite Tasking Console" style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
-                    <div style="position:absolute; bottom:10px; left:12px; background:rgba(9,12,16,0.85); backdrop-filter:blur(6px); border:1px solid var(--border-subtle); padding:4px 10px; border-radius:4px; font-size:10px; font-family:var(--font-mono); color:var(--text-secondary);">
-                        TASKING MODULE // SGP4 SCHEDULER
+            <!-- Satellite Name Constellation Selector -->
+            <div class="sat-pills-row">
+                <div class="sat-pill active" onclick="selectSatPill('s1', this)">
+                    <div class="sat-pill-name">SENTINEL-1A</div>
+                    <div class="sat-pill-payload">C-Band SAR (Radar)</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('s2', this)">
+                    <div class="sat-pill-name">SENTINEL-2A</div>
+                    <div class="sat-pill-payload">MSI 13-Band Optical</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('l8', this)">
+                    <div class="sat-pill-name">LANDSAT 8/9</div>
+                    <div class="sat-pill-payload">OLI-2 & TIRS-2</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('terra', this)">
+                    <div class="sat-pill-name">TERRA / MODIS</div>
+                    <div class="sat-pill-payload">Thermal & Atmosphere</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('iss', this)">
+                    <div class="sat-pill-name">ISS</div>
+                    <div class="sat-pill-payload">Crew Earth Obs</div>
+                </div>
+            </div>
+
+            <div class="grid-2col" style="margin: 8px 0;">
+                <div class="editorial-surface" id="satDetailCard" style="gap: 8px;">
+                    <div>
+                        <div class="surface-header" id="satDetailHeader">PLATFORM SPECIFICATIONS</div>
+                        <div class="surface-title" id="satDetailTitle" style="color:var(--text-primary);">SENTINEL-1A (ESA)</div>
                     </div>
+                    <div class="data-row"><span class="data-label">NORAD Cat ID</span> <span class="data-val" id="satNorad">39634</span></div>
+                    <div class="data-row"><span class="data-label">Sensor Payload</span> <span class="data-val" id="satPayload">C-Band Synthetic Aperture Radar (C-SAR)</span></div>
+                    <div class="data-row"><span class="data-label">Spatial Resolution</span> <span class="data-val" id="satRes">5m – 20m (Interferometric Wide Swath)</span></div>
+                    <div class="data-row"><span class="data-label">Cloud Capability</span> <span class="data-val" id="satCloud" style="color:var(--status-ok)">Cloud-Penetrating (All-Weather / Day & Night)</span></div>
                 </div>
 
-                <div class="editorial-surface" style="gap: 10px;">
+                <div class="editorial-surface" style="gap: 8px;">
                     <div>
                         <div class="surface-header">ASTRODYNAMIC METHODOLOGY</div>
                         <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-top:4px;">
@@ -899,21 +1059,15 @@
                             • <strong>Weather Synchronization:</strong> Correlates hourly numerical cloud forecasts at pass culmination.
                         </div>
                     </div>
-                    <div style="border-top:1px solid var(--border-subtle); padding-top:8px;">
-                        <div class="surface-header">SUPPORTED CONSTELLATIONS</div>
-                        <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-primary); display:flex; flex-direction:column; gap:3px;">
-                            <span>• Sentinel-1A (C-SAR 5m)</span>
-                            <span>• Sentinel-2A (MSI Optical 10m)</span>
-                            <span>• Landsat 8/9 (OLI-2 & TIRS-2)</span>
-                            <span>• Terra & Aqua (MODIS Thermal)</span>
-                        </div>
+                    <div style="border-top:1px solid var(--border-subtle); padding-top:6px; font-size:11px; color:var(--text-muted);">
+                        PROPAGATION REFRESH: CelesTrak NORAD General Perturbations (GP) TLEs
                     </div>
                 </div>
             </div>
 
             <div class="data-lineage-note">
                 <span>ORBIT PROPAGATION: SGP4 KEPLARIAN PHYSICS & NORAD TLEs</span>
-                <span>MISSION ASTRODYNAMICS</span>
+                <span>CONSTELLATION SPEC</span>
             </div>
         </section>
 
@@ -1106,12 +1260,12 @@
                 <h2 class="slide-title" style="font-size:40px;">
                     Turning disaster signals into better observation decisions.
                 </h2>
-                <p class="slide-subtitle" style="margin-top:10px;">
+                <p class="slide-subtitle" style="margin-top:8px;">
                     Observe the event. Understand the context. Plan the observation.
                 </p>
             </div>
 
-            <div class="editorial-surface" style="margin: 24px 0; padding: 22px 28px;">
+            <div class="editorial-surface" style="margin: 20px 0; padding: 20px 24px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
                         <div style="font-size:16px; font-weight:600; color:var(--text-primary);">SkyWindow Project Repository</div>
@@ -1222,10 +1376,120 @@
 
     // Click outside control buttons to advance
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.deck-footer') && !e.target.closest('.deck-header') && !e.target.closest('button')) {
+        if (!e.target.closest('.deck-footer') && !e.target.closest('.deck-header') && !e.target.closest('button') && !e.target.closest('.sat-pill') && !e.target.closest('.shot-tab')) {
             nextSlide();
         }
     });
+
+    // ==========================================
+    // INTERACTIVE SCREENSHOT SWITCHER (SLIDE 4)
+    // ==========================================
+    const screenshotData = {
+        'overview': {
+            file: 'docs/screenshots/skywindow_overview.png',
+            badge: 'MODULE 01 // LIVE OPERATIONS GIS MAP & DISASTER FEED'
+        },
+        'tasking': {
+            file: 'docs/screenshots/skywindow_tasking.png',
+            badge: 'MODULE 02 // SENSOR-AWARE SATELLITE TASKING & SGP4 SCHEDULER'
+        },
+        'catalog': {
+            file: 'docs/screenshots/skywindow_catalog.png',
+            badge: 'MODULE 03 // GLOBAL MULTI-DISASTER DIRECTORY & INCIDENTS'
+        },
+        'change': {
+            file: 'docs/screenshots/skywindow_change.png',
+            badge: 'MODULE 04 // MULTI-TEMPORAL CHANGE DETECTION DIFFERENCING'
+        },
+        'analyst': {
+            file: 'docs/screenshots/skywindow_analyst.png',
+            badge: 'MODULE 05 // GROUNDED AI ANALYST & NLP MISSION PLANNER'
+        }
+    };
+
+    function switchShot(key, btn) {
+        document.querySelectorAll('.shot-tab').forEach(t => t.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const data = screenshotData[key];
+        if (data) {
+            const img = document.getElementById('activeShotImg');
+            const badge = document.getElementById('shotBadgeText');
+            if (img) {
+                img.style.opacity = '0.4';
+                setTimeout(() => {
+                    img.src = data.file;
+                    img.onerror = () => { img.src = data.file.replace('docs/screenshots/', 'screenshots/'); };
+                    img.style.opacity = '1';
+                }, 150);
+            }
+            if (badge) badge.textContent = data.badge;
+        }
+    }
+
+    // ==========================================
+    // INTERACTIVE SATELLITE SELECTOR (SLIDE 7)
+    // ==========================================
+    const satCatalog = {
+        's1': {
+            title: 'SENTINEL-1A (ESA)',
+            norad: '39634',
+            payload: 'C-Band Synthetic Aperture Radar (C-SAR)',
+            res: '5m – 20m (Interferometric Wide Swath)',
+            cloud: 'Cloud-Penetrating (All-Weather / Day & Night)',
+            color: 'var(--status-ok)'
+        },
+        's2': {
+            title: 'SENTINEL-2A (ESA)',
+            norad: '40697',
+            payload: 'MultiSpectral Instrument (MSI 13 Bands: VNIR / SWIR)',
+            res: '10m (Visual), 20m (Red-Edge), 60m (Atmospheric)',
+            cloud: 'Optical Modality (Requires Clear Sky < 50% Cloud)',
+            color: 'var(--status-info)'
+        },
+        'l8': {
+            title: 'LANDSAT 8 / 9 (NASA / USGS)',
+            norad: '39084',
+            payload: 'Operational Land Imager-2 (OLI-2) & Thermal (TIRS-2)',
+            res: '15m (Panchromatic), 30m (VNIR/SWIR), 100m (Thermal TIR)',
+            cloud: 'Multispectral & Thermal (Smoke/Fire Penetration)',
+            color: 'var(--status-warn)'
+        },
+        'terra': {
+            title: 'TERRA / MODIS (NASA EOS)',
+            norad: '25994',
+            payload: 'Moderate Resolution Imaging Spectroradiometer (MODIS)',
+            res: '250m, 500m, 1000m (Global Daily Revisit)',
+            cloud: 'Thermal Infrared (Active Fire Radiative Power & Aerosols)',
+            color: 'var(--status-crit)'
+        },
+        'iss': {
+            title: 'INTERNATIONAL SPACE STATION (ISS)',
+            norad: '25544',
+            payload: 'Crew Earth Observations (CEO) & External Payloads',
+            res: 'Variable (Low Inclination 51.6° Rapid Target Revisit)',
+            cloud: 'Flexible Rapid Response (Low-Orbit Nadir / Oblique)',
+            color: 'var(--accent-earth)'
+        }
+    };
+
+    function selectSatPill(key, pill) {
+        document.querySelectorAll('.sat-pill').forEach(p => p.classList.remove('active'));
+        if (pill) pill.classList.add('active');
+
+        const s = satCatalog[key];
+        if (s) {
+            document.getElementById('satDetailTitle').textContent = s.title;
+            document.getElementById('satNorad').textContent = s.norad;
+            document.getElementById('satPayload').textContent = s.payload;
+            document.getElementById('satRes').textContent = s.res;
+            const cloudEl = document.getElementById('satCloud');
+            if (cloudEl) {
+                cloudEl.textContent = s.cloud;
+                cloudEl.style.color = s.color;
+            }
+        }
+    }
 
     // ==========================================
     // LIVE DATA CLIENT (REAL DATA INTEGRATION)
