@@ -318,6 +318,18 @@ function getHazardSvg(eventType) {
 
 function getSatelliteSchematicSvg(name) {
     const n = (name || '').toLowerCase();
+    if (n.includes('iss') || n.includes('zarya') || n.includes('station')) {
+        return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="10" y1="50" x2="90" y2="50" stroke="#64748B" stroke-width="2"/>
+            <rect x="42" y="44" width="16" height="12" rx="2" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+            <line x1="50" y1="36" x2="50" y2="64" stroke="#94A3B8" stroke-width="1.5"/>
+            <rect x="12" y="24" width="14" height="22" rx="1" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+            <rect x="12" y="54" width="14" height="22" rx="1" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+            <rect x="74" y="24" width="14" height="22" rx="1" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+            <rect x="74" y="54" width="14" height="22" rx="1" fill="#0F172A" stroke="#38BDF8" stroke-width="1"/>
+            <circle cx="50" cy="50" r="3" fill="#38BDF8"/>
+        </svg>`;
+    }
     if (n.includes('sentinel-1') || n.includes('sar')) {
         return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="40" y="35" width="20" height="30" rx="2" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
@@ -339,6 +351,16 @@ function getSatelliteSchematicSvg(name) {
             <line x1="23" y1="42" x2="23" y2="56" stroke="#334155"/>
             <circle cx="50" cy="68" r="8" fill="#0F172A" stroke="#10B981" stroke-width="1.5"/>
             <circle cx="50" cy="68" r="4" fill="#10B981" fill-opacity="0.5"/>
+        </svg>`;
+    }
+    if (n.includes('landsat')) {
+        return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,26 68,36 68,64 50,74 32,64 32,36" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+            <rect x="68" y="42" width="28" height="16" rx="1" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+            <line x1="77" y1="42" x2="77" y2="58" stroke="#334155"/>
+            <line x1="87" y1="42" x2="87" y2="58" stroke="#334155"/>
+            <circle cx="44" cy="50" r="5" fill="#F59E0B" fill-opacity="0.4" stroke="#F59E0B" stroke-width="1.5"/>
+            <circle cx="56" cy="50" r="3" fill="#EF4444" stroke="#EF4444" stroke-width="1"/>
         </svg>`;
     }
     return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
