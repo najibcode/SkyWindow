@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyWindow — Earth Observation & Mission Intelligence Deck</title>
+    <title>SkyWindow — Earth Observation & Mission Intelligence</title>
     
     <!-- Modern Editorial Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
             /* Restrained Scientific Palette */
-            --bg-canvas: #0D0F12;
-            --bg-surface: #14171D;
-            --bg-elevated: #1B2028;
-            --bg-subtle: #222834;
+            --bg-canvas: #0A0D12;
+            --bg-surface: #10141C;
+            --bg-elevated: #161C26;
+            --bg-card: #1B2230;
+            --bg-subtle: #222B3D;
             
             --border-subtle: rgba(255, 255, 255, 0.08);
             --border-medium: rgba(255, 255, 255, 0.16);
             --border-focus: #8C9BAE;
             
-            --text-primary: #F2F4F7;
+            --text-primary: #F4F6F8;
             --text-secondary: #9AA4B2;
             --text-muted: #667085;
             
             --accent-earth: #7E97A6;
             --accent-warm: #E2E8F0;
             
-            /* Restrained Semantic Indicators */
+            /* Restrained Semantic Status */
             --status-crit: #E06C75;
             --status-warn: #E5C07B;
             --status-ok: #98C379;
@@ -58,7 +59,7 @@
             user-select: none;
         }
 
-        /* 16:9 Aspect-Ratio Constrained Slide Frame */
+        /* 16:9 Aspect-Ratio Constrained Slide Shell */
         .deck-shell {
             position: absolute;
             inset: 0;
@@ -68,16 +69,16 @@
             max-width: calc(100vh * 16 / 9);
             max-height: calc(100vw * 9 / 16);
             background-color: var(--bg-canvas);
-            box-shadow: 0 0 80px rgba(0, 0, 0, 0.85);
+            box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
             display: flex;
             flex-direction: column;
             overflow: hidden;
         }
 
-        /* Top Meta Header */
+        /* Top Status Header */
         .deck-header {
-            height: 48px;
-            padding: 0 40px;
+            height: 50px;
+            padding: 0 44px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -86,6 +87,7 @@
             color: var(--text-muted);
             letter-spacing: 0.04em;
             z-index: 50;
+            background: var(--bg-canvas);
         }
 
         .header-brand {
@@ -94,13 +96,13 @@
             letter-spacing: 0.08em;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
         .header-status {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .status-dot {
@@ -109,13 +111,14 @@
             border-radius: 50%;
             background-color: var(--status-ok);
             display: inline-block;
+            transition: background-color 0.3s;
         }
 
         .status-dot.offline {
             background-color: var(--text-muted);
         }
 
-        /* Slide Stage */
+        /* Slide Stage Container */
         .slide-stage {
             flex: 1;
             position: relative;
@@ -127,15 +130,15 @@
         .slide {
             position: absolute;
             inset: 0;
-            padding: 50px 70px 40px 70px;
+            padding: 44px 64px 34px 64px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            transform: translateY(12px);
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(14px);
         }
 
         .slide.active {
@@ -145,14 +148,14 @@
             transform: translateY(0);
         }
 
-        /* Editorial Typography & Layout */
+        /* Typography */
         .eyebrow {
             font-size: 11px;
             font-weight: 600;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
             color: var(--accent-earth);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -161,36 +164,36 @@
         .eyebrow::after {
             content: "";
             height: 1px;
-            width: 24px;
+            width: 28px;
             background: var(--border-medium);
         }
 
         .slide-title {
-            font-size: 38px;
+            font-size: 36px;
             font-weight: 600;
-            line-height: 1.15;
+            line-height: 1.18;
             color: var(--text-primary);
             letter-spacing: -0.02em;
-            max-width: 900px;
-            margin-bottom: 12px;
+            max-width: 920px;
+            margin-bottom: 10px;
         }
 
         .slide-subtitle {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 400;
             color: var(--text-secondary);
-            max-width: 800px;
-            line-height: 1.5;
+            max-width: 820px;
+            line-height: 1.55;
         }
 
-        /* Grid Containers */
+        /* Grid Layouts */
         .grid-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 36px;
-            align-items: center;
+            gap: 32px;
+            align-items: stretch;
             flex: 1;
-            margin: 20px 0;
+            margin: 18px 0;
         }
 
         .grid-3col {
@@ -198,16 +201,16 @@
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
             flex: 1;
-            margin: 24px 0;
+            margin: 20px 0;
             align-items: stretch;
         }
 
-        /* Editorial Surface & Cards */
+        /* Surface Panels */
         .editorial-surface {
             background-color: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 6px;
-            padding: 24px;
+            padding: 22px 24px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -224,7 +227,7 @@
         }
 
         .surface-title {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--text-primary);
             margin-bottom: 8px;
@@ -236,13 +239,13 @@
             line-height: 1.6;
         }
 
-        /* Linear Workflow Pipeline */
+        /* Interactive Workflow Pipeline */
         .workflow-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
-            margin: 30px 0;
+            margin: 24px 0;
             gap: 12px;
         }
 
@@ -253,7 +256,7 @@
             border-radius: 4px;
             padding: 16px 12px;
             text-align: center;
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         .workflow-step.highlight {
@@ -279,13 +282,13 @@
             font-size: 14px;
         }
 
-        /* Comparison Layout */
+        /* Comparison Box */
         .compare-grid {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1.25fr;
             gap: 28px;
             flex: 1;
-            margin: 20px 0;
+            margin: 18px 0;
         }
 
         .compare-box {
@@ -329,7 +332,7 @@
         .bullet-muted { color: var(--text-muted); }
         .bullet-active { color: var(--accent-earth); }
 
-        /* Data Rows & Metadata */
+        /* Data Rows */
         .data-row {
             display: flex;
             justify-content: space-between;
@@ -341,7 +344,21 @@
         .data-label { color: var(--text-muted); }
         .data-val { color: var(--text-primary); font-family: var(--font-mono); }
 
-        /* Live Data Fallback Notice */
+        /* Vector Orbital Visualization */
+        .orbit-svg-container {
+            width: 100%;
+            height: 180px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Lineage Note */
         .data-lineage-note {
             font-size: 11px;
             color: var(--text-muted);
@@ -354,8 +371,8 @@
 
         /* Bottom Controls Bar */
         .deck-footer {
-            height: 48px;
-            padding: 0 40px;
+            height: 50px;
+            padding: 0 44px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -368,7 +385,7 @@
 
         .progress-track {
             position: absolute;
-            bottom: 48px;
+            bottom: 50px;
             left: 0;
             width: 100%;
             height: 2px;
@@ -392,7 +409,7 @@
             background: transparent;
             border: 1px solid var(--border-subtle);
             color: var(--text-secondary);
-            padding: 4px 10px;
+            padding: 5px 12px;
             border-radius: 4px;
             font-size: 11px;
             font-family: inherit;
@@ -438,11 +455,11 @@
         </div>
         <div class="header-status">
             <span id="liveStatusDot" class="status-dot"></span>
-            <span id="liveStatusText">CONNECTING TO LIVE FEEDS...</span>
+            <span id="liveStatusText">CONNECTING TO API...</span>
         </div>
     </header>
 
-    <!-- Slide Stage Container -->
+    <!-- Slide Stage -->
     <main class="slide-stage" id="slideStage">
 
         <!-- ========================================================= -->
@@ -451,20 +468,20 @@
         <section class="slide active" id="slide-1">
             <div>
                 <div class="eyebrow">MISSION INTELLIGENCE PLATFORM</div>
-                <h1 class="slide-title" style="font-size:46px; margin-top: 8px;">
+                <h1 class="slide-title" style="font-size:44px; margin-top: 6px;">
                     From disaster signal<br>to satellite observation.
                 </h1>
-                <p class="slide-subtitle" style="margin-top: 14px;">
+                <p class="slide-subtitle" style="margin-top: 12px;">
                     Connecting real-time planetary hazard signals directly to sensor-aware satellite mission planning.
                 </p>
             </div>
 
-            <div class="grid-3col" style="margin-top: 30px;">
+            <div class="grid-3col" style="margin-top: 24px;">
                 <div class="editorial-surface">
                     <div class="surface-header">01. SENSE</div>
                     <div class="surface-title">Planetary Hazard Feeds</div>
                     <div class="surface-body">
-                        Direct ingestion of real-time public feeds for earthquakes, wildfires, tropical storms, and flood inundations.
+                        Direct ingestion of verified public feeds for earthquakes, wildfires, tropical cyclones, and flood inundations.
                     </div>
                 </div>
                 <div class="editorial-surface">
@@ -476,7 +493,7 @@
                 </div>
                 <div class="editorial-surface">
                     <div class="surface-header">03. OPTIMIZE</div>
-                    <div class="surface-title">Sensor-Aware Mission Tasking</div>
+                    <div class="surface-title">Sensor-Aware Tasking</div>
                     <div class="surface-body">
                         Constraint-based scheduling pairing cloud-penetrating SAR or multispectral payloads with weather forecasts.
                     </div>
@@ -485,7 +502,7 @@
 
             <div class="data-lineage-note">
                 <span>OPEN SOURCE · PUBLIC SPACE AGENCY FEEDS · ASTRODYNAMICS PROPAGATION</span>
-                <span>SKYWINDOW SPEC v2.4</span>
+                <span>SKYWINDOW PLATFORM</span>
             </div>
         </section>
 
@@ -494,10 +511,10 @@
         <!-- ========================================================= -->
         <section class="slide" id="slide-2">
             <div>
-                <div class="eyebrow">OPERATIONAL CONTEXT</div>
+                <div class="eyebrow">OPERATIONAL BOTTLENECK</div>
                 <h2 class="slide-title">Disaster information is fragmented.</h2>
                 <p class="slide-subtitle">
-                    Relevant information exists across different feeds, weather forecasts, and orbital catalogs. Operators are forced to manually connect the dots during time-critical events.
+                    Relevant information exists across different feeds, weather forecasts, and orbital catalogs. Operators must manually cross-reference data during time-critical events.
                 </p>
             </div>
 
@@ -512,18 +529,18 @@
                     <div class="editorial-surface" style="border-left: 3px solid var(--text-muted);">
                         <div class="surface-title">Uncoordinated Tasking Requests</div>
                         <div class="surface-body">
-                            Optical satellites risk being tasked over heavy cloud-shrouded monsoon zones, resulting in unusable obscured imagery and wasted mission duty cycles.
+                            Optical satellites risk being tasked over heavy cloud-shrouded monsoon zones, resulting in unusable obscured imagery and depleted mission duty cycles.
                         </div>
                     </div>
                 </div>
 
-                <div class="editorial-surface" style="height: 100%; justify-content: center; gap: 16px;">
+                <div class="editorial-surface" style="justify-content: center; gap: 14px;">
                     <div class="surface-header">THE OPERATOR'S CHALLENGE</div>
                     <div style="font-size:15px; color:var(--text-primary); line-height: 1.6;">
                         "When an emergency unfolds, the decision is not merely knowing a disaster occurred—it is knowing <em>which satellite can see it next</em> and <em>which sensor modality can penetrate prevailing weather</em>."
                     </div>
                     <div style="font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 8px;">
-                        REDUCING MANUAL CROSS-REFERENCING DURING RAPID RESPONSE
+                        REDUCING MANUAL CROSS-REFERENCING DURING CRISIS RESPONSE
                     </div>
                 </div>
             </div>
@@ -614,7 +631,7 @@
                 </p>
             </div>
 
-            <div class="grid-3col" style="margin-top: 24px;">
+            <div class="grid-3col" style="margin-top: 20px;">
                 <div class="editorial-surface" style="border-top: 2px solid var(--accent-earth);">
                     <div class="surface-header">ZONE A</div>
                     <div class="surface-title">Priority Hazard Feed</div>
@@ -638,11 +655,11 @@
                 </div>
             </div>
 
-            <div class="editorial-surface" style="background: var(--bg-surface); padding: 16px 20px;">
+            <div class="editorial-surface" style="background: var(--bg-surface); padding: 14px 20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
-                        <div style="font-weight:600; font-size:13px; color:var(--text-primary);">Web-Based Operations Dashboard</div>
-                        <div style="font-size:11px; color:var(--text-muted);">FastAPI asynchronous backend with Leaflet GIS interface</div>
+                        <div style="font-weight:600; font-size:13px; color:var(--text-primary);">Web-Based Operations Console</div>
+                        <div style="font-size:11px; color:var(--text-muted);">FastAPI asynchronous backend with Leaflet GIS mapping</div>
                     </div>
                     <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-earth);">
                         http://127.0.0.1:8000
@@ -717,7 +734,7 @@
         <!-- ========================================================= -->
         <section class="slide" id="slide-6">
             <div>
-                <div class="eyebrow">CORE VALUE PROPOSITION</div>
+                <div class="eyebrow">WORKFLOW CONTRAST</div>
                 <h2 class="slide-title">
                     A disaster feed tells you what happened.<br>
                     <span style="color:var(--text-secondary)">SkyWindow helps answer what to observe next.</span>
@@ -765,7 +782,7 @@
             </div>
 
             <div class="grid-2col">
-                <div class="editorial-surface" style="gap: 12px;">
+                <div class="editorial-surface" style="gap: 10px;">
                     <div class="surface-header">SUPPORTED PLATFORMS IN CATALOG</div>
                     <div class="data-row"><span class="data-label">Sentinel-1A</span> <span class="data-val">C-band SAR (5m Resolution)</span></div>
                     <div class="data-row"><span class="data-label">Sentinel-2A</span> <span class="data-val">MSI 13-Band Optical (10m)</span></div>
@@ -976,15 +993,15 @@
         <section class="slide" id="slide-12">
             <div>
                 <div class="eyebrow">SKYWINDOW</div>
-                <h2 class="slide-title" style="font-size:42px;">
+                <h2 class="slide-title" style="font-size:40px;">
                     Turning disaster signals into better observation decisions.
                 </h2>
-                <p class="slide-subtitle" style="margin-top:12px;">
+                <p class="slide-subtitle" style="margin-top:10px;">
                     Observe the event. Understand the context. Plan the observation.
                 </p>
             </div>
 
-            <div class="editorial-surface" style="margin: 30px 0; padding: 24px 30px;">
+            <div class="editorial-surface" style="margin: 24px 0; padding: 22px 28px;">
                 <div style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
                         <div style="font-size:16px; font-weight:600; color:var(--text-primary);">SkyWindow Project Repository</div>
@@ -1004,12 +1021,12 @@
 
     </main>
 
-    <!-- Progress Track -->
+    <!-- Progress Bar -->
     <div class="progress-track">
         <div class="progress-indicator" id="progressIndicator"></div>
     </div>
 
-    <!-- Bottom Navigation Footer -->
+    <!-- Bottom Controls Footer -->
     <footer class="deck-footer">
         <div>
             <span id="slideCurrent" style="font-weight:600; color:var(--text-primary);">01</span>
@@ -1139,7 +1156,7 @@
             statusText.textContent = 'STANDALONE MODE (BACKEND OFFLINE)';
             
             const nameEl = document.getElementById('dEventName');
-            if (nameEl) nameEl.textContent = 'Live data unavailable (connect backend)';
+            if (nameEl) nameEl.innerHTML = '<span style="color:var(--text-muted); font-size:11px;">LIVE DATA UNAVAILABLE<br><br>Connect the SkyWindow API to display current operational data.</span>';
         }
     }
 
