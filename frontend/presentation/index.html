@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkyWindow — Earth Observation & Mission Intelligence</title>
+    
+    <!-- Modern Editorial Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Restrained Scientific Palette */
+            --bg-canvas: #090C10;
+            --bg-surface: #0F131B;
+            --bg-elevated: #151A24;
+            --bg-card: #1B2230;
+            --bg-subtle: #222B3D;
+            
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.16);
+            --border-focus: #8C9BAE;
+            
+            --text-primary: #F4F6F8;
+            --text-secondary: #9AA4B2;
+            --text-muted: #667085;
+            
+            --accent-earth: #7E97A6;
+            --accent-warm: #E2E8F0;
+            
+            /* Restrained Semantic Status */
+            --status-crit: #E06C75;
+            --status-warn: #E5C07B;
+            --status-ok: #98C379;
+            --status-info: #61AFEF;
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+        }
+
+        /* 16:9 Aspect-Ratio Constrained Slide Shell */
+        .deck-shell {
+            position: absolute;
+            inset: 0;
+            margin: auto;
+            width: 100vw;
+            height: 100vh;
+            max-width: calc(100vh * 16 / 9);
+            max-height: calc(100vw * 9 / 16);
+            background-color: var(--bg-canvas);
+            box-shadow: 0 0 120px rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glow & Grid Lines */
+        .deck-shell::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            left: 20%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(126, 151, 166, 0.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Top Status Header */
+        .deck-header {
+            height: 50px;
+            padding: 0 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            z-index: 50;
+            background: rgba(9, 12, 16, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .header-brand {
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: 0.08em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: var(--status-ok);
+            display: inline-block;
+            box-shadow: 0 0 8px rgba(152, 195, 121, 0.4);
+            animation: pulse-dot 2.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+        }
+
+        .status-dot.offline {
+            background-color: var(--text-muted);
+            box-shadow: none;
+            animation: none;
+        }
+
+        /* Slide Stage Container */
+        .slide-stage {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            padding: 38px 60px 28px 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(10px) scale(0.995);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        /* Staggered Child Entrance Animations */
+        .slide.active .eyebrow {
+            animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.02s;
+        }
+
+        .slide.active .slide-title {
+            animation: slideUpFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.05s;
+        }
+
+        .slide.active .slide-subtitle {
+            animation: slideUpFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.08s;
+        }
+
+        .slide.active .editorial-surface,
+        .slide.active .compare-box,
+        .slide.active .interactive-screenshot-container,
+        .slide.active .workflow-step {
+            animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .slide.active .grid-3col .editorial-surface:nth-child(1) { animation-delay: 0.08s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(2) { animation-delay: 0.12s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(3) { animation-delay: 0.16s; }
+
+        .slide.active .grid-2col .editorial-surface:nth-child(1) { animation-delay: 0.08s; }
+        .slide.active .grid-2col .editorial-surface:nth-child(2) { animation-delay: 0.14s; }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Typography */
+        .eyebrow {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--accent-earth);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+        }
+
+        .eyebrow::after {
+            content: "";
+            height: 1px;
+            width: 28px;
+            background: var(--border-medium);
+        }
+
+        .slide-title {
+            font-size: 34px;
+            font-weight: 600;
+            line-height: 1.18;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            max-width: 920px;
+            margin-bottom: 8px;
+            opacity: 0;
+        }
+
+        .slide-subtitle {
+            font-size: 14px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            max-width: 820px;
+            line-height: 1.5;
+            opacity: 0;
+        }
+
+        /* Grid Layouts */
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            align-items: stretch;
+            flex: 1;
+            margin: 14px 0;
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            flex: 1;
+            margin: 16px 0;
+            align-items: stretch;
+        }
+
+        /* Surface Panels */
+        .editorial-surface {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 18px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: border-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .editorial-surface:hover {
+            border-color: var(--border-medium);
+            transform: translateY(-2px);
+        }
+
+        .surface-header {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .surface-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .surface-body {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+        }
+
+        /* Interactive Workflow Pipeline */
+        .workflow-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 18px 0;
+            gap: 10px;
+        }
+
+        .workflow-step {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 14px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .workflow-step.highlight {
+            border-color: var(--accent-earth);
+            background: var(--bg-elevated);
+            box-shadow: 0 4px 16px rgba(126, 151, 166, 0.08);
+        }
+
+        .step-tag {
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-bottom: 3px;
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .workflow-arrow {
+            color: var(--text-muted);
+            font-size: 13px;
+            animation: arrowGlow 3s infinite ease-in-out;
+        }
+
+        @keyframes arrowGlow {
+            0%, 100% { opacity: 0.4; transform: translateX(0); }
+            50% { opacity: 1; transform: translateX(3px); color: var(--accent-earth); }
+        }
+
+        /* Interactive Screenshot Switcher Container */
+        .screenshot-switcher-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+            margin: 12px 0;
+        }
+
+        .screenshot-tabs {
+            display: flex;
+            gap: 6px;
+            overflow-x: auto;
+        }
+
+        .shot-tab {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .shot-tab:hover {
+            color: var(--text-primary);
+            border-color: var(--border-medium);
+        }
+
+        .shot-tab.active {
+            background: var(--bg-elevated);
+            color: var(--text-primary);
+            border-color: var(--accent-earth);
+            font-weight: 600;
+        }
+
+        .screenshot-display-box {
+            position: relative;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-medium);
+            border-radius: 6px;
+            overflow: hidden;
+            height: 250px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .screenshot-display-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top left;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .screenshot-badge {
+            position: absolute;
+            bottom: 10px;
+            left: 12px;
+            background: rgba(9, 12, 16, 0.88);
+            backdrop-filter: blur(6px);
+            border: 1px solid var(--border-subtle);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-family: var(--font-mono);
+            color: var(--text-secondary);
+        }
+
+        /* Satellite Constellation Selector */
+        .sat-pills-row {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .sat-pill {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 10px 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .sat-pill:hover, .sat-pill.active {
+            border-color: var(--accent-earth);
+            background: var(--bg-elevated);
+            transform: translateY(-2px);
+        }
+
+        .sat-pill-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+        }
+
+        .sat-pill-payload {
+            font-size: 10px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Tech Stack Badges */
+        .tech-badge-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .tech-badge {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 6px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .tech-badge-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .tech-badge-role {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        /* Data Rows */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 12px;
+        }
+
+        .data-label { color: var(--text-muted); }
+        .data-val { color: var(--text-primary); font-family: var(--font-mono); }
+
+        /* Comparison Box */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.25fr;
+            gap: 24px;
+            flex: 1;
+            margin: 14px 0;
+        }
+
+        .compare-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .compare-box.active-focus {
+            border-color: var(--border-medium);
+            background: var(--bg-elevated);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+        }
+
+        .compare-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 6px;
+        }
+
+        .compare-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .compare-list li {
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        .bullet-muted { color: var(--text-muted); }
+        .bullet-active { color: var(--accent-earth); font-weight: 600; }
+
+        /* Lineage Note */
+        .data-lineage-note {
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Bottom Controls Bar */
+        .deck-footer {
+            height: 50px;
+            padding: 0 44px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 12px;
+            color: var(--text-muted);
+            z-index: 50;
+            background: rgba(9, 12, 16, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .progress-track {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.04);
+            z-index: 60;
+        }
+
+        .progress-indicator {
+            height: 100%;
+            background: var(--accent-earth);
+            width: 8.33%;
+            transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 10px var(--accent-earth);
+        }
+
+        .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-deck {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 5px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-deck:hover {
+            border-color: var(--border-medium);
+            color: var(--text-primary);
+            background: var(--bg-surface);
+            transform: translateY(-1px);
+        }
+
+        .btn-deck:active {
+            transform: scale(0.97);
+        }
+
+        .key-tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            padding: 1px 4px;
+            border-radius: 2px;
+            margin-left: 4px;
+        }
+
+        /* Respect Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .slide, .progress-indicator, .workflow-step, .editorial-surface {
+                transition: none !important;
+                transform: none !important;
+                animation: none !important;
+            }
+            .eyebrow, .slide-title, .slide-subtitle {
+                opacity: 1 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="deck-shell">
+
+    <!-- Top Header -->
+    <header class="deck-header">
+        <div class="header-brand">
+            <span>SKYWINDOW</span>
+            <span style="color:var(--border-medium)">/</span>
+            <span style="color:var(--text-secondary); font-weight:400;">Earth Observation & Mission Intelligence</span>
+        </div>
+        <div class="header-status">
+            <span id="liveStatusDot" class="status-dot"></span>
+            <span id="liveStatusText">CONNECTING TO API...</span>
+        </div>
+    </header>
+
+    <!-- Slide Stage -->
+    <main class="slide-stage" id="slideStage">
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 1: OPENING -->
+        <!-- ========================================================= -->
+        <section class="slide active" id="slide-1">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                <div>
+                    <div class="eyebrow">MISSION INTELLIGENCE PLATFORM</div>
+                    <h1 class="slide-title" style="font-size:40px; margin-top: 4px;">
+                        From disaster signal<br>to satellite observation.
+                    </h1>
+                    <p class="slide-subtitle" style="margin-top: 6px;">
+                        Connecting real-time planetary hazard signals directly to sensor-aware satellite mission planning.
+                    </p>
+                </div>
+
+                <!-- Team RARF Credits -->
+                <div class="editorial-surface" style="padding: 12px 18px; min-width: 230px; background: var(--bg-elevated); border-color: var(--border-medium);">
+                    <div style="font-size: 10px; font-weight: 700; color: var(--accent-earth); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px;">
+                        TEAM RARF
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-primary); font-weight: 500; display: flex; flex-direction: column; gap: 2px;">
+                        <span>Mohamed Fahad</span>
+                        <span>Naresh</span>
+                        <span>Mohamed Najib</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid-3col" style="margin-top: 18px;">
+                <div class="editorial-surface">
+                    <div class="surface-header">01. SENSE</div>
+                    <div class="surface-title">Planetary Hazard Feeds</div>
+                    <div class="surface-body">
+                        Direct ingestion of verified public feeds for earthquakes, wildfires, tropical cyclones, and flood inundations.
+                    </div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">02. COMPUTE</div>
+                    <div class="surface-title">Orbital Astrodynamics</div>
+                    <div class="surface-body">
+                        SGP4 Keplarian pass propagation over fresh NORAD ephemeris to evaluate look-angles and imaging windows.
+                    </div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">03. OPTIMIZE</div>
+                    <div class="surface-title">Sensor-Aware Tasking</div>
+                    <div class="surface-body">
+                        Constraint-based scheduling pairing cloud-penetrating SAR or multispectral payloads with weather forecasts.
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>OPEN SOURCE · PUBLIC SPACE AGENCY FEEDS · ASTRODYNAMICS PROPAGATION</span>
+                <span>SKYWINDOW PLATFORM</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 2: THE PROBLEM -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-2">
+            <div>
+                <div class="eyebrow">OPERATIONAL BOTTLENECK</div>
+                <h2 class="slide-title">Disaster information is fragmented.</h2>
+                <p class="slide-subtitle">
+                    Relevant information exists across different feeds, weather forecasts, and orbital catalogs. Operators must manually cross-reference data during time-critical events.
+                </p>
+            </div>
+
+            <div class="grid-2col">
+                <div style="display:flex; flex-direction:column; gap:12px;">
+                    <div class="editorial-surface" style="border-left: 3px solid var(--text-muted);">
+                        <div class="surface-title">Disconnected Data Streams</div>
+                        <div class="surface-body">
+                            Seismic telemetry, thermal fire points, meteorological forecasts, and satellite orbital elements reside in disparate formats without unified geospatial correlation.
+                        </div>
+                    </div>
+                    <div class="editorial-surface" style="border-left: 3px solid var(--text-muted);">
+                        <div class="surface-title">Uncoordinated Tasking Requests</div>
+                        <div class="surface-body">
+                            Optical satellites risk being tasked over heavy cloud-shrouded monsoon zones, resulting in unusable obscured imagery and depleted mission duty cycles.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="editorial-surface" style="justify-content: center; gap: 12px;">
+                    <div class="surface-header">THE OPERATOR'S CHALLENGE</div>
+                    <div style="font-size:14px; color:var(--text-primary); line-height: 1.6;">
+                        "When an emergency unfolds, the decision is not merely knowing a disaster occurred—it is knowing <em>which satellite can see it next</em> and <em>which sensor modality can penetrate prevailing weather</em>."
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 8px;">
+                        REDUCING MANUAL CROSS-REFERENCING DURING CRISIS RESPONSE
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>CHALLENGE: DISPARATE FEEDS & UNFILTERED OBSERVATION PLANNING</span>
+                <span>DECISION BOTTLENECK</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 3: THE IDEA -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-3">
+            <div>
+                <div class="eyebrow">UNIFIED ARCHITECTURE</div>
+                <h2 class="slide-title">One operational workflow.</h2>
+                <p class="slide-subtitle">
+                    SkyWindow unifies disparate event data into a continuous decision pipeline connecting hazard detection to orbital observation planning.
+                </p>
+            </div>
+
+            <div class="workflow-row">
+                <div class="workflow-step">
+                    <div class="step-tag">01</div>
+                    <div class="step-label">Event</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">NASA / USGS</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step">
+                    <div class="step-tag">02</div>
+                    <div class="step-label">Context</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">OSM & Geography</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step highlight">
+                    <div class="step-tag">03</div>
+                    <div class="step-label">Observation</div>
+                    <div style="font-size:10px; color:var(--accent-earth); margin-top:2px;">Sensor Matching</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step highlight">
+                    <div class="step-tag">04</div>
+                    <div class="step-label">Task Plan</div>
+                    <div style="font-size:10px; color:var(--accent-earth); margin-top:2px;">SGP4 & Weather</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step">
+                    <div class="step-tag">05</div>
+                    <div class="step-label">Analysis</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Change Differencing</div>
+                </div>
+            </div>
+
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">FOUNDATION 1</div>
+                    <div class="surface-title">Live Data Ingestion</div>
+                    <div class="surface-body">Standardized GeoJSON hazard geometries with explicit observation timestamps and provider attribution.</div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">FOUNDATION 2</div>
+                    <div class="surface-title">Astrodynamic Physics</div>
+                    <div class="surface-body">SGP4 orbital propagation calculating topocentric pass elevations, azimuths, and look-angles.</div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">FOUNDATION 3</div>
+                    <div class="surface-title">Weather Integration</div>
+                    <div class="surface-body">Evaluates numerical cloud forecasts at the exact overpass minute to inform sensor selection.</div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>SYSTEM PIPELINE: SIGNAL &rarr; RECONNAISSANCE RECOMMENDATION</span>
+                <span>INTELLIGENCE WORKFLOW</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 4: THE PRODUCT & MULTI-SCREENSHOT INTERACTIVE CONSOLE -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-4">
+            <div>
+                <div class="eyebrow">PRODUCTION INTERFACE</div>
+                <h2 class="slide-title">Interactive mission operations console.</h2>
+                <p class="slide-subtitle">
+                    Explore real modules: live operations GIS map, satellite tasking scheduler, disaster directory, and AI copilot.
+                </p>
+            </div>
+
+            <div class="screenshot-switcher-wrap">
+                <!-- Interactive Screenshot Switcher Tabs -->
+                <div class="screenshot-tabs">
+                    <button class="shot-tab active" onclick="switchShot('overview', this)">01 · Operations Map</button>
+                    <button class="shot-tab" onclick="switchShot('tasking', this)">02 · Satellite Tasking</button>
+                    <button class="shot-tab" onclick="switchShot('catalog', this)">03 · Disaster Directory</button>
+                    <button class="shot-tab" onclick="switchShot('change', this)">04 · Change Detection</button>
+                    <button class="shot-tab" onclick="switchShot('analyst', this)">05 · AI Analyst</button>
+                </div>
+
+                <div class="screenshot-display-box">
+                    <img id="activeShotImg" src="docs/screenshots/skywindow_overview.png" onerror="this.src='screenshots/skywindow_overview.png'" alt="SkyWindow Module View">
+                    <div class="screenshot-badge" id="shotBadgeText">MODULE // LIVE OPERATIONS GIS MAP & DISASTER FEED</div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>PRODUCTION SCREENSHOTS: 5 OPERATIONAL MODULES</span>
+                <span>CLICK TABS TO EXPLORE VIEWS</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 5: HOW IT WORKS & TECH STACK -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-5">
+            <div>
+                <div class="eyebrow">ARCHITECTURE & TECHNOLOGY STACK</div>
+                <h2 class="slide-title">Engine architecture & real-world APIs.</h2>
+                <p class="slide-subtitle">
+                    A multi-tiered backend architecture integrating authoritative public data sources through astrodynamic models.
+                </p>
+            </div>
+
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">1. REAL-WORLD DATA APIS</div>
+                    <div class="surface-title">Authoritative Feeds</div>
+                    <div class="surface-body" style="font-size:11px;">
+                        • <strong>NASA EONET v3:</strong> Active Fires & Storms<br>
+                        • <strong>USGS NEIC:</strong> Seismic GeoJSON<br>
+                        • <strong>Open-Meteo & ECMWF:</strong> Cloud NWP<br>
+                        • <strong>Copernicus GloFAS:</strong> Hydrology<br>
+                        • <strong>CelesTrak:</strong> NORAD Orbital Ephemeris<br>
+                        • <strong>OpenStreetMap:</strong> Infrastructure Overpass<br>
+                        • <strong>RainViewer:</strong> Doppler Weather Radar
+                    </div>
+                </div>
+
+                <div class="editorial-surface" style="border-color: var(--border-medium);">
+                    <div class="surface-header">2. CORE TECH STACK</div>
+                    <div class="surface-title">Backend & Physics</div>
+                    <div class="tech-badge-grid">
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Python 3.10+</span>
+                            <span class="tech-badge-role">Core Engine</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">FastAPI</span>
+                            <span class="tech-badge-role">Async REST</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Skyfield / SGP4</span>
+                            <span class="tech-badge-role">Astrodynamics</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Pydantic v2</span>
+                            <span class="tech-badge-role">Validation</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">SQLite Store</span>
+                            <span class="tech-badge-role">Persistence</span>
+                        </div>
+                        <div class="tech-badge">
+                            <span class="tech-badge-name">Leaflet.js</span>
+                            <span class="tech-badge-role">GIS Frontend</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">3. OPERATOR INTERACTION</div>
+                    <div class="surface-title">Decision Output</div>
+                    <div class="surface-body" style="font-size:11px;">
+                        • <strong>Operations Map:</strong> Spatial Context<br>
+                        • <strong>Tasking Schedule:</strong> Pass Timelines<br>
+                        • <strong>Grounded Analyst:</strong> Evidence Q&A<br>
+                        • <strong>Change Differencing:</strong> Surface Deltas<br>
+                        • <strong>API Health:</strong> Verifiable Latency
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>ARCHITECTURE: ASYNC PYTHON / FASTAPI / SGP4 ASTRODYNAMICS</span>
+                <span>SYSTEM SPEC</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 6: THE DIFFERENTIATOR -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-6">
+            <div>
+                <div class="eyebrow">WORKFLOW CONTRAST</div>
+                <h2 class="slide-title">
+                    A disaster feed tells you what happened.<br>
+                    <span style="color:var(--text-secondary)">SkyWindow helps answer what to observe next.</span>
+                </h2>
+            </div>
+
+            <div class="compare-grid">
+                <div class="compare-box">
+                    <div class="compare-title">Conventional Information View</div>
+                    <ul class="compare-list">
+                        <li><span class="bullet-muted">•</span> Displays static incident pins on a basemap</li>
+                        <li><span class="bullet-muted">•</span> Unaware of cloud cover and satellite look-angles</li>
+                        <li><span class="bullet-muted">•</span> Disconnected from satellite orbit schedules</li>
+                        <li><span class="bullet-muted">•</span> Leaves mission planning to separate manual steps</li>
+                    </ul>
+                </div>
+
+                <div class="compare-box active-focus">
+                    <div class="compare-title">SkyWindow Decision Workflow</div>
+                    <ul class="compare-list">
+                        <li><span class="bullet-active">&check;</span> Ingests live incident geometry & exposure</li>
+                        <li><span class="bullet-active">&check;</span> Evaluates sensor modality (SAR for clouds, Optical for clear)</li>
+                        <li><span class="bullet-active">&check;</span> Calculates next SGP4 overpass opportunities</li>
+                        <li><span class="bullet-active">&check;</span> Proposes a sensor-aware observation plan</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>BRIDGING INCIDENT MONITORING AND SATELLITE RECONNAISSANCE</span>
+                <span>WORKFLOW DIFFERENTIATOR</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 7: SATELLITE CONSTELLATION INTELLIGENCE (MIDDLE PAGE) -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-7">
+            <div>
+                <div class="eyebrow">CONSTELLATION & ASTRODYNAMICS</div>
+                <h2 class="slide-title">The orbital layer: supported Earth observation platforms.</h2>
+                <p class="slide-subtitle">
+                    Select any satellite platform to inspect payload specifications, orbital regime, and sensor capabilities.
+                </p>
+            </div>
+
+            <!-- Satellite Name Constellation Selector -->
+            <div class="sat-pills-row">
+                <div class="sat-pill active" onclick="selectSatPill('s1', this)">
+                    <div class="sat-pill-name">SENTINEL-1A</div>
+                    <div class="sat-pill-payload">C-Band SAR (Radar)</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('s2', this)">
+                    <div class="sat-pill-name">SENTINEL-2A</div>
+                    <div class="sat-pill-payload">MSI 13-Band Optical</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('l8', this)">
+                    <div class="sat-pill-name">LANDSAT 8/9</div>
+                    <div class="sat-pill-payload">OLI-2 & TIRS-2</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('terra', this)">
+                    <div class="sat-pill-name">TERRA / MODIS</div>
+                    <div class="sat-pill-payload">Thermal & Atmosphere</div>
+                </div>
+                <div class="sat-pill" onclick="selectSatPill('iss', this)">
+                    <div class="sat-pill-name">ISS</div>
+                    <div class="sat-pill-payload">Crew Earth Obs</div>
+                </div>
+            </div>
+
+            <div class="grid-2col" style="margin: 8px 0;">
+                <div class="editorial-surface" id="satDetailCard" style="gap: 8px;">
+                    <div>
+                        <div class="surface-header" id="satDetailHeader">PLATFORM SPECIFICATIONS</div>
+                        <div class="surface-title" id="satDetailTitle" style="color:var(--text-primary);">SENTINEL-1A (ESA)</div>
+                    </div>
+                    <div class="data-row"><span class="data-label">NORAD Cat ID</span> <span class="data-val" id="satNorad">39634</span></div>
+                    <div class="data-row"><span class="data-label">Sensor Payload</span> <span class="data-val" id="satPayload">C-Band Synthetic Aperture Radar (C-SAR)</span></div>
+                    <div class="data-row"><span class="data-label">Spatial Resolution</span> <span class="data-val" id="satRes">5m – 20m (Interferometric Wide Swath)</span></div>
+                    <div class="data-row"><span class="data-label">Cloud Capability</span> <span class="data-val" id="satCloud" style="color:var(--status-ok)">Cloud-Penetrating (All-Weather / Day & Night)</span></div>
+                </div>
+
+                <div class="editorial-surface" style="gap: 8px;">
+                    <div>
+                        <div class="surface-header">ASTRODYNAMIC METHODOLOGY</div>
+                        <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-top:4px;">
+                            • <strong>SGP4 Keplarian Propagation:</strong> Calculates topocentric elevation and azimuth angles using the `skyfield` physics engine.<br>
+                            • <strong>Elevation Filtering:</strong> Discards low-angle passes below minimum acquisition thresholds (&ge; 20° elevation).<br>
+                            • <strong>Weather Synchronization:</strong> Correlates hourly numerical cloud forecasts at pass culmination.
+                        </div>
+                    </div>
+                    <div style="border-top:1px solid var(--border-subtle); padding-top:6px; font-size:11px; color:var(--text-muted);">
+                        PROPAGATION REFRESH: CelesTrak NORAD General Perturbations (GP) TLEs
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>ORBIT PROPAGATION: SGP4 KEPLARIAN PHYSICS & NORAD TLEs</span>
+                <span>CONSTELLATION SPEC</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 8: SENSOR-AWARE OBSERVATION -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-8">
+            <div>
+                <div class="eyebrow">SENSOR MODALITY MATCHING</div>
+                <h2 class="slide-title">Different disasters require different observations.</h2>
+                <p class="slide-subtitle">
+                    SkyWindow aligns the physical characteristics of each hazard with the optimal Earth observation sensor payload.
+                </p>
+            </div>
+
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">HYDROLOGICAL HAZARD</div>
+                    <div class="surface-title">Floods & Inundation</div>
+                    <div style="font-size:12px; color:var(--accent-earth); font-weight:600; margin-bottom:6px;">SYNTHETIC APERTURE RADAR (SAR)</div>
+                    <div class="surface-body">
+                        Active microwave pulses penetrate cloud cover and rain to detect surface water specular reflection and delineate flood perimeters.
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">ENVIRONMENTAL HAZARD</div>
+                    <div class="surface-title">Wildfires & Heatwaves</div>
+                    <div style="font-size:12px; color:var(--accent-earth); font-weight:600; margin-bottom:6px;">THERMAL INFRARED (TIR) & SWIR</div>
+                    <div class="surface-body">
+                        Shortwave and Thermal Infrared bands detect active combustion fronts through smoke and measure fire radiative power.
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">GEOLOGICAL HAZARD</div>
+                    <div class="surface-title">Earthquakes & Landslides</div>
+                    <div style="font-size:12px; color:var(--accent-earth); font-weight:600; margin-bottom:6px;">HIGH-RES OPTICAL & InSAR</div>
+                    <div class="surface-body">
+                        Interferometric SAR detects sub-centimeter surface displacement; high-resolution optical assesses structural damage.
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>MATCHING HAZARD PHYSICS TO SENSOR WAVELENGTHS</span>
+                <span>OBSERVATION LOGIC</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 9: LIVE INTELLIGENCE -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-9">
+            <div>
+                <div class="eyebrow">REAL-TIME TELEMETRY</div>
+                <h2 class="slide-title">Working with live planetary data.</h2>
+                <p class="slide-subtitle">
+                    The platform evaluates currently active hazards retrieved from public space agency and seismic feeds.
+                </p>
+            </div>
+
+            <div class="grid-2col">
+                <div class="editorial-surface">
+                    <div class="surface-header">ACTIVE HAZARD SAMPLE</div>
+                    <div id="deckDisasterSample">
+                        <div class="data-row"><span class="data-label">Selected Event</span> <span class="data-val" id="dEventName">Connecting...</span></div>
+                        <div class="data-row"><span class="data-label">Classification</span> <span class="data-val" id="dEventType">--</span></div>
+                        <div class="data-row"><span class="data-label">Coordinates</span> <span class="data-val" id="dEventCoords">--</span></div>
+                        <div class="data-row"><span class="data-label">Calculated Risk</span> <span class="data-val" id="dEventRisk">--</span></div>
+                        <div class="data-row"><span class="data-label">Data Provider</span> <span class="data-val" id="dEventProvider">--</span></div>
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">OBSERVATION RECOMMENDATION</div>
+                    <div class="data-row"><span class="data-label">Matched Sensor</span> <span class="data-val" id="dRecSensor">SAR / Optical</span></div>
+                    <div class="data-row"><span class="data-label">Weather Context</span> <span class="data-val" id="dWeather">Open-Meteo NWP</span></div>
+                    <div class="data-row"><span class="data-label">Tasking Action</span> <span class="data-val">Sensor-Aware Schedule</span></div>
+                    <div class="data-row"><span class="data-label">Status</span> <span class="data-val" style="color:var(--status-ok)">Active Pipeline</span></div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>DATA RETRIEVED FROM CONNECTED BACKEND VIA /api/disasters</span>
+                <span id="liveDataTime">LIVE QUERY</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 10: EVIDENCE & PROVENANCE -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-10">
+            <div>
+                <div class="eyebrow">TRANSPARENCY & DATA LINEAGE</div>
+                <h2 class="slide-title">Every decision should be traceable.</h2>
+                <p class="slide-subtitle">
+                    SkyWindow preserves source metadata and observation timestamps so operators can inspect where key inputs originated.
+                </p>
+            </div>
+
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">SEISMIC & GEOLOGICAL</div>
+                    <div class="surface-title">USGS Earthquake Hazards</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • Real-time NEIC GeoJSON feed<br>
+                        • Epicenter, magnitude, depth, tsunami flag<br>
+                        • Public Domain (CC0)
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">MULTI-HAZARD TRACKING</div>
+                    <div class="surface-title">NASA EONET v3</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • Earth Observatory Natural Event Tracker<br>
+                        • Active fires, tropical storms, volcanoes<br>
+                        • NASA Open Data Policy
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">ATMOSPHERIC & HYDROLOGY</div>
+                    <div class="surface-title">Open-Meteo & GloFAS</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • Hourly numerical cloud cover forecasts<br>
+                        • Copernicus GloFAS river discharge runoff<br>
+                        • CC BY 4.0 / Open Access
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>STATUS MONITORING: REST ROUTE /api/health</span>
+                <span>AUDITABLE PROVENANCE</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 11: WHAT IS BUILT / WHAT COMES NEXT -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-11">
+            <div>
+                <div class="eyebrow">ROADMAP & STATUS</div>
+                <h2 class="slide-title">Built capabilities & upcoming development.</h2>
+                <p class="slide-subtitle">
+                    A clear overview of what is currently implemented in the repository versus future development milestones.
+                </p>
+            </div>
+
+            <div class="grid-2col">
+                <div class="editorial-surface" style="border-top: 2px solid var(--status-ok);">
+                    <div class="surface-header" style="color:var(--status-ok);">CURRENTLY IMPLEMENTED</div>
+                    <div class="surface-body" style="line-height:1.7;">
+                        &check; Real-time ingestion for NASA EONET & USGS feeds<br>
+                        &check; Interactive Leaflet operations map & layer toggles<br>
+                        &check; Satellite catalog & SGP4 overpass calculations<br>
+                        &check; Sensor-aware scheduling with cloud constraints<br>
+                        &check; Critical infrastructure spatial analysis via OSM<br>
+                        &check; Grounded intelligence analyst & NLP task parser<br>
+                        &check; Automated executive briefing generation
+                    </div>
+                </div>
+
+                <div class="editorial-surface" style="border-top: 2px solid var(--text-muted);">
+                    <div class="surface-header">FUTURE ROADMAP</div>
+                    <div class="surface-body" style="line-height:1.7;">
+                        &rarr; Direct downlink integration with commercial ground stations<br>
+                        &rarr; Autonomous multi-satellite constellation coordination<br>
+                        &rarr; Advanced interferometric InSAR coherence loss pipelines<br>
+                        &rarr; Humanitarian evacuation corridor routing<br>
+                        &rarr; Edge-compute orbital tasking APIs
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>TECHNICAL HONESTY: VERIFIED IMPLEMENTATION vs PLANNED FEATURES</span>
+                <span>PROJECT STATUS</span>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- SLIDE 12: CLOSE -->
+        <!-- ========================================================= -->
+        <section class="slide" id="slide-12">
+            <div>
+                <div class="eyebrow">SKYWINDOW</div>
+                <h2 class="slide-title" style="font-size:40px;">
+                    Turning disaster signals into better observation decisions.
+                </h2>
+                <p class="slide-subtitle" style="margin-top:8px;">
+                    Observe the event. Understand the context. Plan the observation.
+                </p>
+            </div>
+
+            <div class="editorial-surface" style="margin: 20px 0; padding: 20px 24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:16px; font-weight:600; color:var(--text-primary);">SkyWindow Project Repository</div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Built by <strong>Team RARF</strong> (Mohamed Fahad · Naresh · Mohamed Najib)</div>
+                    </div>
+                    <div style="font-family:var(--font-mono); font-size:12px; color:var(--text-primary);">
+                        github.com/najibcode/SkyWindow
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>SKYWINDOW // EARTH OBSERVATION · GEOINT · MISSION INTELLIGENCE</span>
+                <span>HACKATHON PRESENTATION</span>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Progress Bar -->
+    <div class="progress-track">
+        <div class="progress-indicator" id="progressIndicator"></div>
+    </div>
+
+    <!-- Bottom Controls Footer -->
+    <footer class="deck-footer">
+        <div>
+            <span id="slideCurrent" style="font-weight:600; color:var(--text-primary);">01</span>
+            <span style="color:var(--text-muted)">/</span>
+            <span id="slideTotal">12</span>
+            <span style="margin-left:12px; color:var(--text-secondary);" id="slideCategoryName">OPENING</span>
+        </div>
+
+        <div class="nav-buttons">
+            <button class="btn-deck" onclick="prevSlide()">&larr; Prev <span class="key-tag">&larr;</span></button>
+            <button class="btn-deck" onclick="nextSlide()">Next &rarr; <span class="key-tag">&rarr; / Space</span></button>
+            <button class="btn-deck" onclick="toggleFullscreen()">Fullscreen <span class="key-tag">F</span></button>
+        </div>
+    </footer>
+
+</div>
+
+<script>
+    // ==========================================
+    // SLIDE NAVIGATION CONTROLLER
+    // ==========================================
+    let currentSlide = 1;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+    const slideTitles = [
+        "OPENING",
+        "THE PROBLEM",
+        "THE IDEA",
+        "THE PRODUCT",
+        "HOW IT WORKS",
+        "THE DIFFERENTIATOR",
+        "SATELLITE INTELLIGENCE",
+        "SENSOR-AWARE OBSERVATION",
+        "LIVE INTELLIGENCE",
+        "EVIDENCE & PROVENANCE",
+        "BUILT & ROADMAP",
+        "CLOSE"
+    ];
+
+    document.getElementById('slideTotal').textContent = String(totalSlides).padStart(2, '0');
+
+    function showSlide(index) {
+        if (index < 1) index = 1;
+        if (index > totalSlides) index = totalSlides;
+        currentSlide = index;
+
+        slides.forEach((s, idx) => {
+            s.classList.toggle('active', idx === index - 1);
+        });
+
+        document.getElementById('slideCurrent').textContent = String(index).padStart(2, '0');
+        document.getElementById('slideCategoryName').textContent = slideTitles[index - 1] || "SKYWINDOW";
+        document.getElementById('progressIndicator').style.width = ((index / totalSlides) * 100) + '%';
+    }
+
+    function nextSlide() { showSlide(currentSlide + 1); }
+    function prevSlide() { showSlide(currentSlide - 1); }
+
+    // Keyboard Shortcuts
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'Home') {
+            showSlide(1);
+        } else if (e.key === 'End') {
+            showSlide(totalSlides);
+        } else if (e.key === 'f' || e.key === 'F') {
+            toggleFullscreen();
+        }
+    });
+
+    function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+        } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+        }
+    }
+
+    // Click outside control buttons to advance
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.deck-footer') && !e.target.closest('.deck-header') && !e.target.closest('button') && !e.target.closest('.sat-pill') && !e.target.closest('.shot-tab')) {
+            nextSlide();
+        }
+    });
+
+    // ==========================================
+    // INTERACTIVE SCREENSHOT SWITCHER (SLIDE 4)
+    // ==========================================
+    const screenshotData = {
+        'overview': {
+            file: 'screenshots/skywindow_overview.png',
+            badge: 'MODULE 01 // LIVE OPERATIONS GIS MAP & DISASTER FEED'
+        },
+        'tasking': {
+            file: 'screenshots/skywindow_tasking.png',
+            badge: 'MODULE 02 // SENSOR-AWARE SATELLITE TASKING & SGP4 SCHEDULER'
+        },
+        'catalog': {
+            file: 'screenshots/skywindow_catalog.png',
+            badge: 'MODULE 03 // GLOBAL MULTI-DISASTER DIRECTORY & INCIDENTS'
+        },
+        'change': {
+            file: 'screenshots/skywindow_change.png',
+            badge: 'MODULE 04 // MULTI-TEMPORAL CHANGE DETECTION DIFFERENCING'
+        },
+        'analyst': {
+            file: 'screenshots/skywindow_analyst.png',
+            badge: 'MODULE 05 // GROUNDED AI ANALYST & NLP MISSION PLANNER'
+        }
+    };
+
+    // Preload screenshots for instantaneous switching
+    Object.values(screenshotData).forEach(item => {
+        const img = new Image();
+        img.src = item.file;
+        img.onerror = () => { img.src = '../docs/' + item.file; };
+    });
+
+    function switchShot(key, btn) {
+        document.querySelectorAll('.shot-tab').forEach(t => t.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const data = screenshotData[key];
+        if (data) {
+            const img = document.getElementById('activeShotImg');
+            const badge = document.getElementById('shotBadgeText');
+            if (img) {
+                img.style.opacity = '0.7';
+                img.src = data.file;
+                img.onerror = () => { img.src = '../docs/' + data.file; };
+                setTimeout(() => {
+                    img.style.opacity = '1';
+                }, 40);
+            }
+            if (badge) badge.textContent = data.badge;
+        }
+    }
+
+    // ==========================================
+    // INTERACTIVE SATELLITE SELECTOR (SLIDE 7)
+    // ==========================================
+    const satCatalog = {
+        's1': {
+            title: 'SENTINEL-1A (ESA)',
+            norad: '39634',
+            payload: 'C-Band Synthetic Aperture Radar (C-SAR)',
+            res: '5m – 20m (Interferometric Wide Swath)',
+            cloud: 'Cloud-Penetrating (All-Weather / Day & Night)',
+            color: 'var(--status-ok)'
+        },
+        's2': {
+            title: 'SENTINEL-2A (ESA)',
+            norad: '40697',
+            payload: 'MultiSpectral Instrument (MSI 13 Bands: VNIR / SWIR)',
+            res: '10m (Visual), 20m (Red-Edge), 60m (Atmospheric)',
+            cloud: 'Optical Modality (Requires Clear Sky < 50% Cloud)',
+            color: 'var(--status-info)'
+        },
+        'l8': {
+            title: 'LANDSAT 8 / 9 (NASA / USGS)',
+            norad: '39084',
+            payload: 'Operational Land Imager-2 (OLI-2) & Thermal (TIRS-2)',
+            res: '15m (Panchromatic), 30m (VNIR/SWIR), 100m (Thermal TIR)',
+            cloud: 'Multispectral & Thermal (Smoke/Fire Penetration)',
+            color: 'var(--status-warn)'
+        },
+        'terra': {
+            title: 'TERRA / MODIS (NASA EOS)',
+            norad: '25994',
+            payload: 'Moderate Resolution Imaging Spectroradiometer (MODIS)',
+            res: '250m, 500m, 1000m (Global Daily Revisit)',
+            cloud: 'Thermal Infrared (Active Fire Radiative Power & Aerosols)',
+            color: 'var(--status-crit)'
+        },
+        'iss': {
+            title: 'INTERNATIONAL SPACE STATION (ISS)',
+            norad: '25544',
+            payload: 'Crew Earth Observations (CEO) & External Payloads',
+            res: 'Variable (Low Inclination 51.6° Rapid Target Revisit)',
+            cloud: 'Flexible Rapid Response (Low-Orbit Nadir / Oblique)',
+            color: 'var(--accent-earth)'
+        }
+    };
+
+    function selectSatPill(key, pill) {
+        document.querySelectorAll('.sat-pill').forEach(p => p.classList.remove('active'));
+        if (pill) pill.classList.add('active');
+
+        const s = satCatalog[key];
+        if (s) {
+            document.getElementById('satDetailTitle').textContent = s.title;
+            document.getElementById('satNorad').textContent = s.norad;
+            document.getElementById('satPayload').textContent = s.payload;
+            document.getElementById('satRes').textContent = s.res;
+            const cloudEl = document.getElementById('satCloud');
+            if (cloudEl) {
+                cloudEl.textContent = s.cloud;
+                cloudEl.style.color = s.color;
+            }
+        }
+    }
+
+    // ==========================================
+    // LIVE DATA CLIENT (REAL DATA INTEGRATION)
+    // ==========================================
+    async function loadLiveData() {
+        const dot = document.getElementById('liveStatusDot');
+        const statusText = document.getElementById('liveStatusText');
+
+        try {
+            const res = await fetch('http://127.0.0.1:8000/api/disasters/summary');
+            if (res.ok) {
+                const summary = await res.json();
+                dot.classList.remove('offline');
+                statusText.textContent = `LIVE DATA CONNECTED · ${summary.active_disasters_count || 0} ACTIVE HAZARDS`;
+
+                // If sample disaster is available
+                if (summary.top_priority_event) {
+                    const top = summary.top_priority_event;
+                    const nameEl = document.getElementById('dEventName');
+                    const typeEl = document.getElementById('dEventType');
+                    const coordsEl = document.getElementById('dEventCoords');
+                    const riskEl = document.getElementById('dEventRisk');
+                    const provEl = document.getElementById('dEventProvider');
+                    const recEl = document.getElementById('dRecSensor');
+
+                    if (nameEl) nameEl.textContent = top.name || 'Active Incident';
+                    if (typeEl) typeEl.textContent = `${top.event_type || 'Hazard'} (${top.category || 'General'})`;
+                    if (coordsEl) coordsEl.textContent = `${top.latitude.toFixed(2)}°N, ${top.longitude.toFixed(2)}°E`;
+                    if (riskEl) riskEl.textContent = `${top.risk_score || 50}/100`;
+                    if (provEl) provEl.textContent = top.provenance?.provider || 'NASA / USGS';
+                    if (recEl) recEl.textContent = top.recommended_sensor || 'SAR / Optical';
+                }
+            } else {
+                throw new Error('API degraded');
+            }
+        } catch (e) {
+            dot.classList.add('offline');
+            statusText.textContent = 'STANDALONE MODE (BACKEND OFFLINE)';
+            
+            const nameEl = document.getElementById('dEventName');
+            if (nameEl) nameEl.innerHTML = '<span style="color:var(--text-muted); font-size:11px;">LIVE DATA UNAVAILABLE<br><br>Connect the SkyWindow API to display current operational data.</span>';
+        }
+    }
+
+    loadLiveData();
+    showSlide(1);
+</script>
+</body>
+</html>
