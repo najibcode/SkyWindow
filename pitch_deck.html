@@ -3,53 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SKYWINDOW // AI-Powered Earth Observation & Multi-Disaster Intelligence Platform — Pitch Deck</title>
-    <!-- Modern Typography -->
+    <title>SkyWindow — Earth Observation & Mission Intelligence Deck</title>
+    
+    <!-- Modern Editorial Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg-void: #03060d;
-            --bg-space: #060b17;
-            --bg-panel: rgba(10, 18, 36, 0.75);
-            --bg-card: rgba(15, 27, 54, 0.65);
-            --border-tech: rgba(0, 240, 255, 0.18);
-            --border-dim: rgba(255, 255, 255, 0.08);
-            --border-alert: rgba(255, 59, 48, 0.4);
+            /* Restrained Scientific Palette */
+            --bg-canvas: #0D0F12;
+            --bg-surface: #14171D;
+            --bg-elevated: #1B2028;
+            --bg-subtle: #222834;
             
-            --accent-cyan: #00f0ff;
-            --accent-cyan-glow: rgba(0, 240, 255, 0.35);
-            --accent-blue: #3b82f6;
-            --accent-emerald: #10b981;
-            --accent-amber: #f59e0b;
-            --accent-crimson: #ef4444;
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-medium: rgba(255, 255, 255, 0.16);
+            --border-focus: #8C9BAE;
             
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-            --text-muted: #64748b;
+            --text-primary: #F2F4F7;
+            --text-secondary: #9AA4B2;
+            --text-muted: #667085;
             
-            --font-head: 'Space Grotesk', -apple-system, sans-serif;
-            --font-body: 'Inter', -apple-system, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --accent-earth: #7E97A6;
+            --accent-warm: #E2E8F0;
+            
+            /* Restrained Semantic Indicators */
+            --status-crit: #E06C75;
+            --status-warn: #E5C07B;
+            --status-ok: #98C379;
+            --status-info: #61AFEF;
+
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-        body {
-            background-color: var(--bg-void);
-            color: var(--text-main);
-            font-family: var(--font-body);
-            overflow: hidden;
-            width: 100vw;
+        html, body {
+            width: 100%;
             height: 100vh;
-            user-select: none;
+            background-color: var(--bg-canvas);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 14px;
+            line-height: 1.5;
+            overflow: hidden;
             -webkit-font-smoothing: antialiased;
+            user-select: none;
         }
 
-        /* 16:9 Widescreen Presentation Shell */
-        .deck-container {
+        /* 16:9 Aspect-Ratio Constrained Slide Frame */
+        .deck-shell {
             position: absolute;
             inset: 0;
             margin: auto;
@@ -57,631 +67,425 @@
             height: 100vh;
             max-width: calc(100vh * 16 / 9);
             max-height: calc(100vw * 9 / 16);
-            background: radial-gradient(circle at 50% 20%, #0c162d 0%, #050a14 60%, #020408 100%);
-            box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
-            overflow: hidden;
+            background-color: var(--bg-canvas);
+            box-shadow: 0 0 80px rgba(0, 0, 0, 0.85);
             display: flex;
             flex-direction: column;
+            overflow: hidden;
         }
 
-        /* Subtle Aerospace Grid Overlay */
-        .grid-overlay {
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        /* Top HUD Bar */
-        .hud-header {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
+        /* Top Meta Header */
+        .deck-header {
             height: 48px;
+            padding: 0 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 36px;
-            border-bottom: 1px solid var(--border-dim);
-            background: rgba(4, 8, 18, 0.6);
-            backdrop-filter: blur(12px);
-            z-index: 20;
-            font-family: var(--font-mono);
+            border-bottom: 1px solid var(--border-subtle);
             font-size: 11px;
-            letter-spacing: 0.08em;
-            color: var(--text-dim);
+            color: var(--text-muted);
+            letter-spacing: 0.04em;
+            z-index: 50;
         }
 
-        .hud-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-        }
-
-        .hud-logo {
-            font-family: var(--font-head);
-            font-weight: 700;
-            font-size: 14px;
-            color: #fff;
-            letter-spacing: 0.15em;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .hud-logo-icon {
-            width: 10px;
-            height: 10px;
-            border: 2px solid var(--accent-cyan);
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 8px var(--accent-cyan);
-        }
-
-        .hud-badge {
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 9px;
+        .header-brand {
             font-weight: 600;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            color: var(--accent-cyan);
-        }
-
-        .hud-right {
+            color: var(--text-primary);
+            letter-spacing: 0.08em;
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 8px;
         }
 
-        .telemetry-pulse {
+        .header-status {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .status-dot {
             width: 6px;
             height: 6px;
-            background: var(--accent-emerald);
             border-radius: 50%;
+            background-color: var(--status-ok);
             display: inline-block;
-            box-shadow: 0 0 8px var(--accent-emerald);
-            animation: pulse-glow 2s infinite ease-in-out;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.8); }
+        .status-dot.offline {
+            background-color: var(--text-muted);
         }
 
-        /* Slide Stage & Transitions */
-        .slide-deck {
-            position: relative;
+        /* Slide Stage */
+        .slide-stage {
             flex: 1;
+            position: relative;
             width: 100%;
             height: 100%;
             overflow: hidden;
-            z-index: 10;
         }
 
         .slide {
             position: absolute;
             inset: 0;
-            padding: 80px 70px 60px 70px;
+            padding: 50px 70px 40px 70px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: scale(0.98) translateY(10px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            transform: translateY(12px);
         }
 
         .slide.active {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
-            transform: scale(1) translateY(0);
+            transform: translateY(0);
         }
 
-        /* Typography Hierarchy */
-        .micro-tag {
-            font-family: var(--font-mono);
+        /* Editorial Typography & Layout */
+        .eyebrow {
             font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: var(--accent-cyan);
-            display: inline-flex;
+            color: var(--accent-earth);
+            margin-bottom: 12px;
+            display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 12px;
         }
 
-        .micro-tag::before {
+        .eyebrow::after {
             content: "";
-            width: 16px;
             height: 1px;
-            background: var(--accent-cyan);
+            width: 24px;
+            background: var(--border-medium);
         }
 
         .slide-title {
-            font-family: var(--font-head);
-            font-size: 44px;
-            font-weight: 700;
+            font-size: 38px;
+            font-weight: 600;
             line-height: 1.15;
+            color: var(--text-primary);
             letter-spacing: -0.02em;
-            color: #ffffff;
+            max-width: 900px;
             margin-bottom: 12px;
         }
 
-        .slide-title span.accent-cyan {
-            color: var(--accent-cyan);
-            text-shadow: 0 0 24px rgba(0, 240, 255, 0.3);
-        }
-
-        .slide-title span.accent-amber {
-            color: var(--accent-amber);
-            text-shadow: 0 0 24px rgba(245, 158, 11, 0.3);
-        }
-
-        .slide-title span.accent-crimson {
-            color: var(--accent-crimson);
-            text-shadow: 0 0 24px rgba(239, 68, 68, 0.3);
-        }
-
         .slide-subtitle {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 400;
-            color: var(--text-dim);
+            color: var(--text-secondary);
+            max-width: 800px;
             line-height: 1.5;
-            max-width: 860px;
         }
 
-        /* Tactical Cards & Layout Modules */
-        .content-grid-2 {
+        /* Grid Containers */
+        .grid-2col {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 32px;
+            gap: 36px;
             align-items: center;
             flex: 1;
-            margin-top: 24px;
+            margin: 20px 0;
         }
 
-        .content-grid-3 {
+        .grid-3col {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 20px;
             flex: 1;
-            margin-top: 24px;
-        }
-
-        .content-grid-4 {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            flex: 1;
-            margin-top: 20px;
-        }
-
-        .tactical-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-tech);
-            border-radius: 8px;
-            padding: 24px;
-            position: relative;
-            backdrop-filter: blur(16px);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .tactical-card::before {
-            content: "";
-            position: absolute;
-            top: -1px;
-            left: 12px;
-            width: 24px;
-            height: 2px;
-            background: var(--accent-cyan);
-        }
-
-        .card-header-label {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--accent-cyan);
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-        }
-
-        .card-title {
-            font-family: var(--font-head);
-            font-size: 20px;
-            font-weight: 600;
-            color: #fff;
-            margin-bottom: 10px;
-        }
-
-        .card-text {
-            font-size: 13px;
-            color: var(--text-dim);
-            line-height: 1.6;
-        }
-
-        /* Pipeline Visualizer */
-        .pipeline-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            width: 100%;
-            margin: 30px 0;
-            position: relative;
-        }
-
-        .pipeline-node {
-            flex: 1;
-            background: rgba(11, 22, 44, 0.85);
-            border: 1px solid var(--border-dim);
-            border-radius: 6px;
-            padding: 16px 12px;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .pipeline-node.active-node {
-            border-color: var(--accent-cyan);
-            background: rgba(0, 240, 255, 0.08);
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
-        }
-
-        .node-step {
-            font-family: var(--font-mono);
-            font-size: 9px;
-            color: var(--accent-cyan);
-            margin-bottom: 4px;
-        }
-
-        .node-name {
-            font-family: var(--font-head);
-            font-size: 13px;
-            font-weight: 600;
-            color: #fff;
-            line-height: 1.2;
-        }
-
-        .pipeline-arrow {
-            color: var(--accent-cyan);
-            font-size: 14px;
-            opacity: 0.6;
-        }
-
-        /* Comparison Architecture Split */
-        .compare-split {
-            display: grid;
-            grid-template-columns: 1fr 1.2fr;
-            gap: 32px;
-            flex: 1;
-            margin-top: 20px;
+            margin: 24px 0;
             align-items: stretch;
         }
 
-        .compare-side {
-            background: rgba(10, 17, 33, 0.6);
-            border: 1px solid var(--border-dim);
-            border-radius: 8px;
-            padding: 28px;
+        /* Editorial Surface & Cards */
+        .editorial-surface {
+            background-color: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            justify-content: space-between;
+            position: relative;
         }
 
-        .compare-side.dominant {
-            background: rgba(6, 26, 48, 0.7);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.12);
+        .surface-header {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 8px;
         }
 
-        .side-tag {
+        .surface-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .surface-body {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Linear Workflow Pipeline */
+        .workflow-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            margin: 30px 0;
+            gap: 12px;
+        }
+
+        .workflow-step {
+            flex: 1;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .workflow-step.highlight {
+            border-color: var(--accent-earth);
+            background: var(--bg-elevated);
+        }
+
+        .step-tag {
             font-family: var(--font-mono);
             font-size: 10px;
-            letter-spacing: 0.15em;
             color: var(--text-muted);
-            text-transform: uppercase;
+            margin-bottom: 4px;
         }
 
-        .compare-side.dominant .side-tag {
-            color: var(--accent-cyan);
+        .step-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .workflow-arrow {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Comparison Layout */
+        .compare-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 28px;
+            flex: 1;
+            margin: 20px 0;
+        }
+
+        .compare-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .compare-box.active-focus {
+            border-color: var(--border-medium);
+            background: var(--bg-elevated);
+        }
+
+        .compare-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 8px;
         }
 
         .compare-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
         .compare-list li {
-            font-size: 14px;
-            color: var(--text-dim);
+            font-size: 13px;
+            color: var(--text-secondary);
             display: flex;
-            align-items: flex-start;
-            gap: 10px;
+            gap: 8px;
             line-height: 1.4;
         }
 
-        .compare-list li strong {
-            color: #fff;
-        }
+        .bullet-muted { color: var(--text-muted); }
+        .bullet-active { color: var(--accent-earth); }
 
-        .compare-side.dominant .compare-list li {
-            color: #e2e8f0;
-        }
-
-        .icon-check { color: var(--accent-emerald); font-weight: bold; }
-        .icon-cross { color: var(--accent-crimson); font-weight: bold; }
-
-        /* Scientific Data Matrix */
-        .data-matrix {
-            width: 100%;
-            border-collapse: collapse;
-            font-family: var(--font-body);
-            font-size: 12px;
-            margin-top: 16px;
-        }
-
-        .data-matrix th {
-            text-align: left;
-            padding: 10px 14px;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--accent-cyan);
-            border-bottom: 1px solid var(--border-tech);
-            background: rgba(0, 240, 255, 0.04);
-        }
-
-        .data-matrix td {
-            padding: 10px 14px;
-            color: var(--text-dim);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-        .data-matrix tr:hover td {
-            background: rgba(255, 255, 255, 0.02);
-            color: #fff;
-        }
-
-        .badge-live {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-family: var(--font-mono);
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--accent-emerald);
-            background: rgba(16, 185, 129, 0.12);
-            padding: 2px 8px;
-            border-radius: 4px;
-            border: 1px solid rgba(16, 185, 129, 0.3);
-        }
-
-        .badge-roadmap {
-            font-family: var(--font-mono);
-            font-size: 9px;
-            font-weight: 600;
-            color: var(--accent-amber);
-            background: rgba(245, 158, 11, 0.12);
-            padding: 2px 6px;
-            border-radius: 4px;
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            text-transform: uppercase;
-        }
-
-        /* Visual Graphic Containers */
-        .diagram-box {
-            background: rgba(5, 12, 26, 0.9);
-            border: 1px solid var(--border-tech);
-            border-radius: 8px;
-            padding: 20px;
-            height: 100%;
+        /* Data Rows & Metadata */
+        .data-row {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            font-size: 12px;
         }
 
-        .orbit-graphic {
-            width: 100%;
-            height: 240px;
+        .data-label { color: var(--text-muted); }
+        .data-val { color: var(--text-primary); font-family: var(--font-mono); }
+
+        /* Live Data Fallback Notice */
+        .data-lineage-note {
+            font-size: 11px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         /* Bottom Controls Bar */
-        .hud-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
+        .deck-footer {
             height: 48px;
+            padding: 0 40px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 36px;
-            border-top: 1px solid var(--border-dim);
-            background: rgba(4, 8, 18, 0.75);
-            backdrop-filter: blur(12px);
-            z-index: 20;
-            font-family: var(--font-mono);
-            font-size: 11px;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 12px;
             color: var(--text-muted);
+            z-index: 50;
+            background: var(--bg-canvas);
         }
 
-        .progress-bar-container {
+        .progress-track {
             position: absolute;
-            top: 0;
+            bottom: 48px;
             left: 0;
             width: 100%;
             height: 2px;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        .progress-bar-fill {
+        .progress-indicator {
             height: 100%;
-            background: var(--accent-cyan);
-            box-shadow: 0 0 10px var(--accent-cyan);
-            width: 7.14%;
+            background: var(--accent-earth);
+            width: 8.33%;
             transition: width 0.3s ease;
         }
 
-        .controls-group {
+        .nav-buttons {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
         }
 
-        .btn-ctrl {
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-dim);
-            color: #fff;
-            padding: 5px 12px;
+        .btn-deck {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-secondary);
+            padding: 4px 10px;
             border-radius: 4px;
-            cursor: pointer;
-            font-family: var(--font-mono);
             font-size: 11px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.15s ease;
         }
 
-        .btn-ctrl:hover {
-            background: rgba(0, 240, 255, 0.15);
-            border-color: var(--accent-cyan);
-            color: var(--accent-cyan);
+        .btn-deck:hover {
+            border-color: var(--border-medium);
+            color: var(--text-primary);
+            background: var(--bg-surface);
         }
 
-        .slide-counter {
+        .key-tag {
             font-family: var(--font-mono);
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        /* Keyboard Hints Overlay */
-        .key-hint {
-            border: 1px solid var(--border-dim);
-            padding: 1px 5px;
-            border-radius: 3px;
             font-size: 9px;
-            color: var(--text-dim);
-            background: rgba(0, 0, 0, 0.4);
+            color: var(--text-muted);
+            border: 1px solid var(--border-subtle);
+            padding: 1px 4px;
+            border-radius: 2px;
+            margin-left: 4px;
         }
 
-        /* Animations */
-        @keyframes draw-line {
-            to { stroke-dashoffset: 0; }
-        }
-
-        .orbit-path-anim {
-            stroke-dasharray: 600;
-            stroke-dashoffset: 600;
-            animation: draw-line 3s forwards ease-in-out;
+        /* Respect Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .slide, .progress-indicator, .workflow-step {
+                transition: none !important;
+                transform: none !important;
+            }
         }
     </style>
 </head>
 <body>
 
-<div class="deck-container">
-    <div class="grid-overlay"></div>
+<div class="deck-shell">
 
-    <!-- HUD Header -->
-    <header class="hud-header">
-        <div class="hud-left">
-            <div class="hud-logo">
-                <span class="hud-logo-icon"></span>
-                SKYWINDOW
-            </div>
-            <span class="hud-badge">TACTICAL MISSION PITCH</span>
-            <span>AEROSPACE EO // GEOINT INTELLIGENCE</span>
+    <!-- Top Header -->
+    <header class="deck-header">
+        <div class="header-brand">
+            <span>SKYWINDOW</span>
+            <span style="color:var(--border-medium)">/</span>
+            <span style="color:var(--text-secondary); font-weight:400;">Earth Observation & Mission Intelligence</span>
         </div>
-        <div class="hud-right">
-            <div><span class="telemetry-pulse"></span> SYSTEM: <strong style="color:#fff;">100% REAL LIVE TELEMETRY</strong></div>
-            <div id="deck-clock">00:00:00 UTC</div>
+        <div class="header-status">
+            <span id="liveStatusDot" class="status-dot"></span>
+            <span id="liveStatusText">CONNECTING TO LIVE FEEDS...</span>
         </div>
     </header>
 
-    <!-- Slide Deck Inner -->
-    <main class="slide-deck" id="slideDeck">
+    <!-- Slide Stage Container -->
+    <main class="slide-stage" id="slideStage">
 
         <!-- ========================================================= -->
-        <!-- SLIDE 1: THE HOOK -->
+        <!-- SLIDE 1: OPENING -->
         <!-- ========================================================= -->
         <section class="slide active" id="slide-1">
             <div>
-                <div class="micro-tag">EARTH OBSERVATION / MISSION INTELLIGENCE</div>
-                <h1 class="slide-title" style="font-size: 58px; margin-top: 10px;">
-                    SKYWINDOW
+                <div class="eyebrow">MISSION INTELLIGENCE PLATFORM</div>
+                <h1 class="slide-title" style="font-size:46px; margin-top: 8px;">
+                    From disaster signal<br>to satellite observation.
                 </h1>
-                <div style="font-family: var(--font-head); font-size: 26px; font-weight: 500; color: #fff; margin-top: 8px; line-height: 1.3;">
-                    Observe the disaster. <span class="accent-cyan">Understand the impact.</span> Task the satellite.
-                </div>
                 <p class="slide-subtitle" style="margin-top: 14px;">
-                    AI-powered Earth observation and multi-disaster intelligence engine connecting live global hazard signals directly to sensor-aware satellite mission planning.
+                    Connecting real-time planetary hazard signals directly to sensor-aware satellite mission planning.
                 </p>
             </div>
 
-            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: center;">
-                <div class="tactical-card" style="padding: 28px; background: rgba(5, 12, 28, 0.85);">
-                    <div class="card-header-label">PLANETARY CRISIS DECISION WORKFLOW</div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
-                        <div style="text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-crimson);">LIVE DISASTER</div>
-                            <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">NASA / USGS Feeds</div>
-                        </div>
-                        <div style="color: var(--accent-cyan); font-size: 18px;">➔</div>
-                        <div style="text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan);">GEOINT ANALYSIS</div>
-                            <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Spatial & Exposure</div>
-                        </div>
-                        <div style="color: var(--accent-cyan); font-size: 18px;">➔</div>
-                        <div style="text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-emerald);">SENSOR TASKING</div>
-                            <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">SGP4 + Cloud NWP</div>
-                        </div>
-                        <div style="color: var(--accent-cyan); font-size: 18px;">➔</div>
-                        <div style="text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 11px; color: #fff;">DECISION SUPPORT</div>
-                            <div style="font-size: 12px; color: var(--text-dim); margin-top: 4px;">Rapid Response</div>
-                        </div>
+            <div class="grid-3col" style="margin-top: 30px;">
+                <div class="editorial-surface">
+                    <div class="surface-header">01. SENSE</div>
+                    <div class="surface-title">Planetary Hazard Feeds</div>
+                    <div class="surface-body">
+                        Direct ingestion of real-time public feeds for earthquakes, wildfires, tropical storms, and flood inundations.
                     </div>
                 </div>
-
-                <div class="tactical-card" style="border-color: rgba(0, 240, 255, 0.3);">
-                    <div class="card-header-label">CURRENT TELEMETRY STATUS</div>
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 8px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                            <span style="color: var(--text-dim);">Connected Providers:</span>
-                            <span class="badge-live">6 LIVE FEEDS</span>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                            <span style="color: var(--text-dim);">Orbital Constellations:</span>
-                            <strong style="color: #fff; font-family: var(--font-mono);">7 SATELLITES</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                            <span style="color: var(--text-dim);">Data Fabrication:</span>
-                            <strong style="color: var(--accent-emerald); font-family: var(--font-mono);">0.0% (ZERO MOCK)</strong>
-                        </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">02. COMPUTE</div>
+                    <div class="surface-title">Orbital Astrodynamics</div>
+                    <div class="surface-body">
+                        SGP4 Keplarian pass propagation over fresh NORAD ephemeris to evaluate look-angles and imaging windows.
+                    </div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">03. OPTIMIZE</div>
+                    <div class="surface-title">Sensor-Aware Mission Tasking</div>
+                    <div class="surface-body">
+                        Constraint-based scheduling pairing cloud-penetrating SAR or multispectral payloads with weather forecasts.
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-dim); padding-top: 14px;">
-                <span>LAT/LON SPATIAL INDEXING</span>
-                <span>SGP4 KEPLARIAN PROPAGATOR</span>
-                <span>ECMWF IFS NWP INTEGRATION</span>
+            <div class="data-lineage-note">
+                <span>OPEN SOURCE · PUBLIC SPACE AGENCY FEEDS · ASTRODYNAMICS PROPAGATION</span>
+                <span>SKYWINDOW SPEC v2.4</span>
             </div>
         </section>
 
@@ -690,984 +494,559 @@
         <!-- ========================================================= -->
         <section class="slide" id="slide-2">
             <div>
-                <div class="micro-tag">THE MISSION DILEMMA</div>
-                <h2 class="slide-title">
-                    When disaster strikes, <span class="accent-crimson">information arrives fragmented.</span>
-                </h2>
+                <div class="eyebrow">OPERATIONAL CONTEXT</div>
+                <h2 class="slide-title">Disaster information is fragmented.</h2>
                 <p class="slide-subtitle">
-                    Emergency response teams and satellite mission directors operate in disconnected data silos with no unified intelligence layer connecting incident detection to orbital tasking.
+                    Relevant information exists across different feeds, weather forecasts, and orbital catalogs. Operators are forced to manually connect the dots during time-critical events.
                 </p>
             </div>
 
-            <div class="content-grid-2">
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div class="tactical-card" style="border-left: 3px solid var(--accent-crimson);">
-                        <div class="card-title" style="font-size: 17px; color: #fff;">1. Data Silo Overload</div>
-                        <div class="card-text">
-                            Seismic feeds (USGS), thermal fire hotspots (FIRMS), meteorological forecasts (ECMWF), and orbital catalogs (CelesTrak) exist in disparate formats without mutual geospatial correlation.
+            <div class="grid-2col">
+                <div style="display:flex; flex-direction:column; gap:14px;">
+                    <div class="editorial-surface" style="border-left: 3px solid var(--text-muted);">
+                        <div class="surface-title">Disconnected Data Streams</div>
+                        <div class="surface-body">
+                            Seismic telemetry, thermal fire points, meteorological forecasts, and satellite orbital elements reside in disparate formats without unified geospatial correlation.
                         </div>
                     </div>
-                    <div class="tactical-card" style="border-left: 3px solid var(--accent-amber);">
-                        <div class="card-title" style="font-size: 17px; color: #fff;">2. Blind Optical Tasking & Wasted Passes</div>
-                        <div class="card-text">
-                            Optical satellites are routinely tasked over flooded or cyclone-ravaged zones only to capture 100% cloud obscuration—wasting critical satellite power (Wh), onboard storage (GB), and precious imaging windows.
-                        </div>
-                    </div>
-                    <div class="tactical-card" style="border-left: 3px solid #64748b;">
-                        <div class="card-title" style="font-size: 17px; color: #fff;">3. Missing Decision Support Layer</div>
-                        <div class="card-text">
-                            Current platforms stop at showing a static marker on a map. They fail to calculate: <em>Which sensor modality is required? When is the next pass? What critical infrastructure is compromised?</em>
+                    <div class="editorial-surface" style="border-left: 3px solid var(--text-muted);">
+                        <div class="surface-title">Uncoordinated Tasking Requests</div>
+                        <div class="surface-body">
+                            Optical satellites risk being tasked over heavy cloud-shrouded monsoon zones, resulting in unusable obscured imagery and wasted mission duty cycles.
                         </div>
                     </div>
                 </div>
 
-                <div class="diagram-box">
-                    <div class="card-header-label" style="align-self: flex-start;">FRAGMENTED DISASTER RESPONSE ECOSYSTEM</div>
-                    <svg viewBox="0 0 400 240" style="width: 100%; height: 200px;">
-                        <!-- Fragmented Silo Nodes -->
-                        <g opacity="0.85">
-                            <rect x="20" y="20" width="100" height="40" rx="4" fill="#0c172e" stroke="#ef4444" stroke-width="1.5"/>
-                            <text x="70" y="44" fill="#fff" font-size="10" font-family="JetBrains Mono" text-anchor="middle">WEATHER SILO</text>
-                            
-                            <rect x="280" y="20" width="100" height="40" rx="4" fill="#0c172e" stroke="#ef4444" stroke-width="1.5"/>
-                            <text x="330" y="44" fill="#fff" font-size="10" font-family="JetBrains Mono" text-anchor="middle">SEISMIC FEED</text>
-
-                            <rect x="20" y="160" width="100" height="40" rx="4" fill="#0c172e" stroke="#ef4444" stroke-width="1.5"/>
-                            <text x="70" y="184" fill="#fff" font-size="10" font-family="JetBrains Mono" text-anchor="middle">ORBIT TLEs</text>
-
-                            <rect x="280" y="160" width="100" height="40" rx="4" fill="#0c172e" stroke="#ef4444" stroke-width="1.5"/>
-                            <text x="330" y="184" fill="#fff" font-size="10" font-family="JetBrains Mono" text-anchor="middle">OSM ASSETS</text>
-
-                            <!-- Disconnected Center -->
-                            <circle cx="200" cy="110" r="30" fill="none" stroke="#64748b" stroke-dasharray="4" stroke-width="2"/>
-                            <text x="200" y="106" fill="#ef4444" font-size="10" font-family="JetBrains Mono" text-anchor="middle">NO UNIFIED</text>
-                            <text x="200" y="120" fill="#ef4444" font-size="10" font-family="JetBrains Mono" text-anchor="middle">INTELLIGENCE</text>
-
-                            <!-- Broken lines -->
-                            <line x1="120" y1="45" x2="175" y2="90" stroke="#64748b" stroke-dasharray="4"/>
-                            <line x1="280" y1="45" x2="225" y2="90" stroke="#64748b" stroke-dasharray="4"/>
-                            <line x1="120" y1="175" x2="175" y2="130" stroke="#64748b" stroke-dasharray="4"/>
-                            <line x1="280" y1="175" x2="225" y2="130" stroke="#64748b" stroke-dasharray="4"/>
-                        </g>
-                    </svg>
-                    <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-crimson); margin-top: 8px;">
-                        HIGH LATENCY • WASTED SATELLITE PASSES • BLIND DECISION MAKING
+                <div class="editorial-surface" style="height: 100%; justify-content: center; gap: 16px;">
+                    <div class="surface-header">THE OPERATOR'S CHALLENGE</div>
+                    <div style="font-size:15px; color:var(--text-primary); line-height: 1.6;">
+                        "When an emergency unfolds, the decision is not merely knowing a disaster occurred—it is knowing <em>which satellite can see it next</em> and <em>which sensor modality can penetrate prevailing weather</em>."
+                    </div>
+                    <div style="font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border-subtle); padding-top: 8px;">
+                        REDUCING MANUAL CROSS-REFERENCING DURING RAPID RESPONSE
                     </div>
                 </div>
             </div>
 
-            <div style="font-size: 14px; color: var(--text-dim); border-left: 2px solid var(--accent-cyan); padding-left: 14px;">
-                <strong>Core Message:</strong> Emergency teams don't just need more raw data streams. They need <em>sensor-actionable intelligence</em> delivered before the satellite passes overhead.
+            <div class="data-lineage-note">
+                <span>CHALLENGE: DISPARATE FEEDS & UNFILTERED OBSERVATION PLANNING</span>
+                <span>DECISION BOTTLENECK</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 3: THE INSIGHT -->
+        <!-- SLIDE 3: THE IDEA -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-3">
             <div>
-                <div class="micro-tag">ARCHITECTURAL PARADIGM</div>
-                <h2 class="slide-title">
-                    The missing layer is <span class="accent-cyan">intelligence.</span>
-                </h2>
+                <div class="eyebrow">UNIFIED ARCHITECTURE</div>
+                <h2 class="slide-title">One operational workflow.</h2>
                 <p class="slide-subtitle">
-                    SkyWindow unifies fragmented telemetry into a continuous, real-time pipeline that transitions smoothly from incident detection to orbital execution.
+                    SkyWindow unifies disparate event data into a continuous decision pipeline connecting hazard detection to orbital observation planning.
                 </p>
             </div>
 
-            <div style="display: flex; flex-direction: column; justify-content: center; gap: 24px; flex: 1;">
-                <div class="pipeline-container" style="margin: 0;">
-                    <div class="pipeline-node active-node">
-                        <div class="node-step">01. DETECT</div>
-                        <div class="node-name">Multi-Hazard Ingestion</div>
-                        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">NASA EONET / USGS</div>
-                    </div>
-                    <div class="pipeline-arrow">➔</div>
-                    <div class="pipeline-node active-node">
-                        <div class="node-step">02. UNDERSTAND</div>
-                        <div class="node-name">Spatial Impact & Risk</div>
-                        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">H × E × V Framework</div>
-                    </div>
-                    <div class="pipeline-arrow">➔</div>
-                    <div class="pipeline-node active-node">
-                        <div class="node-step">03. OBSERVE</div>
-                        <div class="node-name">Sensor-Aware SGP4</div>
-                        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">SAR vs Optical vs TIR</div>
-                    </div>
-                    <div class="pipeline-arrow">➔</div>
-                    <div class="pipeline-node active-node">
-                        <div class="node-step">04. ACT</div>
-                        <div class="node-name">Mission Task Plan</div>
-                        <div style="font-size: 10px; color: var(--text-dim); margin-top: 4px;">Optimized Pass Schedule</div>
-                    </div>
+            <div class="workflow-row">
+                <div class="workflow-step">
+                    <div class="step-tag">01</div>
+                    <div class="step-label">Event</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">NASA / USGS</div>
                 </div>
-
-                <div class="content-grid-3">
-                    <div class="tactical-card">
-                        <div class="card-header-label">1. MULTI-SENSOR FUSION</div>
-                        <div class="card-title" style="font-size: 16px;">Automated Modality Matching</div>
-                        <div class="card-text">
-                            Directs Synthetic Aperture Radar (SAR) to cloud-shrouded floods, Thermal Infrared to wildfire fronts, and Multispectral to clear-sky damage assessment.
-                        </div>
-                    </div>
-                    <div class="tactical-card">
-                        <div class="card-header-label">2. ASTRODYNAMIC COMPUTATION</div>
-                        <div class="card-title" style="font-size: 16px;">Real-Time SGP4 Propagation</div>
-                        <div class="card-text">
-                            Calculates accurate look-angles, off-nadir tilt, azimuth, elevation geometry, and exact imaging acquisition windows.
-                        </div>
-                    </div>
-                    <div class="tactical-card">
-                        <div class="card-header-label">3. METEOROLOGICAL AWARENESS</div>
-                        <div class="card-title" style="font-size: 16px;">Hourly Cloud Forecasts</div>
-                        <div class="card-text">
-                            Evaluates ECMWF numerical weather models at the exact overpass minute, automatically discarding passes with $>50\%$ obscuration.
-                        </div>
-                    </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step">
+                    <div class="step-tag">02</div>
+                    <div class="step-label">Context</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">OSM & Geography</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step highlight">
+                    <div class="step-tag">03</div>
+                    <div class="step-label">Observation</div>
+                    <div style="font-size:10px; color:var(--accent-earth); margin-top:2px;">Sensor Matching</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step highlight">
+                    <div class="step-tag">04</div>
+                    <div class="step-label">Task Plan</div>
+                    <div style="font-size:10px; color:var(--accent-earth); margin-top:2px;">SGP4 & Weather</div>
+                </div>
+                <div class="workflow-arrow">&rarr;</div>
+                <div class="workflow-step">
+                    <div class="step-tag">05</div>
+                    <div class="step-label">Analysis</div>
+                    <div style="font-size:10px; color:var(--text-muted); margin-top:2px;">Change Differencing</div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan); text-align: right;">
-                SKYWINDOW DISASTER-TO-ORBIT DECISION ENGINE // SYSTEM SPEC v2.4
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">FOUNDATION 1</div>
+                    <div class="surface-title">Live Data Ingestion</div>
+                    <div class="surface-body">Standardized GeoJSON hazard geometries with explicit observation timestamps and provider attribution.</div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">FOUNDATION 2</div>
+                    <div class="surface-title">Astrodynamic Physics</div>
+                    <div class="surface-body">SGP4 orbital propagation calculating topocentric pass elevations, azimuths, and look-angles.</div>
+                </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">FOUNDATION 3</div>
+                    <div class="surface-title">Weather Integration</div>
+                    <div class="surface-body">Evaluates numerical cloud forecasts at the exact overpass minute to inform sensor selection.</div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>SYSTEM PIPELINE: SIGNAL &rarr; RECONNAISSANCE RECOMMENDATION</span>
+                <span>INTELLIGENCE WORKFLOW</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 4: WHAT IS SKYWINDOW? -->
+        <!-- SLIDE 4: THE PRODUCT -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-4">
             <div>
-                <div class="micro-tag">SYSTEM SPECIFICATION</div>
-                <h2 class="slide-title">
-                    One platform. <span class="accent-cyan">From disaster signal to satellite mission.</span>
-                </h2>
+                <div class="eyebrow">SYSTEM INTERFACE</div>
+                <h2 class="slide-title">An operational console for Earth observation.</h2>
                 <p class="slide-subtitle">
-                    An end-to-end operational software stack built on authentic space-agency data, mathematical astrodynamics, and high-resolution geospatial analytics.
+                    Designed for clarity and operational discipline, providing situational awareness across active disasters and satellite orbits.
                 </p>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 20px; flex: 1; justify-content: center;">
-                <!-- Full Horizontal Pipeline -->
-                <div style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px;">
-                    <div class="pipeline-node" style="padding: 12px 6px;">
-                        <div class="node-step">P1</div>
-                        <div style="font-size: 11px; font-weight: 600; color: #fff;">Real Event</div>
-                    </div>
-                    <div class="pipeline-node" style="padding: 12px 6px;">
-                        <div class="node-step">P2</div>
-                        <div style="font-size: 11px; font-weight: 600; color: #fff;">API Ingest</div>
-                    </div>
-                    <div class="pipeline-node" style="padding: 12px 6px;">
-                        <div class="node-step">P3</div>
-                        <div style="font-size: 11px; font-weight: 600; color: #fff;">Risk Engine</div>
-                    </div>
-                    <div class="pipeline-node" style="padding: 12px 6px;">
-                        <div class="node-step">P4</div>
-                        <div style="font-size: 11px; font-weight: 600; color: #fff;">OSM GEOINT</div>
-                    </div>
-                    <div class="pipeline-node active-node" style="padding: 12px 6px;">
-                        <div class="node-step">P5</div>
-                        <div style="font-size: 11px; font-weight: 600; color: var(--accent-cyan);">Sat Select</div>
-                    </div>
-                    <div class="pipeline-node active-node" style="padding: 12px 6px;">
-                        <div class="node-step">P6</div>
-                        <div style="font-size: 11px; font-weight: 600; color: var(--accent-cyan);">Scheduler</div>
-                    </div>
-                    <div class="pipeline-node" style="padding: 12px 6px;">
-                        <div class="node-step">P7</div>
-                        <div style="font-size: 11px; font-weight: 600; color: #fff;">Observation</div>
-                    </div>
-                    <div class="pipeline-node" style="padding: 12px 6px;">
-                        <div class="node-step">P8</div>
-                        <div style="font-size: 11px; font-weight: 600; color: #fff;">Change Δ</div>
+            <div class="grid-3col" style="margin-top: 24px;">
+                <div class="editorial-surface" style="border-top: 2px solid var(--accent-earth);">
+                    <div class="surface-header">ZONE A</div>
+                    <div class="surface-title">Priority Hazard Feed</div>
+                    <div class="surface-body">
+                        Categorized list of live incidents with severity classifications, estimated impact footprints, and explainable risk scores.
                     </div>
                 </div>
-
-                <div class="content-grid-3">
-                    <div class="tactical-card">
-                        <div class="card-header-label">LAYER 1 // DATA INGESTION</div>
-                        <div class="card-title" style="font-size: 16px;">Real-Time Zero-Mock Feeds</div>
-                        <div class="card-text">
-                            Continuous ingestion from NASA EONET v3, USGS NEIC Earthquakes, Copernicus GloFAS, and OpenStreetMap Overpass.
-                        </div>
+                <div class="editorial-surface" style="border-top: 2px solid var(--border-medium);">
+                    <div class="surface-header">ZONE B</div>
+                    <div class="surface-title">Interactive GIS Map</div>
+                    <div class="surface-body">
+                        Multi-layer spatial view displaying hazard boundaries, satellite ground tracks, sub-satellite points, and weather radar.
                     </div>
-                    <div class="tactical-card" style="border-color: rgba(0, 240, 255, 0.4);">
-                        <div class="card-header-label">LAYER 2 // ASTRODYNAMICS & SCHEDULER</div>
-                        <div class="card-title" style="font-size: 16px;">SGP4 & Duty-Cycle Knapsack</div>
-                        <div class="card-text">
-                            Python `skyfield` physics engine evaluating orbital passes against target weights, daily pass thermal limits, power (Wh), and storage (GB).
-                        </div>
-                    </div>
-                    <div class="tactical-card">
-                        <div class="card-header-label">LAYER 3 // DECISION CO-PILOT</div>
-                        <div class="card-title" style="font-size: 16px;">Grounded AI Analyst</div>
-                        <div class="card-text">
-                            Evidence-based natural language briefing generator and mission tasking parser translating plain text into structured flight schedules.
-                        </div>
+                </div>
+                <div class="editorial-surface" style="border-top: 2px solid var(--accent-earth);">
+                    <div class="surface-header">ZONE C</div>
+                    <div class="surface-title">Observation Decision</div>
+                    <div class="surface-body">
+                        Direct identification of candidate satellite platforms (e.g. Sentinel-1A SAR), pass times, and single-click task deployment.
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; gap: 20px; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);">
-                <span>• FASTAPI ASYNCHRONOUS BACKEND</span>
-                <span>• LEAFLET GEOINT INTERFACE</span>
-                <span>• SQLITE CALIBRATION AUDIT LOG</span>
+            <div class="editorial-surface" style="background: var(--bg-surface); padding: 16px 20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-weight:600; font-size:13px; color:var(--text-primary);">Web-Based Operations Dashboard</div>
+                        <div style="font-size:11px; color:var(--text-muted);">FastAPI asynchronous backend with Leaflet GIS interface</div>
+                    </div>
+                    <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-earth);">
+                        http://127.0.0.1:8000
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-lineage-note">
+                <span>UI DESIGN: RESTRAINED AEROSPACE PALETTE · EDITORIAL TYPOGRAPHY · GIS VISUALIZATION</span>
+                <span>CONSOLE SPEC</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 5: CORE INNOVATION -->
+        <!-- SLIDE 5: HOW IT WORKS -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-5">
             <div>
-                <div class="micro-tag">COMPETITIVE DIFFERENTIATION</div>
-                <h2 class="slide-title">
-                    We don't stop at detection. <span class="accent-cyan">We plan the mission.</span>
-                </h2>
+                <div class="eyebrow">ARCHITECTURE & DATA FLOW</div>
+                <h2 class="slide-title">Real data &rarr; operational decision.</h2>
                 <p class="slide-subtitle">
-                    Conventional disaster dashboards merely visualize historical markers. SkyWindow converts live disaster intelligence into optimized forward-looking satellite imaging plans.
+                    A multi-tiered backend architecture integrating authoritative public data sources through astrodynamic and geospatial models.
                 </p>
             </div>
 
-            <div class="compare-split">
-                <div class="compare-side">
-                    <div class="side-tag">CONVENTIONAL DISASTER DASHBOARD</div>
-                    <div style="font-family: var(--font-head); font-size: 20px; color: var(--text-dim);">"There is a flood."</div>
-                    <ul class="compare-list">
-                        <li><span class="icon-cross">✕</span> Static pins on a standard basemap</li>
-                        <li><span class="icon-cross">✕</span> Disconnected from satellite operators</li>
-                        <li><span class="icon-cross">✕</span> Blind to cloud cover & weather constraints</li>
-                        <li><span class="icon-cross">✕</span> No sensor matching (fails in monsoon clouds)</li>
-                        <li><span class="icon-cross">✕</span> Zero capacity / duty-cycle optimization</li>
-                        <li><span class="icon-cross">✕</span> Purely reactive and passive</li>
-                    </ul>
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">1. DATA PROVIDERS</div>
+                    <div class="surface-title">Authoritative Feeds</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • <strong>NASA EONET v3:</strong> Fires, Storms, Volcanoes<br>
+                        • <strong>USGS NEIC:</strong> Seismic GeoJSON<br>
+                        • <strong>Open-Meteo & ECMWF:</strong> Cloud & NWP<br>
+                        • <strong>CelesTrak:</strong> NORAD Orbital Ephemeris<br>
+                        • <strong>OpenStreetMap:</strong> Critical Assets
+                    </div>
                 </div>
 
-                <div class="compare-side dominant">
-                    <div class="side-tag">SKYWINDOW INTELLIGENCE PLATFORM</div>
-                    <div style="font-family: var(--font-head); font-size: 20px; color: #fff;">"Here is the flood, the impact, the sensor, and the pass."</div>
-                    <ul class="compare-list">
-                        <li><span class="icon-check">✓</span> <strong>Exact Bounding Polygon & Hazard Extent</strong> ($km^2$)</li>
-                        <li><span class="icon-check">✓</span> <strong>Exposed Critical Infrastructure</strong> (OSM Hospitals/Bridges)</li>
-                        <li><span class="icon-check">✓</span> <strong>Sensor Matching:</strong> Automatic C-band SAR selection to penetrate clouds</li>
-                        <li><span class="icon-check">✓</span> <strong>SGP4 Overpass Time:</strong> Exact acquisition second calculated</li>
-                        <li><span class="icon-check">✓</span> <strong>Duty-Cycle Optimization:</strong> Power & storage budgets preserved</li>
-                        <li><span class="icon-check">✓</span> <strong>Actionable Mission Plan:</strong> One-click tasking push</li>
-                    </ul>
+                <div class="editorial-surface" style="border-color: var(--border-medium);">
+                    <div class="surface-header">2. SKYWINDOW ENGINE</div>
+                    <div class="surface-title">Processing & Analytics</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • <strong>Disaster Manager:</strong> Ingestion & Lineage<br>
+                        • <strong>Risk Engine:</strong> H × E × V Breakdown<br>
+                        • <strong>SGP4 Propagator:</strong> Pass Calculations<br>
+                        • <strong>Mission Scheduler:</strong> Duty Constraints<br>
+                        • <strong>Change Detection:</strong> Surface Differencing
+                    </div>
+                </div>
+
+                <div class="editorial-surface">
+                    <div class="surface-header">3. OPERATOR INTERACTION</div>
+                    <div class="surface-title">Decision Output</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • <strong>Operations Map:</strong> Spatial Context<br>
+                        • <strong>Tasking Schedule:</strong> Pass Timelines<br>
+                        • <strong>Grounded Analyst:</strong> Evidence Q&A<br>
+                        • <strong>Intelligence Reports:</strong> Executive Briefs<br>
+                        • <strong>API Health:</strong> Verifiable Latency
+                    </div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-head); font-size: 15px; font-weight: 600; color: #fff; text-align: center; background: rgba(0, 240, 255, 0.06); padding: 10px; border-radius: 6px; border: 1px solid var(--border-tech);">
-                FROM <span style="color: var(--text-dim);">"WHAT IS HAPPENING?"</span> ➔ TO <span style="color: var(--accent-cyan);">"WHAT SHOULD WE OBSERVE NEXT?"</span>
+            <div class="data-lineage-note">
+                <span>BACKEND: PYTHON / FASTAPI / SKYFIELD / NUMERICAL WEATHER PREDICTION</span>
+                <span>SYSTEM ARCHITECTURE</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 6: LIVE DISASTER INTELLIGENCE -->
+        <!-- SLIDE 6: THE DIFFERENTIATOR -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-6">
             <div>
-                <div class="micro-tag">OPERATIONAL SITUATIONAL AWARENESS</div>
+                <div class="eyebrow">CORE VALUE PROPOSITION</div>
                 <h2 class="slide-title">
-                    One map. Multiple disasters. <span class="accent-cyan">One intelligence layer.</span>
+                    A disaster feed tells you what happened.<br>
+                    <span style="color:var(--text-secondary)">SkyWindow helps answer what to observe next.</span>
                 </h2>
-                <p class="slide-subtitle">
-                    Real-time situational awareness monitoring 90+ active planetary hazards with live spatial geometries, risk classifications, and weather overlays.
-                </p>
             </div>
 
-            <div class="content-grid-2">
-                <div class="diagram-box" style="padding: 16px; justify-content: flex-start; align-items: stretch;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-dim); padding-bottom: 8px;">
-                        <span class="card-header-label" style="margin:0;">GLOBAL INCIDENT MATRIX</span>
-                        <span class="badge-live">92 ACTIVE EVENTS TRACKED</span>
-                    </div>
-
-                    <table class="data-matrix">
-                        <thead>
-                            <tr>
-                                <th>INCIDENT ID</th>
-                                <th>EVENT TYPE</th>
-                                <th>LOCATION</th>
-                                <th>RISK SCORE</th>
-                                <th>PROVIDER</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td style="font-family:var(--font-mono); color:#fff;">WI-EONET-22612</td>
-                                <td><span style="color:var(--accent-amber);">Wildfire</span></td>
-                                <td>Washoe, Nevada</td>
-                                <td><strong style="color:var(--accent-crimson);">90.0 / 100</strong></td>
-                                <td>NASA EONET v3</td>
-                            </tr>
-                            <tr>
-                                <td style="font-family:var(--font-mono); color:#fff;">CY-EONET-22926</td>
-                                <td><span style="color:var(--accent-cyan);">Typhoon Saudel</span></td>
-                                <td>16.0°N, 148.1°E</td>
-                                <td><strong style="color:var(--accent-crimson);">88.0 / 100</strong></td>
-                                <td>NASA EONET v3</td>
-                            </tr>
-                            <tr>
-                                <td style="font-family:var(--font-mono); color:#fff;">EQ-us6000tkt2</td>
-                                <td><span style="color:#a855f7;">Earthquake (M4.3)</span></td>
-                                <td>South Fiji Basin</td>
-                                <td><strong style="color:var(--accent-amber);">45.0 / 100</strong></td>
-                                <td>USGS NEIC</td>
-                            </tr>
-                            <tr>
-                                <td style="font-family:var(--font-mono); color:#fff;">VO-EONET-20710</td>
-                                <td><span style="color:var(--accent-crimson);">Volcano</span></td>
-                                <td>Nevados del Chillan</td>
-                                <td><strong style="color:var(--accent-crimson);">82.0 / 100</strong></td>
-                                <td>NASA EONET v3</td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div style="margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <div style="background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 4px; font-size: 11px;">
-                            <span style="color: var(--text-dim);">RainViewer Radar:</span> <strong style="color:#fff;">Active Composite</strong>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 4px; font-size: 11px;">
-                            <span style="color: var(--text-dim);">Refresh Cadence:</span> <strong style="color:var(--accent-cyan);">Near-Real-Time</strong>
-                        </div>
-                    </div>
+            <div class="compare-grid">
+                <div class="compare-box">
+                    <div class="compare-title">Conventional Information View</div>
+                    <ul class="compare-list">
+                        <li><span class="bullet-muted">•</span> Displays static incident pins on a basemap</li>
+                        <li><span class="bullet-muted">•</span> Unaware of cloud cover and satellite look-angles</li>
+                        <li><span class="bullet-muted">•</span> Disconnected from satellite orbit schedules</li>
+                        <li><span class="bullet-muted">•</span> Leaves mission planning to separate manual steps</li>
+                    </ul>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div class="tactical-card">
-                        <div class="card-header-label">EXPLAINABLE RISK ENGINE (H × E × V)</div>
-                        <div class="card-title" style="font-size: 16px;">Transparent Factor Decomposition</div>
-                        <div class="card-text">
-                            Calculates defensible composite risk scores ($0–100$) breaking down Hazard Intensity ($40\%$), Demographic & Infrastructure Exposure ($35\%$), and Terrain Vulnerability ($25\%$).
-                        </div>
-                    </div>
-                    <div class="tactical-card">
-                        <div class="card-header-label">MULTI-HAZARD COVERAGE</div>
-                        <div class="card-title" style="font-size: 16px;">7 Simultaneous Crisis Domains</div>
-                        <div class="card-text">
-                            Floods, Earthquakes, Tropical Cyclones, Wildfires, Volcanic Unrest, Landslides, and Heatwaves indexed with exact spatial bounds and observation timelines.
-                        </div>
-                    </div>
+                <div class="compare-box active-focus">
+                    <div class="compare-title">SkyWindow Decision Workflow</div>
+                    <ul class="compare-list">
+                        <li><span class="bullet-active">&check;</span> Ingests live incident geometry & exposure</li>
+                        <li><span class="bullet-active">&check;</span> Evaluates sensor modality (SAR for clouds, Optical for clear)</li>
+                        <li><span class="bullet-active">&check;</span> Calculates next SGP4 overpass opportunities</li>
+                        <li><span class="bullet-active">&check;</span> Proposes a sensor-aware observation plan</li>
+                    </ul>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-                LIVE REST ROUTE: GET /api/disasters • GET /api/disasters/summary • GET /api/disasters/{id}
+            <div class="data-lineage-note">
+                <span>BRIDGING INCIDENT MONITORING AND SATELLITE RECONNAISSANCE</span>
+                <span>WORKFLOW DIFFERENTIATOR</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 7: FLOOD INTELLIGENCE -->
+        <!-- SLIDE 7: SATELLITE INTELLIGENCE -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-7">
             <div>
-                <div class="micro-tag">MULTI-TEMPORAL EARTH OBSERVATION</div>
-                <h2 class="slide-title">
-                    Floods become <span class="accent-cyan">measurable,</span> not just visible.
-                </h2>
+                <div class="eyebrow">ASTRODYNAMICS & SCHEDULING</div>
+                <h2 class="slide-title">The orbital layer matters.</h2>
                 <p class="slide-subtitle">
-                    Automated pre- and post-disaster spatial differencing calculating exact flood inundation extents, expansion trajectories, and compromised infrastructure.
+                    Satellite observation planning requires precise topocentric geometry, orbital pass calculations, and sensor look-angle evaluation.
                 </p>
             </div>
 
-            <div class="content-grid-2">
-                <div class="tactical-card" style="padding: 24px;">
-                    <div class="card-header-label">SYNTHETIC APERTURE RADAR (SAR) DIFFERENCING</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0;">
-                        <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-dim); border-radius: 6px; padding: 14px; text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);">BASELINE EXTENT (T₀)</div>
-                            <div style="font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: #fff; margin-top: 4px;">20.3 km²</div>
-                            <div style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">Normal River Basin</div>
-                        </div>
-                        <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--border-tech); border-radius: 6px; padding: 14px; text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--accent-cyan);">POST-EVENT EXTENT (T₁)</div>
-                            <div style="font-family: var(--font-mono); font-size: 22px; font-weight: 700; color: var(--accent-cyan); margin-top: 4px;">135.3 km²</div>
-                            <div style="font-size: 11px; color: var(--accent-cyan); margin-top: 2px;">Active Inundation</div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; padding: 10px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 6px; font-size: 13px;">
-                        <span>SURFACE AREA DELTA (Δ):</span>
-                        <strong style="color: var(--accent-crimson); font-family: var(--font-mono);">+115.0 km² (+566.5% EXPANSION)</strong>
-                    </div>
-
-                    <div style="margin-top: 14px; font-size: 12px; color: var(--text-dim); line-height: 1.5;">
-                        <strong>Methodology:</strong> Sentinel-1 C-SAR Dual-Polarization (VV/VH) backscatter amplitude thresholding and Otsu water mask differencing.
-                    </div>
+            <div class="grid-2col">
+                <div class="editorial-surface" style="gap: 12px;">
+                    <div class="surface-header">SUPPORTED PLATFORMS IN CATALOG</div>
+                    <div class="data-row"><span class="data-label">Sentinel-1A</span> <span class="data-val">C-band SAR (5m Resolution)</span></div>
+                    <div class="data-row"><span class="data-label">Sentinel-2A</span> <span class="data-val">MSI 13-Band Optical (10m)</span></div>
+                    <div class="data-row"><span class="data-label">Landsat 8/9</span> <span class="data-val">OLI-2 / TIRS-2 (Multispectral/TIR)</span></div>
+                    <div class="data-row"><span class="data-label">Terra / Aqua</span> <span class="data-val">MODIS / Thermal Flux</span></div>
+                    <div class="data-row"><span class="data-label">ISS</span> <span class="data-val">Crew Earth Observations</span></div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div class="tactical-card">
-                        <div class="card-header-label">EXPOSED CRITICAL ASSETS (OSM OVERPASS)</div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px;">
-                            <div style="font-size: 13px;"><span style="color: var(--text-dim);">Hospitals in Zone:</span> <strong style="color: var(--accent-crimson);">0 Compromised</strong></div>
-                            <div style="font-size: 13px;"><span style="color: var(--text-dim);">Schools Exposed:</span> <strong style="color: #fff;">0 Inundated</strong></div>
-                            <div style="font-size: 13px;"><span style="color: var(--text-dim);">Highway Submerged:</span> <strong style="color: var(--accent-amber);">23.0 km Corridor</strong></div>
-                            <div style="font-size: 13px;"><span style="color: var(--text-dim);">Population Exposed:</span> <strong style="color: #fff;">~6,087 Residents</strong></div>
-                        </div>
-                    </div>
-                    <div class="tactical-card">
-                        <div class="card-header-label">COPERNICUS EMS GLOFAS HYDROLOGY</div>
-                        <div class="card-title" style="font-size: 15px;">River Discharge Forecast</div>
-                        <div class="card-text">
-                            Incorporates 7-day hydrological discharge predictions ($m^3/s$) from ECMWF GloFAS gridded runoff modeling to forecast flood peak timing.
-                        </div>
+                <div class="editorial-surface" style="gap: 10px;">
+                    <div class="surface-header">ASTRODYNAMIC CALCULATION METHODOLOGY</div>
+                    <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
+                        • <strong>SGP4 Keplarian Propagation:</strong> Calculates topocentric elevation and azimuth angles using the `skyfield` physics library.<br>
+                        • <strong>Elevation Filtering:</strong> Discards passes below minimum acquisition thresholds (e.g. &ge; 20° elevation).<br>
+                        • <strong>Duty-Cycle Awareness:</strong> Models maximum daily passes, power draw, and onboard storage constraints.
                     </div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan);">
-                CHANGE DETECTION ALGORITHM: SAR WATER SEGMENTATION • BURN SCAR NBR • LANDSLIDE RUNOUT
+            <div class="data-lineage-note">
+                <span>ORBIT PROPAGATION: SGP4 KEPLARIAN PHYSICS & NORAD TLEs</span>
+                <span>MISSION ASTRODYNAMICS</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 8: SATELLITE INTELLIGENCE -->
+        <!-- SLIDE 8: SENSOR-AWARE OBSERVATION -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-8">
             <div>
-                <div class="micro-tag">ORBITAL ASTRODYNAMICS</div>
-                <h2 class="slide-title">
-                    The right satellite. <span class="accent-cyan">At the right moment.</span>
-                </h2>
+                <div class="eyebrow">SENSOR MODALITY MATCHING</div>
+                <h2 class="slide-title">Different disasters require different observations.</h2>
                 <p class="slide-subtitle">
-                    Real-time SGP4 orbital propagation calculating exact satellite overpass opportunities, elevation angles, off-nadir tilt, and swath coverage.
+                    SkyWindow aligns the physical characteristics of each hazard with the optimal Earth observation sensor payload.
                 </p>
             </div>
 
-            <div class="content-grid-2">
-                <div class="diagram-box">
-                    <div class="card-header-label" style="align-self: flex-start;">SGP4 TOPOCENTRIC PASS GEOMETRY</div>
-                    <svg viewBox="0 0 400 200" style="width: 100%; height: 180px;">
-                        <!-- Earth Surface Curve -->
-                        <path d="M 20 180 Q 200 140 380 180" fill="none" stroke="#334155" stroke-width="3"/>
-                        
-                        <!-- Target Ground Station -->
-                        <circle cx="200" cy="160" r="5" fill="#00f0ff" stroke="#fff" stroke-width="1.5"/>
-                        <text x="200" y="180" fill="#00f0ff" font-size="10" font-family="JetBrains Mono" text-anchor="middle">DISASTER TARGET</text>
-
-                        <!-- Satellite Orbit Arc -->
-                        <path d="M 40 70 Q 200 20 360 70" fill="none" stroke="rgba(0, 240, 255, 0.4)" stroke-dasharray="4" stroke-width="2" class="orbit-path-anim"/>
-                        
-                        <!-- Satellite Position at Culmination -->
-                        <circle cx="200" cy="45" r="7" fill="#3b82f6" stroke="#00f0ff" stroke-width="2"/>
-                        <text x="200" y="32" fill="#fff" font-size="11" font-family="Space Grotesk" font-weight="bold" text-anchor="middle">SENTINEL-1A (C-SAR)</text>
-
-                        <!-- Swath Cone -->
-                        <polygon points="200,45 130,165 270,165" fill="rgba(0, 240, 255, 0.12)" stroke="rgba(0, 240, 255, 0.3)" stroke-width="1"/>
-                        <text x="200" y="115" fill="rgba(255,255,255,0.7)" font-size="9" font-family="JetBrains Mono" text-anchor="middle">Max Elev: 78.4° (Off-Nadir 11.2°)</text>
-                    </svg>
-                    <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim); text-align: center;">
-                        SGP4 Physics Engine via `skyfield` • Elevation Threshold &ge; 20.0°
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">HYDROLOGICAL HAZARD</div>
+                    <div class="surface-title">Floods & Inundation</div>
+                    <div style="font-size:12px; color:var(--accent-earth); font-weight:600; margin-bottom:6px;">SYNTHETIC APERTURE RADAR (SAR)</div>
+                    <div class="surface-body">
+                        Active microwave pulses penetrate cloud cover and rain to detect surface water specular reflection and delineate flood perimeters.
                     </div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <div class="tactical-card" style="padding: 16px;">
-                        <div class="card-header-label">SUPPORTED CONSTELLATIONS</div>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 6px;">
-                            <div style="font-size: 12px;"><strong style="color:#fff;">Sentinel-1A:</strong> <span style="color:var(--accent-cyan);">C-SAR (5m)</span></div>
-                            <div style="font-size: 12px;"><strong style="color:#fff;">Sentinel-2A:</strong> <span style="color:var(--accent-emerald);">MSI 13-Band (10m)</span></div>
-                            <div style="font-size: 12px;"><strong style="color:#fff;">Landsat 8/9:</strong> <span style="color:var(--accent-amber);">OLI-2 / TIRS-2</span></div>
-                            <div style="font-size: 12px;"><strong style="color:#fff;">Terra / Aqua:</strong> <span style="color:var(--accent-crimson);">MODIS Thermal</span></div>
-                        </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">ENVIRONMENTAL HAZARD</div>
+                    <div class="surface-title">Wildfires & Heatwaves</div>
+                    <div style="font-size:12px; color:var(--accent-earth); font-weight:600; margin-bottom:6px;">THERMAL INFRARED (TIR) & SWIR</div>
+                    <div class="surface-body">
+                        Shortwave and Thermal Infrared bands detect active combustion fronts through smoke and measure fire radiative power.
                     </div>
+                </div>
 
-                    <div class="tactical-card" style="padding: 16px;">
-                        <div class="card-header-label">REAL-TIME TLE REFRESH (CELESTRAK)</div>
-                        <div class="card-text" style="font-size: 12px;">
-                            Auto-fetches fresh NORAD Keplarian Two-Line Elements from CelesTrak / Space-Track every 2–4 hours, eliminating orbital drift error.
-                        </div>
-                    </div>
-
-                    <div class="tactical-card" style="padding: 16px;">
-                        <div class="card-header-label">SENSOR SUITABILITY SCORING</div>
-                        <div class="card-text" style="font-size: 12px;">
-                            Automatically pairs SAR for monsoon floods, Thermal IR for wildfires, and MSI Multispectral for post-seismic structural damage.
-                        </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">GEOLOGICAL HAZARD</div>
+                    <div class="surface-title">Earthquakes & Landslides</div>
+                    <div style="font-size:12px; color:var(--accent-earth); font-weight:600; margin-bottom:6px;">HIGH-RES OPTICAL & InSAR</div>
+                    <div class="surface-body">
+                        Interferometric SAR detects sub-centimeter surface displacement; high-resolution optical assesses structural damage.
                     </div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-                ENDPOINT: GET /api/satellites • GET /api/track?satellite_id=39634
+            <div class="data-lineage-note">
+                <span>MATCHING HAZARD PHYSICS TO SENSOR WAVELENGTHS</span>
+                <span>OBSERVATION LOGIC</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 9: INTELLIGENT TASKING -->
+        <!-- SLIDE 9: LIVE INTELLIGENCE -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-9">
             <div>
-                <div class="micro-tag">MISSION OPTIMIZATION ENGINE</div>
-                <h2 class="slide-title">
-                    From satellite visibility <span class="accent-cyan">to an optimized mission.</span>
-                </h2>
+                <div class="eyebrow">REAL-TIME TELEMETRY</div>
+                <h2 class="slide-title">Working with live planetary data.</h2>
                 <p class="slide-subtitle">
-                    A constraint-based greedy knapsack scheduler that prevents wasted imaging passes and preserves satellite power (Wh) and storage (GB).
+                    The platform evaluates currently active hazards retrieved from public space agency and seismic feeds.
                 </p>
             </div>
 
-            <div class="content-grid-2">
-                <div class="tactical-card" style="padding: 24px;">
-                    <div class="card-header-label">TASK SCHEDULING CONSTRAINTS & WEIGHTS</div>
-                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
-                        <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border-dim); padding-bottom: 6px;">
-                            <span>Target Urgency & Priority:</span>
-                            <strong style="color: var(--accent-cyan);">Weight 1.0 – 10.0</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border-dim); padding-bottom: 6px;">
-                            <span>Hourly Cloud Threshold:</span>
-                            <strong style="color: var(--accent-amber);">&le; 50% Obscuration (NWP)</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border-dim); padding-bottom: 6px;">
-                            <span>Thermal Daily Pass Limit:</span>
-                            <strong style="color: #fff;">Max 4 Passes / Day</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px; border-bottom: 1px solid var(--border-dim); padding-bottom: 6px;">
-                            <span>Power Duty-Cycle Budget:</span>
-                            <strong style="color: #fff;">150.0 Wh / Pass</strong>
-                        </div>
-                        <div style="display: flex; justify-content: space-between; font-size: 13px;">
-                            <span>Solid-State Storage Limit:</span>
-                            <strong style="color: #fff;">12.0 GB / Pass</strong>
-                        </div>
-                    </div>
-
-                    <div style="margin-top: 16px; padding: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px; font-size: 12px; color: var(--accent-emerald);">
-                        <strong>Scheduler Output:</strong> Sentinel-1A SAR scheduled 6 optimal imaging opportunities; 0 passes rejected due to radar cloud penetration.
+            <div class="grid-2col">
+                <div class="editorial-surface">
+                    <div class="surface-header">ACTIVE HAZARD SAMPLE</div>
+                    <div id="deckDisasterSample">
+                        <div class="data-row"><span class="data-label">Selected Event</span> <span class="data-val" id="dEventName">Connecting...</span></div>
+                        <div class="data-row"><span class="data-label">Classification</span> <span class="data-val" id="dEventType">--</span></div>
+                        <div class="data-row"><span class="data-label">Coordinates</span> <span class="data-val" id="dEventCoords">--</span></div>
+                        <div class="data-row"><span class="data-label">Calculated Risk</span> <span class="data-val" id="dEventRisk">--</span></div>
+                        <div class="data-row"><span class="data-label">Data Provider</span> <span class="data-val" id="dEventProvider">--</span></div>
                     </div>
                 </div>
 
-                <div class="diagram-box">
-                    <div class="card-header-label" style="align-self: flex-start;">CAPACITY SAVINGS SIMULATOR</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; margin: 12px 0;">
-                        <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-dim); padding: 14px; border-radius: 6px; text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);">WASTED PASSES AVOIDED</div>
-                            <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: var(--accent-emerald); margin-top: 4px;">64.2%</div>
-                            <div style="font-size: 10px; color: var(--text-muted);">Cloud Obscuration Filter</div>
-                        </div>
-                        <div style="background: rgba(0,0,0,0.4); border: 1px solid var(--border-dim); padding: 14px; border-radius: 6px; text-align: center;">
-                            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);">BATTERY POWER SAVED</div>
-                            <div style="font-family: var(--font-mono); font-size: 26px; font-weight: 700; color: var(--accent-cyan); margin-top: 4px;">450 Wh</div>
-                            <div style="font-size: 10px; color: var(--text-muted);">Per 24h Orbital Cycle</div>
-                        </div>
-                    </div>
-                    <div style="font-size: 12px; color: var(--text-dim); text-align: center;">
-                        Quantifies satellite resource preservation for high-tempo constellation operations.
-                    </div>
+                <div class="editorial-surface">
+                    <div class="surface-header">OBSERVATION RECOMMENDATION</div>
+                    <div class="data-row"><span class="data-label">Matched Sensor</span> <span class="data-val" id="dRecSensor">SAR / Optical</span></div>
+                    <div class="data-row"><span class="data-label">Weather Context</span> <span class="data-val" id="dWeather">Open-Meteo NWP</span></div>
+                    <div class="data-row"><span class="data-label">Tasking Action</span> <span class="data-val">Sensor-Aware Schedule</span></div>
+                    <div class="data-row"><span class="data-label">Status</span> <span class="data-val" style="color:var(--status-ok)">Active Pipeline</span></div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-                ENDPOINT: POST /api/schedule • POST /api/tasking/constellation • GET /api/tasking/queue
+            <div class="data-lineage-note">
+                <span>DATA RETRIEVED FROM CONNECTED BACKEND VIA /api/disasters</span>
+                <span id="liveDataTime">LIVE QUERY</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 10: MULTI-DISASTER INTELLIGENCE -->
+        <!-- SLIDE 10: EVIDENCE & PROVENANCE -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-10">
             <div>
-                <div class="micro-tag">PLANETARY CRISIS ENGINE</div>
-                <h2 class="slide-title">
-                    One engine. <span class="accent-cyan">Many disaster classes.</span>
-                </h2>
+                <div class="eyebrow">TRANSPARENCY & DATA LINEAGE</div>
+                <h2 class="slide-title">Every decision should be traceable.</h2>
                 <p class="slide-subtitle">
-                    A unified multi-hazard architecture connecting authoritative real-world feeds to optimal satellite sensor modalities.
+                    SkyWindow preserves source metadata and observation timestamps so operators can inspect where key inputs originated.
                 </p>
             </div>
 
-            <div class="content-grid-4">
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-cyan);">
-                    <div class="card-header-label">HYDROLOGICAL</div>
-                    <div class="card-title" style="font-size: 16px;">Floods & Inundation</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> NASA EONET & GloFAS<br>
-                        <strong>Sensor:</strong> C-band SAR (Radar)<br>
-                        <strong>Metric:</strong> Extent Δ ($km^2$), River runoff
+            <div class="grid-3col">
+                <div class="editorial-surface">
+                    <div class="surface-header">SEISMIC & GEOLOGICAL</div>
+                    <div class="surface-title">USGS Earthquake Hazards</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • Real-time NEIC GeoJSON feed<br>
+                        • Epicenter, magnitude, depth, tsunami flag<br>
+                        • Public Domain (CC0)
                     </div>
                 </div>
 
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-amber);">
-                    <div class="card-header-label">ENVIRONMENTAL</div>
-                    <div class="card-title" style="font-size: 16px;">Wildfires & Hotspots</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> NASA EONET & FIRMS<br>
-                        <strong>Sensor:</strong> Thermal IR / SWIR<br>
-                        <strong>Metric:</strong> Fire Radiative Power (MW)
+                <div class="editorial-surface">
+                    <div class="surface-header">MULTI-HAZARD TRACKING</div>
+                    <div class="surface-title">NASA EONET v3</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • Earth Observatory Natural Event Tracker<br>
+                        • Active fires, tropical storms, volcanoes<br>
+                        • NASA Open Data Policy
                     </div>
                 </div>
 
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-blue);">
-                    <div class="card-header-label">METEOROLOGICAL</div>
-                    <div class="card-title" style="font-size: 16px;">Cyclones & Typhoons</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> NASA Severe Storms<br>
-                        <strong>Sensor:</strong> SAR & Radiometers<br>
-                        <strong>Metric:</strong> Wind velocity, Storm track
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid #a855f7;">
-                    <div class="card-header-label">GEOLOGICAL</div>
-                    <div class="card-title" style="font-size: 16px;">Earthquakes & Ruptures</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> USGS NEIC GeoJSON<br>
-                        <strong>Sensor:</strong> InSAR Surface Rupture<br>
-                        <strong>Metric:</strong> Magnitude ($M$), Focal Depth
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-crimson);">
-                    <div class="card-header-label">VOLCANOLOGY</div>
-                    <div class="card-title" style="font-size: 16px;">Volcanic Eruptions</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> NASA Volcanoes<br>
-                        <strong>Sensor:</strong> TIR & Ash Plume Optical<br>
-                        <strong>Metric:</strong> Thermal flux, SO₂ anomaly
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid #06b6d4;">
-                    <div class="card-header-label">OCEANIC</div>
-                    <div class="card-title" style="font-size: 16px;">Tsunamis & Surge</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> NOAA PTWC / USGS<br>
-                        <strong>Sensor:</strong> Altimetry & Optical Coast<br>
-                        <strong>Metric:</strong> Inundation runup depth
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid #84cc16;">
-                    <div class="card-header-label">TERRAIN</div>
-                    <div class="card-title" style="font-size: 16px;">Landslides</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> NASA Landslides<br>
-                        <strong>Sensor:</strong> High-Res Optical (10m)<br>
-                        <strong>Metric:</strong> Runout slope displacement
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid #f97316;">
-                    <div class="card-header-label">CLIMATE</div>
-                    <div class="card-title" style="font-size: 16px;">Extreme Heatwaves</div>
-                    <div class="card-text" style="font-size: 11px;">
-                        <strong>Feed:</strong> Open-Meteo & NASA<br>
-                        <strong>Sensor:</strong> Land Surface Temp (LST)<br>
-                        <strong>Metric:</strong> Urban Heat Island Anomaly
+                <div class="editorial-surface">
+                    <div class="surface-header">ATMOSPHERIC & HYDROLOGY</div>
+                    <div class="surface-title">Open-Meteo & GloFAS</div>
+                    <div class="surface-body" style="font-size:12px;">
+                        • Hourly numerical cloud cover forecasts<br>
+                        • Copernicus GloFAS river discharge runoff<br>
+                        • CC BY 4.0 / Open Access
                     </div>
                 </div>
             </div>
 
-            <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border-dim); padding-top: 10px;">
-                <span>EONET v3 CATEGORY MAPPING</span>
-                <span>OPENMETEO NWP INTERPOLATION</span>
-                <span>OSM ASSET CORRELATION</span>
+            <div class="data-lineage-note">
+                <span>STATUS MONITORING: REST ROUTE /api/health</span>
+                <span>AUDITABLE PROVENANCE</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 11: AI ANALYST -->
+        <!-- SLIDE 11: WHAT IS BUILT / WHAT COMES NEXT -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-11">
             <div>
-                <div class="micro-tag">TACTICAL REASONING COPILOT</div>
-                <h2 class="slide-title">
-                    Ask the system. <span class="accent-cyan">Get evidence, not guesses.</span>
-                </h2>
+                <div class="eyebrow">ROADMAP & STATUS</div>
+                <h2 class="slide-title">Built capabilities & upcoming development.</h2>
                 <p class="slide-subtitle">
-                    A grounded AI disaster analyst providing structured evidence retrieval, provenance attribution, and natural language mission tasking parsing.
+                    A clear overview of what is currently implemented in the repository versus future development milestones.
                 </p>
             </div>
 
-            <div class="content-grid-2">
-                <div class="tactical-card" style="padding: 24px; background: rgba(5, 12, 28, 0.9);">
-                    <div class="card-header-label">SAMPLE OPERATIONAL INTERACTION</div>
-                    
-                    <div style="background: rgba(0, 240, 255, 0.08); border: 1px solid var(--border-tech); border-radius: 6px; padding: 12px; font-size: 12px; margin-top: 10px;">
-                        <span style="color: var(--accent-cyan); font-family: var(--font-mono);">OPERATOR:</span>
-                        <div style="color: #fff; margin-top: 4px;">"What is the situation with Wildfire Stallion in Nevada and what sensor should be tasked?"</div>
-                    </div>
-
-                    <div style="background: rgba(0,0,0,0.5); border: 1px solid var(--border-dim); border-radius: 6px; padding: 14px; font-size: 12px; margin-top: 12px; line-height: 1.5;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                            <span style="color: var(--accent-emerald); font-family: var(--font-mono); font-weight: 600;">SKYWINDOW ANALYST</span>
-                            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--text-dim);">CONFIDENCE: 94%</span>
-                        </div>
-                        <p style="color: var(--text-dim);">
-                            • <strong>Current Status:</strong> Critical Wildfire ($33,426\text{ acres}$) at $39.82^\circ\text{N}, -119.53^\circ\text{W}$.<br>
-                            • <strong>Meteorological Context:</strong> Open-Meteo reports $0.0\%$ cloud cover, wind $14\text{ km/h}$.<br>
-                            • <strong>Recommended Sensor:</strong> SWIR Band 12 (Sentinel-2A) & Thermal Infrared (Landsat-9) to delineate combustion perimeter.
-                        </p>
-                        <div style="margin-top: 8px; font-family: var(--font-mono); font-size: 10px; color: var(--accent-cyan);">
-                            SOURCES: NASA EONET v3 Feed • Open-Meteo NWP • SkyWindow Spatial Index
-                        </div>
+            <div class="grid-2col">
+                <div class="editorial-surface" style="border-top: 2px solid var(--status-ok);">
+                    <div class="surface-header" style="color:var(--status-ok);">CURRENTLY IMPLEMENTED</div>
+                    <div class="surface-body" style="line-height:1.7;">
+                        &check; Real-time ingestion for NASA EONET & USGS feeds<br>
+                        &check; Interactive Leaflet operations map & layer toggles<br>
+                        &check; Satellite catalog & SGP4 overpass calculations<br>
+                        &check; Sensor-aware scheduling with cloud constraints<br>
+                        &check; Critical infrastructure spatial analysis via OSM<br>
+                        &check; Grounded intelligence analyst & NLP task parser<br>
+                        &check; Automated executive briefing generation
                     </div>
                 </div>
 
-                <div style="display: flex; flex-direction: column; gap: 14px;">
-                    <div class="tactical-card">
-                        <div class="card-header-label">NATURAL LANGUAGE MISSION PARSER</div>
-                        <div class="card-title" style="font-size: 16px;">English Command &rarr; SGP4 Schedule</div>
-                        <div class="card-text">
-                            Translates unstructured mission instructions like <em>"Task SAR over flood zone in Kerala for next 48 hours"</em> directly into structured flight parameters via Open-Meteo geocoding.
-                        </div>
-                    </div>
-                    <div class="tactical-card">
-                        <div class="card-header-label">ZERO HALLUCINATION DESIGN</div>
-                        <div class="card-title" style="font-size: 16px;">Grounded in Live Telemetry</div>
-                        <div class="card-text">
-                            Synthesizes answers strictly from active database incidents, SGP4 pass tables, and ECMWF weather predictions with verifiable data citations.
-                        </div>
+                <div class="editorial-surface" style="border-top: 2px solid var(--text-muted);">
+                    <div class="surface-header">FUTURE ROADMAP</div>
+                    <div class="surface-body" style="line-height:1.7;">
+                        &rarr; Direct downlink integration with commercial ground stations<br>
+                        &rarr; Autonomous multi-satellite constellation coordination<br>
+                        &rarr; Advanced interferometric InSAR coherence loss pipelines<br>
+                        &rarr; Humanitarian evacuation corridor routing<br>
+                        &rarr; Edge-compute orbital tasking APIs
                     </div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-                ENDPOINT: POST /api/analyst/query • POST /api/analyst/nlp-task
+            <div class="data-lineage-note">
+                <span>TECHNICAL HONESTY: VERIFIED IMPLEMENTATION vs PLANNED FEATURES</span>
+                <span>PROJECT STATUS</span>
             </div>
         </section>
 
         <!-- ========================================================= -->
-        <!-- SLIDE 12: REAL DATA ARCHITECTURE -->
+        <!-- SLIDE 12: CLOSE -->
         <!-- ========================================================= -->
         <section class="slide" id="slide-12">
             <div>
-                <div class="micro-tag">SCIENTIFIC INTEGRITY & PROVENANCE</div>
-                <h2 class="slide-title">
-                    Every number has <span class="accent-cyan">a verifiable source.</span>
+                <div class="eyebrow">SKYWINDOW</div>
+                <h2 class="slide-title" style="font-size:42px;">
+                    Turning disaster signals into better observation decisions.
                 </h2>
-                <p class="slide-subtitle">
-                    SkyWindow enforces a strict Zero-Fabrication Policy: all metrics originate from authoritative space and meteorological agency APIs.
+                <p class="slide-subtitle" style="margin-top:12px;">
+                    Observe the event. Understand the context. Plan the observation.
                 </p>
             </div>
 
-            <div style="display: flex; flex-direction: column; gap: 16px; flex: 1; justify-content: center;">
-                <table class="data-matrix">
-                    <thead>
-                        <tr>
-                            <th>PROVIDER / SOURCE</th>
-                            <th>DATASET INGESTED</th>
-                            <th>UPDATE FREQUENCY</th>
-                            <th>MEASURED LATENCY</th>
-                            <th>OPERATIONAL STATUS</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong style="color:#fff;">NASA EOSDIS (EONET v3)</strong></td>
-                            <td>Active Wildfires, Cyclones, Volcanoes, Floods</td>
-                            <td>Near-Real-Time (NRT)</td>
-                            <td style="font-family:var(--font-mono);">3,359 ms</td>
-                            <td><span class="badge-live">LIVE (HTTP 200)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong style="color:#fff;">U.S. Geological Survey (USGS)</strong></td>
-                            <td>Global Seismic Epicenters, Depth, Tsunami Flags</td>
-                            <td>Every 1 – 5 min</td>
-                            <td style="font-family:var(--font-mono);">709 ms</td>
-                            <td><span class="badge-live">LIVE (HTTP 200)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong style="color:#fff;">Open-Meteo & ECMWF IFS</strong></td>
-                            <td>Hourly Cloud Cover (0–100%), Wind, Temperature</td>
-                            <td>Hourly NWP Updates</td>
-                            <td style="font-family:var(--font-mono);">815 ms</td>
-                            <td><span class="badge-live">LIVE (HTTP 200)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong style="color:#fff;">Copernicus EMS (GloFAS)</strong></td>
-                            <td>Gridded River Discharge ($m^3/s$) & Runoff</td>
-                            <td>Daily</td>
-                            <td style="font-family:var(--font-mono);">1,588 ms</td>
-                            <td><span class="badge-live">LIVE (HTTP 200)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong style="color:#fff;">CelesTrak / Space-Track</strong></td>
-                            <td>NORAD GP Two-Line Orbital Elements (TLE)</td>
-                            <td>Every 2 – 4 hours</td>
-                            <td style="font-family:var(--font-mono);">1,293 ms</td>
-                            <td><span class="badge-live">LIVE (HTTP 200)</span></td>
-                        </tr>
-                        <tr>
-                            <td><strong style="color:#fff;">OpenStreetMap Foundation</strong></td>
-                            <td>Hospitals, Schools, Bridges, Airports, Highways</td>
-                            <td>Real-time Spatial Query</td>
-                            <td style="font-family:var(--font-mono);">655 ms</td>
-                            <td><span class="badge-live">LIVE (HTTP 200)</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(0, 240, 255, 0.05); padding: 12px 20px; border-radius: 6px; border: 1px solid var(--border-tech); font-size: 13px;">
-                    <span><strong>Continuous Health Monitoring:</strong> Real-time asynchronous pings verify feed freshness and data license compliance.</span>
-                    <span style="font-family: var(--font-mono); color: var(--accent-cyan);">GET /api/health</span>
-                </div>
-            </div>
-
-            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);">
-                PUBLIC DOMAIN (CC0) • CC BY 4.0 • OPEN DATA COMMONS (ODbL) • NASA OPEN DATA POLICY
-            </div>
-        </section>
-
-        <!-- ========================================================= -->
-        <!-- SLIDE 13: WHY IT MATTERS -->
-        <!-- ========================================================= -->
-        <section class="slide" id="slide-13">
-            <div>
-                <div class="micro-tag">OPERATIONAL IMPACT & ROI</div>
-                <h2 class="slide-title">
-                    Turning observation <span class="accent-cyan">into decisive action.</span>
-                </h2>
-                <p class="slide-subtitle">
-                    Reducing emergency reconnaissance lead-time from hours to seconds while preventing wasted satellite duty cycles.
-                </p>
-            </div>
-
-            <div class="content-grid-3">
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-emerald);">
-                    <div class="card-header-label">RAPID RECONNAISSANCE</div>
-                    <div class="card-title" style="font-size: 20px; color: #fff;">10x Faster Tasking</div>
-                    <div class="card-text">
-                        Eliminates manual cross-referencing between disaster feeds, weather maps, and orbital ephemeris catalogs. Generates executable mission plans in under 3 seconds.
+            <div class="editorial-surface" style="margin: 30px 0; padding: 24px 30px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div>
+                        <div style="font-size:16px; font-weight:600; color:var(--text-primary);">SkyWindow Project Repository</div>
+                        <div style="font-size:12px; color:var(--text-secondary); margin-top:2px;">Earth Observation & Mission Operations Platform</div>
                     </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-cyan);">
-                    <div class="card-header-label">POWER & STORAGE PRESERVATION</div>
-                    <div class="card-title" style="font-size: 20px; color: #fff;">Zero Wasted Passes</div>
-                    <div class="card-text">
-                        Automated NWP cloud forecast checking prevents optical cameras from acquiring unusable cloud blanket imagery—saving hundreds of watt-hours and solid-state storage.
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-top: 3px solid var(--accent-amber);">
-                    <div class="card-header-label">CIVIL PROTECTION DECISION SUPPORT</div>
-                    <div class="card-title" style="font-size: 20px; color: #fff;">Asset-Grounded Briefings</div>
-                    <div class="card-text">
-                        First responders receive synthesized intelligence reports correlating flood/fire boundaries with real local hospitals, schools, and highway access corridors.
+                    <div style="font-family:var(--font-mono); font-size:12px; color:var(--text-primary);">
+                        github.com/najibcode/SkyWindow
                     </div>
                 </div>
             </div>
 
-            <div style="background: rgba(10, 20, 40, 0.8); border: 1px solid var(--border-tech); padding: 20px; border-radius: 8px; text-align: center;">
-                <div style="font-family: var(--font-head); font-size: 24px; font-weight: 700; color: #fff;">
-                    "Less time searching for information. <span class="accent-cyan">More time acting on it."</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- ========================================================= -->
-        <!-- SLIDE 14: THE FUTURE & ROADMAP -->
-        <!-- ========================================================= -->
-        <section class="slide" id="slide-14">
-            <div>
-                <div class="micro-tag">FUTURE HORIZON & SCALABILITY</div>
-                <h2 class="slide-title">
-                    Building the <span class="accent-cyan">decision layer</span> for Earth observation.
-                </h2>
-                <p class="slide-subtitle">
-                    Transforming satellite operations from scheduled individual passes into autonomous, collaborative planetary sensing swarms.
-                </p>
-            </div>
-
-            <div class="content-grid-3">
-                <div class="tactical-card">
-                    <div class="card-header-label" style="display: flex; justify-content: space-between;">
-                        <span>PHASE 1 // DEPLOYED</span>
-                        <span class="badge-live">ACTIVE</span>
-                    </div>
-                    <div class="card-title" style="font-size: 18px;">Single-Sat Mission Planner</div>
-                    <div class="card-text">
-                        • SGP4 Real-Time Pass Computation<br>
-                        • 6 Live Disasters & NWP Weather Feeds<br>
-                        • Grounded AI Incident Copilot<br>
-                        • OSM Critical Infrastructure Spatial Queries
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-color: rgba(245, 158, 11, 0.4);">
-                    <div class="card-header-label" style="display: flex; justify-content: space-between;">
-                        <span>PHASE 2 // IN PROGRESS</span>
-                        <span class="badge-roadmap">NEXT</span>
-                    </div>
-                    <div class="card-title" style="font-size: 18px;">Autonomous Constellation Sync</div>
-                    <div class="card-text">
-                        • Multi-Satellite Synchronized Campaigns<br>
-                        • Onboard Edge Compute Integration<br>
-                        • Direct Tasking API via Space-Ground Links<br>
-                        • InSAR Coherence Loss Mapping
-                    </div>
-                </div>
-
-                <div class="tactical-card" style="border-color: rgba(0, 240, 255, 0.4);">
-                    <div class="card-header-label" style="display: flex; justify-content: space-between;">
-                        <span>PHASE 3 // VISION</span>
-                        <span class="badge-roadmap">ROADMAP</span>
-                    </div>
-                    <div class="card-title" style="font-size: 18px;">Planetary Crisis Swarm</div>
-                    <div class="card-text">
-                        • Autonomous Orbital Tip-and-Cue Swarms<br>
-                        • Predictive Machine Learning Disaster Onset<br>
-                        • Humanitarian Rapid Evacuation Analytics<br>
-                        • Global Real-Time Digital Twin of Earth
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border-dim); padding-top: 16px;">
-                <div style="font-family: var(--font-head); font-size: 18px; font-weight: 700; color: #fff;">
-                    SKYWINDOW // <span class="accent-cyan">Observe • Understand • Task</span>
-                </div>
-                <div style="font-family: var(--font-mono); font-size: 12px; color: var(--accent-cyan);">
-                    http://127.0.0.1:8000
-                </div>
+            <div class="data-lineage-note">
+                <span>SKYWINDOW // EARTH OBSERVATION · GEOINT · MISSION INTELLIGENCE</span>
+                <span>HACKATHON PRESENTATION</span>
             </div>
         </section>
 
     </main>
 
-    <!-- HUD Footer Controls -->
-    <footer class="hud-footer">
-        <div class="progress-bar-container">
-            <div class="progress-bar-fill" id="progressBar"></div>
+    <!-- Progress Track -->
+    <div class="progress-track">
+        <div class="progress-indicator" id="progressIndicator"></div>
+    </div>
+
+    <!-- Bottom Navigation Footer -->
+    <footer class="deck-footer">
+        <div>
+            <span id="slideCurrent" style="font-weight:600; color:var(--text-primary);">01</span>
+            <span style="color:var(--text-muted)">/</span>
+            <span id="slideTotal">12</span>
+            <span style="margin-left:12px; color:var(--text-secondary);" id="slideCategoryName">OPENING</span>
         </div>
 
-        <div style="display: flex; align-items: center; gap: 14px;">
-            <span class="slide-counter"><span id="slideCurrent">01</span> / <span id="slideTotal">14</span></span>
-            <span style="color: var(--text-dim);" id="slideCategoryTitle">THE HOOK</span>
-        </div>
-
-        <div class="controls-group">
-            <button class="btn-ctrl" onclick="prevSlide()">&larr; PREV <span class="key-hint">&larr;</span></button>
-            <button class="btn-ctrl" onclick="nextSlide()">NEXT &rarr; <span class="key-hint">&rarr; / SPACE</span></button>
-            <button class="btn-ctrl" onclick="toggleFullscreen()">FULLSCREEN <span class="key-hint">F</span></button>
+        <div class="nav-buttons">
+            <button class="btn-deck" onclick="prevSlide()">&larr; Prev <span class="key-tag">&larr;</span></button>
+            <button class="btn-deck" onclick="nextSlide()">Next &rarr; <span class="key-tag">&rarr; / Space</span></button>
+            <button class="btn-deck" onclick="toggleFullscreen()">Fullscreen <span class="key-tag">F</span></button>
         </div>
     </footer>
+
 </div>
 
 <script>
+    // ==========================================
+    // SLIDE NAVIGATION CONTROLLER
+    // ==========================================
     let currentSlide = 1;
     const slides = document.querySelectorAll('.slide');
     const totalSlides = slides.length;
     const slideTitles = [
-        "THE HOOK",
+        "OPENING",
         "THE PROBLEM",
-        "THE INSIGHT",
-        "SYSTEM ARCHITECTURE",
-        "CORE INNOVATION",
-        "LIVE DISASTER INTELLIGENCE",
-        "FLOOD & SAR INTELLIGENCE",
-        "ORBITAL ASTRODYNAMICS",
-        "INTELLIGENT TASKING",
-        "MULTI-DISASTER ENGINE",
-        "GROUNDED AI ANALYST",
-        "REAL DATA PROVENANCE",
-        "OPERATIONAL IMPACT",
-        "THE FUTURE & ROADMAP"
+        "THE IDEA",
+        "THE PRODUCT",
+        "HOW IT WORKS",
+        "THE DIFFERENTIATOR",
+        "SATELLITE INTELLIGENCE",
+        "SENSOR-AWARE OBSERVATION",
+        "LIVE INTELLIGENCE",
+        "EVIDENCE & PROVENANCE",
+        "BUILT & ROADMAP",
+        "CLOSE"
     ];
 
     document.getElementById('slideTotal').textContent = String(totalSlides).padStart(2, '0');
@@ -1682,14 +1061,14 @@
         });
 
         document.getElementById('slideCurrent').textContent = String(index).padStart(2, '0');
-        document.getElementById('slideCategoryTitle').textContent = slideTitles[index - 1] || "SKYWINDOW";
-        document.getElementById('progressBar').style.width = ((index / totalSlides) * 100) + '%';
+        document.getElementById('slideCategoryName').textContent = slideTitles[index - 1] || "SKYWINDOW";
+        document.getElementById('progressIndicator').style.width = ((index / totalSlides) * 100) + '%';
     }
 
     function nextSlide() { showSlide(currentSlide + 1); }
     function prevSlide() { showSlide(currentSlide - 1); }
 
-    // Keyboard navigation
+    // Keyboard Shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
             e.preventDefault();
@@ -1697,12 +1076,12 @@
         } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
             e.preventDefault();
             prevSlide();
-        } else if (e.key === 'f' || e.key === 'F') {
-            toggleFullscreen();
         } else if (e.key === 'Home') {
             showSlide(1);
         } else if (e.key === 'End') {
             showSlide(totalSlides);
+        } else if (e.key === 'f' || e.key === 'F') {
+            toggleFullscreen();
         }
     });
 
@@ -1714,23 +1093,57 @@
         }
     }
 
-    // Live Clock in UTC
-    function updateClock() {
-        const now = new Date();
-        const utcStr = now.toISOString().substring(11, 19) + " UTC";
-        const clockEl = document.getElementById('deck-clock');
-        if (clockEl) clockEl.textContent = utcStr;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
-    // Click anywhere except buttons to advance
+    // Click outside control buttons to advance
     document.addEventListener('click', (e) => {
-        if (!e.target.closest('.hud-footer') && !e.target.closest('.hud-header')) {
+        if (!e.target.closest('.deck-footer') && !e.target.closest('.deck-header') && !e.target.closest('button')) {
             nextSlide();
         }
     });
 
+    // ==========================================
+    // LIVE DATA CLIENT (REAL DATA INTEGRATION)
+    // ==========================================
+    async function loadLiveData() {
+        const dot = document.getElementById('liveStatusDot');
+        const statusText = document.getElementById('liveStatusText');
+
+        try {
+            const res = await fetch('http://127.0.0.1:8000/api/disasters/summary');
+            if (res.ok) {
+                const summary = await res.json();
+                dot.classList.remove('offline');
+                statusText.textContent = `LIVE DATA CONNECTED · ${summary.active_disasters_count || 0} ACTIVE HAZARDS`;
+
+                // If sample disaster is available
+                if (summary.top_priority_event) {
+                    const top = summary.top_priority_event;
+                    const nameEl = document.getElementById('dEventName');
+                    const typeEl = document.getElementById('dEventType');
+                    const coordsEl = document.getElementById('dEventCoords');
+                    const riskEl = document.getElementById('dEventRisk');
+                    const provEl = document.getElementById('dEventProvider');
+                    const recEl = document.getElementById('dRecSensor');
+
+                    if (nameEl) nameEl.textContent = top.name || 'Active Incident';
+                    if (typeEl) typeEl.textContent = `${top.event_type || 'Hazard'} (${top.category || 'General'})`;
+                    if (coordsEl) coordsEl.textContent = `${top.latitude.toFixed(2)}°N, ${top.longitude.toFixed(2)}°E`;
+                    if (riskEl) riskEl.textContent = `${top.risk_score || 50}/100`;
+                    if (provEl) provEl.textContent = top.provenance?.provider || 'NASA / USGS';
+                    if (recEl) recEl.textContent = top.recommended_sensor || 'SAR / Optical';
+                }
+            } else {
+                throw new Error('API degraded');
+            }
+        } catch (e) {
+            dot.classList.add('offline');
+            statusText.textContent = 'STANDALONE MODE (BACKEND OFFLINE)';
+            
+            const nameEl = document.getElementById('dEventName');
+            if (nameEl) nameEl.textContent = 'Live data unavailable (connect backend)';
+        }
+    }
+
+    loadLiveData();
     showSlide(1);
 </script>
 </body>
