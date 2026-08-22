@@ -43,11 +43,19 @@
 
 **SkyWindow** is a specialized mission-planning and aerospace intelligence console designed for satellite operators, disaster response agencies, and geospatial analysts. During major catastrophes (such as floods, wildfires, hurricanes, or earthquakes), optical satellite imagery is frequently rendered useless by dense cloud cover, resulting in wasted passes, depleted battery reserves, and saturated onboard storage.
 
+<div align="center">
+  <img src="docs/screenshots/skywindow_overview.png" alt="SkyWindow Operations Console" width="900" style="border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);"/>
+</div>
+
 SkyWindow solves this by:
 1. **Aggregating 100% live disaster feeds** from NASA EONET v3, USGS NEIC, and NOAA with zero synthetic placeholders.
 2. **Propagating orbits in real-time** using SGP4 Keplarian physics over fresh NORAD Two-Line Elements (TLEs) from CelesTrak.
 3. **Interrogating high-resolution Numerical Weather Prediction (NWP) models** from ECMWF and DWD at the exact minute and coordinate of each satellite pass.
 4. **Intelligently matching sensor modalities** (e.g. cloud-penetrating Synthetic Aperture Radar for monsoons vs Thermal Infrared for wildfires vs Multispectral for clear-sky damage assessment).
+
+<div align="center">
+  <img src="docs/screenshots/skywindow_tasking.png" alt="Satellite Tasking & Astrodynamics Scheduler" width="900" style="border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); margin-top: 14px;"/>
+</div>
 
 > [!IMPORTANT]
 > **Zero Fabrication Guarantee:** All coordinates, seismic magnitudes, storm tracks, cloud cover percentages, and infrastructure counts displayed in SkyWindow originate from live, authoritative public REST APIs with traceable data provenance.
