@@ -733,49 +733,44 @@
                 <div class="eyebrow">SYSTEM INTERFACE</div>
                 <h2 class="slide-title">An operational console for Earth observation.</h2>
                 <p class="slide-subtitle">
-                    Designed for clarity and operational discipline, providing situational awareness across active disasters and satellite orbits.
+                    Designed for situational awareness, directly connecting planetary hazard feeds to sensor-aware satellite mission planning.
                 </p>
             </div>
 
-            <div class="grid-3col" style="margin-top: 20px;">
-                <div class="editorial-surface" style="border-top: 2px solid var(--accent-earth);">
-                    <div class="surface-header">ZONE A</div>
-                    <div class="surface-title">Priority Hazard Feed</div>
-                    <div class="surface-body">
-                        Categorized list of live incidents with severity classifications, estimated impact footprints, and explainable risk scores.
+            <!-- Real Screenshot Frame with Callouts -->
+            <div style="display:flex; gap:20px; align-items:stretch; flex:1; margin:16px 0;">
+                <div style="flex:1.8; position:relative; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 30px rgba(0,0,0,0.6);">
+                    <img src="docs/screenshots/skywindow_overview.png" onerror="this.src='screenshots/skywindow_overview.png'" alt="SkyWindow Operations Console" style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                    <div style="position:absolute; bottom:10px; left:12px; background:rgba(9,12,16,0.85); backdrop-filter:blur(6px); border:1px solid var(--border-subtle); padding:4px 10px; border-radius:4px; font-size:10px; font-family:var(--font-mono); color:var(--text-secondary);">
+                        LIVE CONSOLE // http://127.0.0.1:8000
                     </div>
                 </div>
-                <div class="editorial-surface" style="border-top: 2px solid var(--border-medium);">
-                    <div class="surface-header">ZONE B</div>
-                    <div class="surface-title">Interactive GIS Map</div>
-                    <div class="surface-body">
-                        Multi-layer spatial view displaying hazard boundaries, satellite ground tracks, sub-satellite points, and weather radar.
-                    </div>
-                </div>
-                <div class="editorial-surface" style="border-top: 2px solid var(--accent-earth);">
-                    <div class="surface-header">ZONE C</div>
-                    <div class="surface-title">Observation Decision</div>
-                    <div class="surface-body">
-                        Direct identification of candidate satellite platforms (e.g. Sentinel-1A SAR), pass times, and single-click task deployment.
-                    </div>
-                </div>
-            </div>
 
-            <div class="editorial-surface" style="background: var(--bg-surface); padding: 14px 20px;">
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                    <div>
-                        <div style="font-weight:600; font-size:13px; color:var(--text-primary);">Web-Based Operations Console</div>
-                        <div style="font-size:11px; color:var(--text-muted);">FastAPI asynchronous backend with Leaflet GIS mapping</div>
+                <div style="flex:1; display:flex; flex-direction:column; gap:10px; justify-content:space-between;">
+                    <div class="editorial-surface" style="padding:14px 16px; border-left:3px solid var(--accent-earth);">
+                        <div class="surface-header">ZONE A · PRIORITY FEED</div>
+                        <div class="surface-body" style="font-size:12px;">
+                            Ingests real-time events from NASA EONET v3 & USGS with risk classifications and population exposure.
+                        </div>
                     </div>
-                    <div style="font-family:var(--font-mono); font-size:11px; color:var(--accent-earth);">
-                        http://127.0.0.1:8000
+                    <div class="editorial-surface" style="padding:14px 16px; border-left:3px solid var(--border-medium);">
+                        <div class="surface-header">ZONE B · GIS OPERATIONS MAP</div>
+                        <div class="surface-body" style="font-size:12px;">
+                            Multi-layer spatial view displaying hazard boundaries, satellite ground tracks, and weather radar.
+                        </div>
+                    </div>
+                    <div class="editorial-surface" style="padding:14px 16px; border-left:3px solid var(--status-ok);">
+                        <div class="surface-header">ZONE C · OBSERVATION DECISION</div>
+                        <div class="surface-body" style="font-size:12px;">
+                            Calculates optimal sensor modality (SAR vs Optical) and direct single-click pass deployment.
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="data-lineage-note">
-                <span>UI DESIGN: RESTRAINED AEROSPACE PALETTE · EDITORIAL TYPOGRAPHY · GIS VISUALIZATION</span>
-                <span>CONSOLE SPEC</span>
+                <span>UI CAPTURE: REAL WORKING OPERATIONS CONSOLE</span>
+                <span>PRODUCTION SCREENSHOT</span>
             </div>
         </section>
 
@@ -887,22 +882,31 @@
                 </p>
             </div>
 
-            <div class="grid-2col">
-                <div class="editorial-surface" style="gap: 10px;">
-                    <div class="surface-header">SUPPORTED PLATFORMS IN CATALOG</div>
-                    <div class="data-row"><span class="data-label">Sentinel-1A</span> <span class="data-val">C-band SAR (5m Resolution)</span></div>
-                    <div class="data-row"><span class="data-label">Sentinel-2A</span> <span class="data-val">MSI 13-Band Optical (10m)</span></div>
-                    <div class="data-row"><span class="data-label">Landsat 8/9</span> <span class="data-val">OLI-2 / TIRS-2 (Multispectral/TIR)</span></div>
-                    <div class="data-row"><span class="data-label">Terra / Aqua</span> <span class="data-val">MODIS / Thermal Flux</span></div>
-                    <div class="data-row"><span class="data-label">ISS</span> <span class="data-val">Crew Earth Observations</span></div>
+            <div class="grid-2col" style="margin:16px 0;">
+                <div style="position:relative; background:var(--bg-surface); border:1px solid var(--border-medium); border-radius:6px; overflow:hidden; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,0.5);">
+                    <img src="docs/screenshots/skywindow_tasking.png" onerror="this.src='screenshots/skywindow_tasking.png'" alt="Satellite Tasking Console" style="width:100%; height:100%; object-fit:cover; object-position:top left; display:block;">
+                    <div style="position:absolute; bottom:10px; left:12px; background:rgba(9,12,16,0.85); backdrop-filter:blur(6px); border:1px solid var(--border-subtle); padding:4px 10px; border-radius:4px; font-size:10px; font-family:var(--font-mono); color:var(--text-secondary);">
+                        TASKING MODULE // SGP4 SCHEDULER
+                    </div>
                 </div>
 
                 <div class="editorial-surface" style="gap: 10px;">
-                    <div class="surface-header">ASTRODYNAMIC CALCULATION METHODOLOGY</div>
-                    <div style="font-size:13px; color:var(--text-secondary); line-height:1.6;">
-                        • <strong>SGP4 Keplarian Propagation:</strong> Calculates topocentric elevation and azimuth angles using the `skyfield` physics library.<br>
-                        • <strong>Elevation Filtering:</strong> Discards passes below minimum acquisition thresholds (e.g. &ge; 20° elevation).<br>
-                        • <strong>Duty-Cycle Awareness:</strong> Models maximum daily passes, power draw, and onboard storage constraints.
+                    <div>
+                        <div class="surface-header">ASTRODYNAMIC METHODOLOGY</div>
+                        <div style="font-size:12px; color:var(--text-secondary); line-height:1.6; margin-top:4px;">
+                            • <strong>SGP4 Keplarian Propagation:</strong> Calculates topocentric elevation and azimuth angles using the `skyfield` physics engine.<br>
+                            • <strong>Elevation Filtering:</strong> Discards low-angle passes below minimum acquisition thresholds (&ge; 20° elevation).<br>
+                            • <strong>Weather Synchronization:</strong> Correlates hourly numerical cloud forecasts at pass culmination.
+                        </div>
+                    </div>
+                    <div style="border-top:1px solid var(--border-subtle); padding-top:8px;">
+                        <div class="surface-header">SUPPORTED CONSTELLATIONS</div>
+                        <div style="font-size:11px; font-family:var(--font-mono); color:var(--text-primary); display:flex; flex-direction:column; gap:3px;">
+                            <span>• Sentinel-1A (C-SAR 5m)</span>
+                            <span>• Sentinel-2A (MSI Optical 10m)</span>
+                            <span>• Landsat 8/9 (OLI-2 & TIRS-2)</span>
+                            <span>• Terra & Aqua (MODIS Thermal)</span>
+                        </div>
                     </div>
                 </div>
             </div>
