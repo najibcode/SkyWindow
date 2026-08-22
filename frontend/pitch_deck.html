@@ -161,8 +161,8 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-            transform: translateY(16px) scale(0.99);
+            transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(10px) scale(0.995);
         }
 
         .slide.active {
@@ -174,36 +174,36 @@
 
         /* Staggered Child Entrance Animations */
         .slide.active .eyebrow {
-            animation: slideUpFade 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.05s;
+            animation: slideUpFade 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.02s;
         }
 
         .slide.active .slide-title {
-            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.1s;
+            animation: slideUpFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.05s;
         }
 
         .slide.active .slide-subtitle {
-            animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.16s;
+            animation: slideUpFade 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.08s;
         }
 
         .slide.active .editorial-surface,
         .slide.active .compare-box,
         .slide.active .interactive-screenshot-container,
         .slide.active .workflow-step {
-            animation: slideUpFade 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             opacity: 0;
         }
 
-        .slide.active .grid-3col .editorial-surface:nth-child(1) { animation-delay: 0.18s; }
-        .slide.active .grid-3col .editorial-surface:nth-child(2) { animation-delay: 0.26s; }
-        .slide.active .grid-3col .editorial-surface:nth-child(3) { animation-delay: 0.34s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(1) { animation-delay: 0.08s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(2) { animation-delay: 0.12s; }
+        .slide.active .grid-3col .editorial-surface:nth-child(3) { animation-delay: 0.16s; }
 
-        .slide.active .grid-2col .editorial-surface:nth-child(1) { animation-delay: 0.2s; }
-        .slide.active .grid-2col .editorial-surface:nth-child(2) { animation-delay: 0.3s; }
+        .slide.active .grid-2col .editorial-surface:nth-child(1) { animation-delay: 0.08s; }
+        .slide.active .grid-2col .editorial-surface:nth-child(2) { animation-delay: 0.14s; }
 
         @keyframes slideUpFade {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(8px);
             }
             to {
                 opacity: 1;
@@ -1386,26 +1386,33 @@
     // ==========================================
     const screenshotData = {
         'overview': {
-            file: 'docs/screenshots/skywindow_overview.png',
+            file: 'screenshots/skywindow_overview.png',
             badge: 'MODULE 01 // LIVE OPERATIONS GIS MAP & DISASTER FEED'
         },
         'tasking': {
-            file: 'docs/screenshots/skywindow_tasking.png',
+            file: 'screenshots/skywindow_tasking.png',
             badge: 'MODULE 02 // SENSOR-AWARE SATELLITE TASKING & SGP4 SCHEDULER'
         },
         'catalog': {
-            file: 'docs/screenshots/skywindow_catalog.png',
+            file: 'screenshots/skywindow_catalog.png',
             badge: 'MODULE 03 // GLOBAL MULTI-DISASTER DIRECTORY & INCIDENTS'
         },
         'change': {
-            file: 'docs/screenshots/skywindow_change.png',
+            file: 'screenshots/skywindow_change.png',
             badge: 'MODULE 04 // MULTI-TEMPORAL CHANGE DETECTION DIFFERENCING'
         },
         'analyst': {
-            file: 'docs/screenshots/skywindow_analyst.png',
+            file: 'screenshots/skywindow_analyst.png',
             badge: 'MODULE 05 // GROUNDED AI ANALYST & NLP MISSION PLANNER'
         }
     };
+
+    // Preload screenshots for instantaneous switching
+    Object.values(screenshotData).forEach(item => {
+        const img = new Image();
+        img.src = item.file;
+        img.onerror = () => { img.src = '../docs/' + item.file; };
+    });
 
     function switchShot(key, btn) {
         document.querySelectorAll('.shot-tab').forEach(t => t.classList.remove('active'));
@@ -1416,12 +1423,12 @@
             const img = document.getElementById('activeShotImg');
             const badge = document.getElementById('shotBadgeText');
             if (img) {
-                img.style.opacity = '0.4';
+                img.style.opacity = '0.7';
+                img.src = data.file;
+                img.onerror = () => { img.src = '../docs/' + data.file; };
                 setTimeout(() => {
-                    img.src = data.file;
-                    img.onerror = () => { img.src = data.file.replace('docs/screenshots/', 'screenshots/'); };
                     img.style.opacity = '1';
-                }, 150);
+                }, 40);
             }
             if (badge) badge.textContent = data.badge;
         }

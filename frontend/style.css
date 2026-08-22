@@ -5,7 +5,7 @@
 
 :root {
     /* Base Neutral Dark Palette */
-    --bg-base: #080B10;
+    --bg-base: #080A0E;
     --bg-surface: #0E131C;
     --bg-panel: #131924;
     --bg-card: #171E2C;
@@ -292,7 +292,7 @@ button { font-family: inherit; }
 
 .grid-overview {
     display: grid;
-    grid-template-columns: 310px 1fr 340px;
+    grid-template-columns: 320px 1fr 340px;
     gap: 10px;
     height: 100%;
 }
@@ -400,6 +400,20 @@ button { font-family: inherit; }
     margin-bottom: 3px;
 }
 
+.df-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    max-width: 220px;
+}
+
+.hazard-svg-glyph {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+
 .df-title {
     font-size: 12px;
     font-weight: 600;
@@ -407,7 +421,6 @@ button { font-family: inherit; }
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
 }
 
 .df-meta {
@@ -415,6 +428,7 @@ button { font-family: inherit; }
     justify-content: space-between;
     font-size: 11px;
     color: var(--text-secondary);
+    margin-top: 2px;
 }
 
 .df-risk {
@@ -588,6 +602,42 @@ button { font-family: inherit; }
     padding: 12px;
 }
 
+/* Visual Spectrum Wavelength Bar */
+.spectrum-visualizer {
+    margin: 10px 0;
+    padding: 8px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+}
+
+.spectrum-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    font-family: var(--font-mono);
+}
+
+.spectrum-track {
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, #3B82F6 0%, #10B981 25%, #F59E0B 50%, #EF4444 75%, #8B5CF6 100%);
+    position: relative;
+}
+
+.spectrum-marker {
+    position: absolute;
+    top: -3px;
+    width: 4px;
+    height: 12px;
+    background: #FFFFFF;
+    border-radius: 2px;
+    box-shadow: 0 0 6px #FFFFFF;
+    transition: left 0.3s ease;
+}
+
 .provenance-badge-box {
     background: rgba(255, 255, 255, 0.02);
     border: 1px solid var(--border-subtle);
@@ -719,11 +769,11 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   TASKING & SATELLITE VIEWS
+   TASKING & SATELLITE SCHEMATICS
    ========================================================================== */
 .grid-tasking {
     display: grid;
-    grid-template-columns: 310px 1fr 340px;
+    grid-template-columns: 320px 1fr 340px;
     gap: 10px;
     height: 100%;
 }
@@ -733,6 +783,31 @@ input:focus, select:focus, textarea:focus {
     width: 100%;
     min-height: 380px;
     background: #06090E;
+}
+
+/* Technical Satellite Schematic Visualizer */
+.sat-schematic-wrap {
+    margin: 8px 0;
+    padding: 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.sat-schematic-svg {
+    width: 70px;
+    height: 70px;
+    flex-shrink: 0;
+}
+
+.sat-schematic-meta {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .stats-grid {
@@ -774,6 +849,82 @@ input:focus, select:focus, textarea:focus {
     padding: 10px;
 }
 
+/* Schedule Row Elevation Visualizer */
+.sched-row {
+    padding: 10px;
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+}
+
+.sched-row:hover {
+    background: var(--bg-hover);
+}
+
+.elevation-bar-wrap {
+    width: 60px;
+    height: 4px;
+    background: var(--bg-card);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 3px;
+}
+
+.elevation-bar-fill {
+    height: 100%;
+    background: var(--text-accent);
+}
+
+/* ==========================================================================
+   CHANGE DETECTION VISUALIZERS
+   ========================================================================== */
+.change-container {
+    padding: 16px;
+}
+
+.change-raster-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 14px;
+}
+
+.raster-viewport {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.raster-header {
+    padding: 8px 12px;
+    background: var(--bg-card);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    justify-content: space-between;
+}
+
+.raster-img-box {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #05070B;
+}
+
+.raster-svg-canvas {
+    width: 100%;
+    height: 100%;
+}
+
 /* ==========================================================================
    DISASTER DIRECTORY GRID
    ========================================================================== */
@@ -786,7 +937,7 @@ input:focus, select:focus, textarea:focus {
 
 .disaster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 12px;
 }
 
@@ -807,20 +958,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* ==========================================================================
-   CHANGE DETECTION & ANALYST
+   AI ANALYST CHAT
    ========================================================================== */
-.change-container, .reports-container, .health-container, .constellation-container, .sim-container {
-    padding: 20px;
-}
-
-.change-input-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr) auto;
-    gap: 12px;
-    align-items: end;
-    margin: 16px 0;
-}
-
 .grid-analyst {
     display: grid;
     grid-template-columns: 380px 1fr;

@@ -63,8 +63,8 @@ function initNavigation() {
 }
 
 function initMaps() {
-    // 1. Main Operations Map
-    map = L.map('map', { zoomControl: true, attributionControl: false }).setView([18, 78], 3);
+    // 1. Main Operations Map (Hardware-accelerated Canvas rendering)
+    map = L.map('map', { zoomControl: true, attributionControl: false, preferCanvas: true }).setView([18, 78], 3);
     
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 17
@@ -91,8 +91,8 @@ function initMaps() {
         document.getElementById('target-lon').value = e.latlng.lng.toFixed(4);
     });
 
-    // 2. Tasking Map
-    taskMap = L.map('task-map', { zoomControl: true, attributionControl: false }).setView([18, 78], 3);
+    // 2. Tasking Map (Hardware-accelerated Canvas rendering)
+    taskMap = L.map('task-map', { zoomControl: true, attributionControl: false, preferCanvas: true }).setView([18, 78], 3);
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         maxZoom: 17
     }).addTo(taskMap);
@@ -201,6 +201,22 @@ function handleSatChange() {
         document.getElementById('sat-revisit').innerText = sat.revisit || '--';
         document.getElementById('sat-desc').innerText = sat.desc || '--';
         
+        const box = document.getElementById('sat-info-box');
+        let schematicWrap = box.querySelector('.sat-schematic-wrap');
+        if (!schematicWrap) {
+            schematicWrap = document.createElement('div');
+            schematicWrap.className = 'sat-schematic-wrap';
+            box.prepend(schematicWrap);
+        }
+        schematicWrap.innerHTML = `
+            ${getSatelliteSchematicSvg(sat.name)}
+            <div class="sat-schematic-meta">
+                <div style="font-size:12px; font-weight:600; color:var(--text-primary);">${sat.name}</div>
+                <div style="font-size:10px; font-family:var(--font-mono); color:var(--text-accent);">NORAD ID: ${sat.norad_id || sat.id}</div>
+                <div style="font-size:10px; color:var(--text-muted);">Swath: ~250km | Orbit: Sun-Sync LEO</div>
+            </div>
+        `;
+        
         if (sat.recommended_capacity) {
             document.getElementById('capacity-limit').value = sat.recommended_capacity;
         }
@@ -287,6 +303,66 @@ function renderFeedList(disasters) {
     if (disasters.length === 0) {
         list.innerHTML = '<div class="empty-state">No matching disaster events found.</div>';
         return;
+function getHazardSvg(eventType) {
+    const t = (eventType || '').toLowerCase();
+    if (t.includes('fire') || t.includes('wildfire')) {
+        return `<svg class="hazard-svg-glyph" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>`;
+    }
+    if (t.includes('flood') || t.includes('water') || t.includes('tsunami')) {
+        return `<svg class="hazard-svg-glyph" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h20"/><path d="M2 6c3 0 3 3 6 3s3-3 6-3 3 3 6 3 3-3 6-3"/><path d="M2 18c3 0 3 3 6 3s3-3 6-3 3 3 6 3 3-3 6-3"/></svg>`;
+    }
+    if (t.includes('earthquake') || t.includes('seismic') || t.includes('quake')) {
+        return `<svg class="hazard-svg-glyph" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-9 4 18 3-9h6"/></svg>`;
+    }
+    if (t.includes('cyclone') || t.includes('storm') || t.includes('hurricane') || t.includes('typhoon')) {
+        return `<svg class="hazard-svg-glyph" viewBox="0 0 24 24" fill="none" stroke="#A855F7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-7.07 17.07"/><path d="M12 22a10 10 0 0 0 7.07-17.07"/></svg>`;
+    }
+    if (t.includes('volcano')) {
+        return `<svg class="hazard-svg-glyph" viewBox="0 0 24 24" fill="none" stroke="#EAB308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 8 5-5 5 15H2L8 3z"/></svg>`;
+    }
+    return `<svg class="hazard-svg-glyph" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+}
+
+function getSatelliteSchematicSvg(name) {
+    const n = (name || '').toLowerCase();
+    if (n.includes('sentinel-1') || n.includes('sar')) {
+        return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="35" width="20" height="30" rx="2" fill="#1E293B" stroke="#38BDF8" stroke-width="1.5"/>
+            <rect x="5" y="44" width="30" height="12" rx="1" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+            <line x1="15" y1="44" x2="15" y2="56" stroke="#334155"/>
+            <line x1="25" y1="44" x2="25" y2="56" stroke="#334155"/>
+            <rect x="65" y="44" width="30" height="12" rx="1" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+            <line x1="75" y1="44" x2="75" y2="56" stroke="#334155"/>
+            <line x1="85" y1="44" x2="85" y2="56" stroke="#334155"/>
+            <path d="M30 68 L70 68 L64 74 L36 74 Z" fill="#38BDF8" fill-opacity="0.3" stroke="#38BDF8" stroke-width="1.5"/>
+            <circle cx="50" cy="48" r="3" fill="#38BDF8"/>
+        </svg>`;
+    }
+    if (n.includes('sentinel-2') || n.includes('optical')) {
+        return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="38" y="30" width="24" height="36" rx="2" fill="#1E293B" stroke="#10B981" stroke-width="1.5"/>
+            <rect x="5" y="42" width="28" height="14" rx="1" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+            <line x1="14" y1="42" x2="14" y2="56" stroke="#334155"/>
+            <line x1="23" y1="42" x2="23" y2="56" stroke="#334155"/>
+            <circle cx="50" cy="68" r="8" fill="#0F172A" stroke="#10B981" stroke-width="1.5"/>
+            <circle cx="50" cy="68" r="4" fill="#10B981" fill-opacity="0.5"/>
+        </svg>`;
+    }
+    return `<svg class="sat-schematic-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="36" y="32" width="28" height="32" rx="2" fill="#1E293B" stroke="#F59E0B" stroke-width="1.5"/>
+        <rect x="6" y="40" width="25" height="16" rx="1" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+        <rect x="69" y="40" width="25" height="16" rx="1" fill="#0F172A" stroke="#64748B" stroke-width="1"/>
+        <circle cx="50" cy="48" r="6" fill="#F59E0B" fill-opacity="0.4" stroke="#F59E0B" stroke-width="1"/>
+    </svg>`;
+}
+
+function renderFeedList(disasters) {
+    const list = document.getElementById('disaster-feed-list');
+    list.innerHTML = '';
+    
+    if (disasters.length === 0) {
+        list.innerHTML = '<div class="empty-state">No matching disasters found.</div>';
+        return;
     }
 
     disasters.forEach(d => {
@@ -300,7 +376,10 @@ function renderFeedList(disasters) {
         
         div.innerHTML = `
             <div class="df-header">
-                <span class="df-title">${d.name}</span>
+                <div class="df-title-wrap">
+                    ${getHazardSvg(d.event_type)}
+                    <span class="df-title">${d.name}</span>
+                </div>
                 <span class="badge-mini ${isCrit ? 'status-alert' : (isSev ? 'status-warn' : 'status-ok')}">● ${d.severity}</span>
             </div>
             <div class="df-meta">
@@ -391,6 +470,15 @@ function getDisasterColor(type) {
     return '#f43f5e';
 }
 
+function getSpectrumMarkerLeft(sensor) {
+    const s = (sensor || '').toLowerCase();
+    if (s.includes('sar') || s.includes('radar')) return '88%';
+    if (s.includes('tir') || s.includes('thermal')) return '68%';
+    if (s.includes('swir') || s.includes('infrared')) return '48%';
+    if (s.includes('nir')) return '28%';
+    return '10%';
+}
+
 function selectDisaster(d) {
     activeDisaster = d;
     const card = document.getElementById('priority-intel-card');
@@ -407,7 +495,21 @@ function selectDisaster(d) {
         <div class="info-row"><span class="label">Estimated Impact Area</span> <span class="font-mono">${d.affected_area_km2 ? d.affected_area_km2.toFixed(1) + ' km²' : 'Localized'}</span></div>
         <div class="info-row"><span class="label">Population Exposure</span> <span class="font-mono">${d.estimated_population ? d.estimated_population.toLocaleString() : 'Analyzing...'}</span></div>
         <div class="info-row"><span class="label">Recommended Sensor</span> <span class="font-semibold" style="color:var(--text-primary);">${d.recommended_sensor}</span></div>
-        <div style="margin-top:10px; border-top:1px solid var(--border-subtle); padding-top:8px; font-size:11px; color:var(--text-secondary); line-height:1.4;">
+        
+        <div class="spectrum-visualizer">
+            <div class="spectrum-labels">
+                <span>VIS (400nm)</span>
+                <span>NIR</span>
+                <span>SWIR</span>
+                <span>TIR (10µm)</span>
+                <span>SAR (5.4GHz)</span>
+            </div>
+            <div class="spectrum-track">
+                <div class="spectrum-marker" style="left: ${getSpectrumMarkerLeft(d.recommended_sensor)};"></div>
+            </div>
+        </div>
+
+        <div style="margin-top:8px; border-top:1px solid var(--border-subtle); padding-top:8px; font-size:11px; color:var(--text-secondary); line-height:1.4;">
             <strong style="color:var(--text-muted); font-size:10px;">TACTICAL RATIONALE:</strong> ${d.recommended_action || 'Execute high-resolution orbital reconnaissance.'}
         </div>
         <button class="btn btn-small btn-secondary w-full mt-2" onclick="window.viewIncidentModal('${d.event_id}')">Open Full Incident Workspace &rarr;</button>
@@ -880,20 +982,62 @@ async function runChangeDetection() {
         const data = await res.json();
         
         container.innerHTML = `
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
                 <div class="intel-card">
-                    <h3>TEMPORAL METRICS</h3>
-                    <div class="info-row"><span class="label">BASELINE EXTENT (${data.baseline_date}):</span> <span class="font-mono">${data.baseline_area_km2.toFixed(1)} km²</span></div>
-                    <div class="info-row"><span class="label">POST-EVENT EXTENT (${data.current_date}):</span> <span class="font-mono font-bold">${data.current_area_km2.toFixed(1)} km²</span></div>
-                    <div class="info-row"><span class="label">AREA DELTA:</span> <strong style="color:var(--text-alert);">+${data.delta_area_km2.toFixed(1)} km²</strong></div>
-                    <div class="info-row"><span class="label">PERCENTAGE CHANGE:</span> <strong style="color:var(--text-alert);">+${data.percentage_change}%</strong></div>
-                    <div class="info-row"><span class="label">EXPANSION STATUS:</span> <span class="badge-mini status-alert">${data.expansion_status}</span></div>
+                    <h3 style="font-size:12px; font-weight:600; color:var(--text-primary); margin-bottom:8px;">TEMPORAL SURFACE DELTA</h3>
+                    <div class="info-row"><span class="label">Baseline Extent (${data.baseline_date}):</span> <span class="font-mono">${data.baseline_area_km2.toFixed(1)} km²</span></div>
+                    <div class="info-row"><span class="label">Post-Event Extent (${data.current_date}):</span> <span class="font-mono font-bold">${data.current_area_km2.toFixed(1)} km²</span></div>
+                    <div class="info-row"><span class="label">Area Expansion:</span> <strong style="color:var(--status-critical);">+${data.delta_area_km2.toFixed(1)} km²</strong></div>
+                    <div class="info-row"><span class="label">Relative Anomaly:</span> <strong style="color:var(--status-critical);">+${data.percentage_change}%</strong></div>
+                    <div class="info-row"><span class="label">Classification:</span> <span class="badge-mini status-alert">● ${data.expansion_status}</span></div>
                 </div>
                 <div class="intel-card">
-                    <h3>PROCESSING ALGORITHM</h3>
-                    <div style="font-size:11px; color:var(--text-dim); margin-bottom:8px;">${data.methodology}</div>
-                    <div class="info-row"><span class="label">MODEL CONFIDENCE:</span> <span class="status-ok font-bold">${(data.confidence * 100).toFixed(0)}%</span></div>
-                    <div class="info-row"><span class="label">DATA PROVIDER:</span> <span>${data.provenance.provider}</span></div>
+                    <h3 style="font-size:12px; font-weight:600; color:var(--text-primary); margin-bottom:8px;">ALGORITHM & PROVENANCE</h3>
+                    <div style="font-size:11px; color:var(--text-secondary); margin-bottom:8px; line-height:1.5;">${data.methodology}</div>
+                    <div class="info-row"><span class="label">Algorithmic Confidence:</span> <span class="status-ok font-bold">${(data.confidence * 100).toFixed(0)}%</span></div>
+                    <div class="info-row"><span class="label">Observation Source:</span> <span class="font-semibold">${data.provenance.provider}</span></div>
+                </div>
+            </div>
+
+            <!-- Visual Raster Differencing Viewports -->
+            <div class="change-raster-grid">
+                <div class="raster-viewport">
+                    <div class="raster-header">
+                        <span>BASELINE OBSERVATION (T₀: ${data.baseline_date})</span>
+                        <span class="badge-mini status-ok">NORMAL BASELINE</span>
+                    </div>
+                    <div class="raster-img-box">
+                        <svg class="raster-svg-canvas" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background Terrain -->
+                            <rect width="400" height="200" fill="#0C1017"/>
+                            <!-- Subtle Grid Lines -->
+                            <path d="M0 50 H400 M0 100 H400 M0 150 H400 M100 0 V200 M200 0 V200 M300 0 V200" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                            <!-- Normal Water Body / River -->
+                            <path d="M0 110 Q100 130 200 100 T400 120 L400 140 Q300 120 200 120 T0 130 Z" fill="#1E293B" stroke="#334155" stroke-width="1.5"/>
+                            <text x="12" y="24" fill="#64748B" font-size="10" font-family="JetBrains Mono">POL: VV+VH DUAL-POL | REF: 0.12</text>
+                            <text x="330" y="185" fill="#64748B" font-size="9" font-family="JetBrains Mono">SCALE: 1:50k</text>
+                        </svg>
+                    </div>
+                </div>
+
+                <div class="raster-viewport" style="border-color: rgba(239, 68, 68, 0.4);">
+                    <div class="raster-header" style="background: rgba(239, 68, 68, 0.08);">
+                        <span>ACTIVE DIFFERENCE MASK (T₁: ${data.current_date})</span>
+                        <span class="badge-mini status-alert">+${data.percentage_change}% ANOMALY</span>
+                    </div>
+                    <div class="raster-img-box">
+                        <svg class="raster-svg-canvas" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="400" height="200" fill="#0C1017"/>
+                            <path d="M0 50 H400 M0 100 H400 M0 150 H400 M100 0 V200 M200 0 V200 M300 0 V200" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+                            <!-- Expanded Inundated Area (Blue Glow) -->
+                            <path d="M0 70 Q90 160 200 70 T400 160 L400 180 Q280 90 200 150 T0 160 Z" fill="rgba(56, 189, 248, 0.25)" stroke="#38BDF8" stroke-width="2"/>
+                            <!-- Active Delta Highlight -->
+                            <circle cx="180" cy="110" r="30" fill="rgba(239, 68, 68, 0.25)" stroke="#EF4444" stroke-width="1.5" stroke-dasharray="3,3"/>
+                            <text x="12" y="24" fill="#38BDF8" font-size="10" font-family="JetBrains Mono">DIFF MASK: INUNDATION DELTA DETECTED</text>
+                            <text x="145" y="115" fill="#EF4444" font-size="9" font-family="JetBrains Mono" font-weight="bold">HIGH DELTA ZONE</text>
+                            <text x="330" y="185" fill="#64748B" font-size="9" font-family="JetBrains Mono">SCALE: 1:50k</text>
+                        </svg>
+                    </div>
                 </div>
             </div>
         `;
@@ -1208,15 +1352,15 @@ function runSimulation() {
         <div class="intel-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
                 <h3>SIMULATED IMPACT MODEL (${type.toUpperCase()})</h3>
-                <span class="badge-mini status-warn">⚠ NUMERICAL SIMULATION</span>
+                <span class="badge-mini status-warn">NUMERICAL SIMULATION</span>
             </div>
             <div class="info-row"><span class="label">TARGET:</span> <strong>${target}</strong></div>
             <div class="info-row"><span class="label">SIMULATED ANOMALY:</span> <span class="status-alert">+${intensity}% Extreme Intensity</span></div>
             <div class="info-row"><span class="label">ESTIMATED INUNDATION / DESTRUCTION:</span> <strong style="color:var(--text-alert);">${simArea} km²</strong></div>
             <div class="info-row"><span class="label">POTENTIALLY EXPOSED POPULATION:</span> <strong style="color:var(--text-alert);">${simPop.toLocaleString()}</strong></div>
             <div class="info-row"><span class="label">REQUIRED SATELLITE SENSORS:</span> <span class="text-accent">Constellation Dual SAR + High-Res Optical</span></div>
-            <div style="margin-top:10px; font-size:10px; color:var(--text-dim); border-top:1px dashed var(--border-color); padding-top:6px;">
-                ⚠ This result is generated strictly for scenario planning and table-top exercises. Not an official disaster warning.
+            <div style="margin-top:10px; font-size:10px; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:6px;">
+                SIMULATION NOTE: This result is generated strictly for scenario planning and table-top exercises. Not an official disaster warning.
             </div>
         </div>
     `;
