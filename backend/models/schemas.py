@@ -6,6 +6,7 @@ from datetime import datetime
 class SourceStatus(str, Enum):
     LIVE = "LIVE"
     STALE = "STALE"
+    DEGRADED = "DEGRADED"
     DEMO = "DEMO"
     ERROR = "ERROR"
     OFFLINE = "OFFLINE"
