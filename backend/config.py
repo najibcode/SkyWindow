@@ -1,6 +1,10 @@
 import os
+from dotenv import load_dotenv
 from pydantic import BaseModel
 from typing import Optional
+
+# Load environment variables from .env
+load_dotenv()
 
 class Settings(BaseModel):
     # App

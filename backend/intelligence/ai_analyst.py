@@ -56,34 +56,39 @@ class SkyWindowAIAnalyst:
         return context
 
     async def _query_groq_llm(self, prompt: str, system_prompt: str) -> Optional[str]:
-        """Queries Groq API using free Llama-3.3-70B model."""
+        """Queries Groq API using available high-speed models."""
         key = self._get_groq_key()
         if not key:
             return None
 
-        try:
-            async with httpx.AsyncClient(timeout=15.0) as client:
-                res = await client.post(
-                    "https://api.groq.com/openai/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {key}",
-                        "Content-Type": "application/json"
-                    },
-                    json={
-                        "model": "llama-3.3-70b-versatile",
-                        "messages": [
-                            {"role": "system", "content": system_prompt},
-                            {"role": "user", "content": prompt}
-                        ],
-                        "temperature": 0.3,
-                        "max_tokens": 800
-                    }
-                )
-                if res.status_code == 200:
-                    data = res.json()
-                    return data["choices"][0]["message"]["content"]
-        except Exception as e:
-            print(f"[SkyWindow AI] Groq API error: {e}")
+        # Candidate models available on this Groq tier
+        models = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.6-27b", "groq/compound"]
+
+        async with httpx.AsyncClient(timeout=15.0) as client:
+            for model in models:
+                try:
+                    res = await client.post(
+                        "https://api.groq.com/openai/v1/chat/completions",
+                        headers={
+                            "Authorization": f"Bearer {key}",
+                            "Content-Type": "application/json"
+                        },
+                        json={
+                            "model": model,
+                            "messages": [
+                                {"role": "system", "content": system_prompt},
+                                {"role": "user", "content": prompt}
+                            ],
+                            "temperature": 0.2,
+                            "max_tokens": 800
+                        }
+                    )
+                    if res.status_code == 200:
+                        data = res.json()
+                        return data["choices"][0]["message"]["content"]
+                except Exception as e:
+                    print(f"[SkyWindow AI] Groq model {model} attempt error: {e}")
+                    continue
         return None
 
     async def _query_gemini_llm(self, prompt: str, system_prompt: str) -> Optional[str]:
@@ -237,6 +242,9 @@ class SkyWindowAIAnalyst:
             data_sources=["NASA EONET v3", "USGS Earthquakes", "Open-Meteo NWP", "CelesTrak TLEs", "OpenStreetMap"],
             provenance=prov
         )
+
+    async def parse_natural_language_task(self, req: NaturalLanguageTaskingRequest) -> NaturalLanguageTaskingResponse:
+        return await self.parse_natural_language_tasking(req)
 
     async def parse_natural_language_tasking(self, req: NaturalLanguageTaskingRequest) -> NaturalLanguageTaskingResponse:
         text = req.instruction.strip()
