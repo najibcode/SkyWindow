@@ -6,13 +6,14 @@
 
 *Fusing Real-Time Space Agency Telemetry, Numerical Weather Prediction (NWP), and SGP4 Orbital Astrodynamics to Optimize Planetary Crisis Response.*
 
+[![GitHub](https://img.shields.io/badge/GitHub-najibcode%2Fskywindow-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/najibcode/skywindow)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.141-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9.4-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![Data Quality](https://img.shields.io/badge/Live_Data-100%25_Verified-brightgreen?style=for-the-badge)](https://eonet.gsfc.nasa.gov)
 
-[Live Demo](http://127.0.0.1:8000) • [Architecture](#-architecture--data-flow) • [Live Data Feeds](#-real-time-authoritative-data-feeds) • [Installation](#-quickstart--installation) • [API Reference](#-rest-api-reference) • [Documentation](docs/)
+[Live Operations Console](http://127.0.0.1:8000) • [Pitch Deck (14 Slides)](pitch_deck.html) • [Architecture](#-architecture--data-flow) • [Live Data Feeds](#-real-time-authoritative-data-feeds) • [Quickstart](#-quickstart--installation) • [API Reference](#-rest-api-reference)
 
 </div>
 
@@ -23,7 +24,7 @@
 - [System Architecture & Data Flow](#-system-architecture--data-flow)
 - [Real-Time Authoritative Data Feeds](#-real-time-authoritative-data-feeds)
 - [Key Modules & Platform Capabilities](#-key-modules--platform-capabilities)
-  - [1. Global Multi-Disaster Operations Center](#1-global-multi-disaster-operations-center)
+  - [1. Global Multi-Disaster Operations Map](#1-global-multi-disaster-operations-map)
   - [2. Sensor-Aware Satellite Mission Tasking Console](#2-sensor-aware-satellite-mission-tasking-console)
   - [3. Multi-Temporal Change Detection Engine](#3-multi-temporal-change-detection-engine)
   - [4. Grounded AI Disaster Analyst ("SkyWindow Analyst")](#4-grounded-ai-disaster-analyst)
@@ -33,6 +34,7 @@
 - [Quickstart & Installation](#-quickstart--installation)
 - [REST API Reference](#-rest-api-reference)
 - [Project Directory Structure](#-project-directory-structure)
+- [Hackathon Pitch Deck](#-hackathon-pitch-deck)
 - [Attribution & Open Data Licenses](#-attribution--open-data-licenses)
 
 ---
@@ -42,10 +44,10 @@
 **SkyWindow** is a specialized mission-planning and aerospace intelligence console designed for satellite operators, disaster response agencies, and geospatial analysts. During major catastrophes (such as floods, wildfires, hurricanes, or earthquakes), optical satellite imagery is frequently rendered useless by dense cloud cover, resulting in wasted passes, depleted battery reserves, and saturated onboard storage.
 
 SkyWindow solves this by:
-1. **Aggregating 100% live disaster feeds** from NASA EONET, USGS, and NOAA with zero synthetic placeholders.
-2. **Propagating orbits** in real-time using SGP4 Keplarian physics over fresh NORAD Two-Line Elements (TLEs).
-3. **Interrogating high-resolution Numerical Weather Prediction (NWP) models** from ECMWF and DWD at the exact time and coordinate of each satellite pass.
-4. **Intelligently matching sensor modalities** (e.g. cloud-penetrating Synthetic Aperture Radar for monsoons vs Thermal Infrared for wildfires vs Multispectral for clear-sky vegetation).
+1. **Aggregating 100% live disaster feeds** from NASA EONET v3, USGS NEIC, and NOAA with zero synthetic placeholders.
+2. **Propagating orbits in real-time** using SGP4 Keplarian physics over fresh NORAD Two-Line Elements (TLEs) from CelesTrak.
+3. **Interrogating high-resolution Numerical Weather Prediction (NWP) models** from ECMWF and DWD at the exact minute and coordinate of each satellite pass.
+4. **Intelligently matching sensor modalities** (e.g. cloud-penetrating Synthetic Aperture Radar for monsoons vs Thermal Infrared for wildfires vs Multispectral for clear-sky damage assessment).
 
 > [!IMPORTANT]
 > **Zero Fabrication Guarantee:** All coordinates, seismic magnitudes, storm tracks, cloud cover percentages, and infrastructure counts displayed in SkyWindow originate from live, authoritative public REST APIs with traceable data provenance.
@@ -73,7 +75,7 @@ flowchart TD
         DB[(SQLite Persistent Store\nTelemetry & Calibration Log)]
     end
 
-    subgraph Frontend_UI [Interactive Tactical Console]
+    subgraph Frontend_UI [Tactical Mission Operations Console]
         MAP[Leaflet Operations Map\nRainViewer Live Radar Overlay]
         TASK[Mission Planning Workspace\nSensor-Aware Flight Scheduler]
         CATALOG[Global Disaster Catalog\nDetailed Incident Workspace]
@@ -119,7 +121,7 @@ SkyWindow connects directly to public, zero-key, high-availability space and met
 
 ## 🚀 Key Modules & Platform Capabilities
 
-### 1. Global Multi-Disaster Operations Center
+### 1. Global Multi-Disaster Operations Map
 - **Interactive Geospatial Map:** Displays 90+ live hazards worldwide with classified severity heatmaps, impact radius polygons, and incident badges.
 - **Categorical Filtering:** Filter instantly across **Geological** (Earthquakes, Volcanoes, Landslides), **Meteorological** (Cyclones, Heatwaves), **Hydrological** (Floods), **Environmental** (Wildfires), and **Oceanic** (Tsunamis).
 - **Incident Deep-Dive Modal:** View real-time casualty estimations, chronological observation logs, and open-street asset exposure.
@@ -178,48 +180,10 @@ $$\text{Risk} = \underbrace{0.40 \times H}_{\text{Hazard Intensity}} + \underbra
 - **Python 3.10 to 3.14**
 - **Git**
 - Modern Web Browser (Chrome, Firefox, Safari, Edge)
->>>>>>> 330614f (Integrate live authoritative APIs for NASA EONET, USGS, Open-Meteo, GloFAS, CelesTrak, and OSM)
 
 ### Step 1: Clone Repository
 ```bash
-<<<<<<< HEAD
-cd backend
-pip install -r requirements.txt
-python -m uvicorn main:app --reload --port 8001
-```
-
-*The backend API will be available at `http://127.0.0.1:8001`.*
-
-### 2. Frontend Setup
-Open a new terminal window, navigate to the `frontend` directory, install the Node packages, and start the Vite dev server:
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-*Vite will automatically proxy `/api` requests to the backend. Open your browser and navigate to `http://127.0.0.1:5173` (or the port Vite specifies).*
-
----
-
-##  How to Use
-
-1. **Mission Planning:**
-   - Select a satellite (e.g., ISS) from the dropdown.
-   - Add targets by clicking on the map, OR by typing a location name in the "Search Location" box.
-   - Click "Generate Schedule". The backend will compute the orbital path, check the weather, apply the constraints, and return the optimized imaging schedule.
-2. **Global Hazard Watch:**
-   - Switch to the "Global Hazard Watch" tab.
-   - Filter active disasters by severity or type using the switches.
-   - Click on any hazard marker on the map to view live details.
-   - Click **"+ ADD AS EMERGENCY IMAGING TARGET"** to instantly inject the hazard into your Mission Planner's active target list for immediate satellite tasking.
-
----
-
-*Project configured and migrated to React for Naresh (`naresh-py`).*
-=======
-git clone https://github.com/naresh-py/skywindow.git
+git clone https://github.com/najibcode/skywindow.git
 cd skywindow
 ```
 
@@ -282,28 +246,24 @@ All backend capabilities are exposed via clean, documented RESTful endpoints:
 | `POST` | `/api/reports/generate/{id}` | Synthesizes an executive intelligence briefing |
 | `GET` | `/api/health` | Live ping checks and latency metrics for all external API providers |
 
-<details>
-<summary><b>Example JSON Request: <code>POST /api/schedule</code></b></summary>
+---
 
-```json
-{
-  "satellite_id": 39634,
-  "targets": [
-    {
-      "id": "tgt-nevada-fire",
-      "name": "WASHOE WILDFIRE",
-      "lat": 39.8228,
-      "lon": -119.5252,
-      "weight": 9.0
-    }
-  ],
-  "max_passes_per_day": 4,
-  "max_cloud_cover": 70.0,
-  "power_per_pass": 150.0,
-  "storage_per_pass": 12.0
-}
-```
-</details>
+## 📊 Hackathon Pitch Deck
+
+An interactive 14-slide aerospace pitch deck is included directly in the repository:
+- **Online Demo:** Open `http://127.0.0.1:8000/pitch_deck.html` while running the server.
+- **Source File:** [pitch_deck.html](pitch_deck.html)
+
+**Slide Highlights:**
+1. *The Hook: Observe, Understand, Task*
+2. *The Problem: Fragmented Disaster Data & Wasted Satellite Passes*
+3. *The Missing Layer: Real-Time Mission Intelligence*
+4. *System Pipeline: Disaster Signal &rarr; Sensor-Aware Tasking*
+5. *Core Differentiator: From Detection to Orbital Planning*
+6. *Floods & SAR Differencing (Sentinel-1 Dual-Pol)*
+7. *Astrodynamics & Look-Angle Optimization*
+8. *Grounded AI Copilot & NLP Mission Parser*
+9. *100% Verified Zero-Mock Architecture*
 
 ---
 
@@ -347,10 +307,11 @@ skywindow/
 │   ├── main.py                  # Application entry point & middleware
 │   └── requirements.txt         # Production Python dependencies
 ├── frontend/
-│   ├── index.html               # Tactical mission control single-page UI
-│   ├── style.css                # Cinematic HUD glassmorphism design system
+│   ├── index.html               # Mission operations console single-page UI
+│   ├── style.css                # Aerospace design system tokens & styles
 │   └── app.js                   # Leaflet mapping, live feed handlers & state
 ├── docs/                        # Detailed architectural and API documentation
+├── pitch_deck.html              # 14-slide interactive aerospace hackathon pitch deck
 └── README.md                    # Project documentation
 ```
 
@@ -373,4 +334,3 @@ SkyWindow is built entirely upon open data, open standards, and scientific trans
 *Built for aerospace engineers, disaster management teams, and Earth observation scientists.*
 
 </div>
->>>>>>> 330614f (Integrate live authoritative APIs for NASA EONET, USGS, Open-Meteo, GloFAS, CelesTrak, and OSM)
