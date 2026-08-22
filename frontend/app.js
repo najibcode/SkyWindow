@@ -296,13 +296,6 @@ async function fetchSummaryStats() {
     }
 }
 
-function renderFeedList(disasters) {
-    const list = document.getElementById('disaster-feed-list');
-    list.innerHTML = '';
-    
-    if (disasters.length === 0) {
-        list.innerHTML = '<div class="empty-state">No matching disaster events found.</div>';
-        return;
 function getHazardSvg(eventType) {
     const t = (eventType || '').toLowerCase();
     if (t.includes('fire') || t.includes('wildfire')) {
