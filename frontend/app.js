@@ -1355,27 +1355,71 @@ async function fetchHealth() {
 // -------------------------------------------------------------
 function runSimulation() {
     const type = document.getElementById('sim-scenario-type').value;
-    const target = document.getElementById('sim-target-name').value;
-    const intensity = document.getElementById('sim-intensity-slider').value;
+    const target = document.getElementById('sim-target-name').value || 'Coastal Urban Corridor';
+    const intensity = parseFloat(document.getElementById('sim-intensity-slider').value) || 50;
 
     const container = document.getElementById('sim-results-card');
     
-    let simArea = (142 * (1 + intensity / 100)).toFixed(1);
-    let simPop = Math.round(84000 * (1 + intensity / 100));
+    let baseArea = 142.0;
+    let basePop = 84000;
+    let sensorPkg = "Sentinel-1A (C-SAR) + Sentinel-2A (MSI Optical)";
+    let rationale = "Penetrate monsoon cloud deck via radar and track flood extent propagation.";
+    let hospitals = Math.round(8 * (1 + intensity / 100));
+    let schools = Math.round(24 * (1 + intensity / 100));
+    let bridges = Math.round(6 * (1 + intensity / 100));
+
+    if (type === 'cyclone') {
+        baseArea = 320.0;
+        basePop = 165000;
+        sensorPkg = "Sentinel-1A (SAR) + Terra (MODIS Thermal) + Landsat 9 (OLI-2)";
+        rationale = "High sea-surface wind shear & coastal storm surge requires multi-temporal radar differencing.";
+    } else if (type === 'earthquake') {
+        baseArea = 450.0;
+        basePop = 240000;
+        sensorPkg = "Sentinel-1A (InSAR Interferometry) + High-Resolution Optical";
+        rationale = "Measure sub-centimeter coseismic crustal deformation and identify collapsed transport corridors.";
+    }
+
+    let simArea = (baseArea * (1 + intensity / 100)).toFixed(1);
+    let simPop = Math.round(basePop * (1 + intensity / 100));
 
     container.innerHTML = `
         <div class="intel-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3>SIMULATED IMPACT MODEL (${type.toUpperCase()})</h3>
-                <span class="badge-mini status-warn">NUMERICAL SIMULATION</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3 style="font-size:14px; font-weight:700; color:var(--text-primary);">SIMULATED IMPACT MODEL: ${type.toUpperCase()}</h3>
+                <span class="badge-mini status-warn">● NUMERICAL SIMULATION</span>
             </div>
-            <div class="info-row"><span class="label">TARGET:</span> <strong>${target}</strong></div>
-            <div class="info-row"><span class="label">SIMULATED ANOMALY:</span> <span class="status-alert">+${intensity}% Extreme Intensity</span></div>
-            <div class="info-row"><span class="label">ESTIMATED INUNDATION / DESTRUCTION:</span> <strong style="color:var(--text-alert);">${simArea} km²</strong></div>
-            <div class="info-row"><span class="label">POTENTIALLY EXPOSED POPULATION:</span> <strong style="color:var(--text-alert);">${simPop.toLocaleString()}</strong></div>
-            <div class="info-row"><span class="label">REQUIRED SATELLITE SENSORS:</span> <span class="text-accent">Constellation Dual SAR + High-Res Optical</span></div>
-            <div style="margin-top:10px; font-size:10px; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:6px;">
-                SIMULATION NOTE: This result is generated strictly for scenario planning and table-top exercises. Not an official disaster warning.
+
+            <div class="sim-metric-badge-grid">
+                <div class="sim-metric-box">
+                    <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase;">Impact Footprint</span>
+                    <strong style="font-size:16px; color:#EF4444; font-family:var(--font-mono);">${simArea} km²</strong>
+                    <span style="font-size:9px; color:var(--text-muted);">+${intensity}% anomaly</span>
+                </div>
+                <div class="sim-metric-box">
+                    <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase;">Exposed Population</span>
+                    <strong style="font-size:16px; color:#F59E0B; font-family:var(--font-mono);">${simPop.toLocaleString()}</strong>
+                    <span style="font-size:9px; color:var(--text-muted);">estimated residents</span>
+                </div>
+                <div class="sim-metric-box">
+                    <span style="font-size:10px; color:var(--text-muted); text-transform:uppercase;">Critical Facilities</span>
+                    <strong style="font-size:16px; color:#38BDF8; font-family:var(--font-mono);">${hospitals + schools + bridges} Assets</strong>
+                    <span style="font-size:9px; color:var(--text-muted);">${hospitals} hosp · ${schools} schl · ${bridges} brg</span>
+                </div>
+            </div>
+
+            <div class="info-row"><span class="label">Target Corridor:</span> <strong>${target}</strong></div>
+            <div class="info-row"><span class="label">Recommended Sensor Package:</span> <strong class="text-accent">${sensorPkg}</strong></div>
+            <div class="info-row"><span class="label">Reconnaissance Rationale:</span> <span>${rationale}</span></div>
+
+            <div style="margin-top:14px; display:flex; gap:8px;">
+                <button class="btn btn-primary btn-small" onclick="document.querySelector('[data-view=view-tasking]').click();">
+                    Launch SGP4 Satellite Tasking for this Target
+                </button>
+            </div>
+
+            <div style="margin-top:12px; font-size:10px; color:var(--text-muted); border-top:1px solid var(--border-subtle); padding-top:8px;">
+                <strong>SIMULATION NOTE:</strong> Hydrodynamic and seismic parameters are computed for operational table-top readiness and satellite duty-cycle stress testing.
             </div>
         </div>
     `;
